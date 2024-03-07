@@ -230,8 +230,8 @@ class HomeController extends Controller
                 // return $request->all();
                 $validity = Validator::make($request->all(), [
                     "name"=>'required',"gender"=> "required","dob"=> "required", "pob"=> "required", "nationality"=> "required",
-                    "region"=> "required", "division"=> "required", "residence"=> "required", "phone"=> "required", "email"=> "required|email",
-                    "referer"=> "required", "high_school"=> "required", "campus_id"=> "required", "entry_qualification"=> "required"
+                    "residence"=> "required", "phone"=> "required", "email"=> "required|email",
+                    "entry_qualification"=> "required"
                 ]);
                 break;
             

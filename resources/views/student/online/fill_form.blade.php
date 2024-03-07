@@ -51,13 +51,13 @@
                     @csrf
                     <div class="py-2 row bg-light border-top shadow">
                         <h4 class="py-3 border-bottom border-top bg-white text-primary my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:800;">{{ __('text.word_stage') }} 1: {{ __('text.personal_details_bilang') }} : <span class="text-danger">APPLYING FOR A(AN) {{ $degree->deg_name }} PROGRAM</span></h4>
-                        <div class="py-2 col-sm-6 col-md-4 col-lg-5">
+                        <div class="py-2 col-sm-6 col-md-5 col-xl-4">
                             <label class="text-secondary  text-capitalize">{{ __('text.word_name_bilang') }}</label>
                             <div class="">
                                 <input type="text" class="form-control text-primary"  name="name" value="{{ auth('student')->user()->name }}" readonly required>
                             </div>
                         </div>
-                        <div class="py-2 col-sm-6 col-md-4 col-lg-3">
+                        <div class="py-2 col-sm-6 col-md-3 col-xl-2">
                             <label class="text-secondary  text-capitalize">{{ __('text.word_gender_bilang') }}</label>
                             <div class="">
                                 <select class="form-control text-primary"  name="gender" required>
@@ -66,19 +66,19 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="py-2 col-sm-6 col-md-4 col-lg-4">
+                        <div class="py-2 col-sm-6 col-md-4 col-xl-2">
                             <label class="text-secondary  text-capitalize">{{ __('text.date_of_birth_bilang') }}</label>
                             <div class="">
                                 <input type="date" class="form-control text-primary"  name="dob" value="{{ $application->dob }}" required>
                             </div>
                         </div>
-                        <div class="py-2 col-sm-6 col-md-4 col-lg-3">
+                        <div class="py-2 col-sm-6 col-md-4 col-xl-4">
                             <label class="text-secondary  text-capitalize">{{ __('text.place_of_birth_bilang') }}</label>
                             <div class="">
                                 <input type="text" class="form-control text-primary"  name="pob" value="{{ $application->pob }}" required>
                             </div>
                         </div>
-                        <div class="py-2 col-sm-6 col-md-4 col-lg-3">
+                        <div class="py-2 col-sm-6 col-md-4 col-xl-2">
                             <label class="text-secondary  text-capitalize">{{ __('text.word_country_bilang') }}</label>
                             <div class="">
                                 <select class="form-control text-primary"  name="nationality" required>
@@ -89,65 +89,23 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="py-2 col-sm-6 col-md-4 col-lg-3">
-                            <label class="text-secondary  text-capitalize">{{ __('text.region_of_origin') }}</label>
-                            <div class="">
-                                <select class="form-control text-primary"  name="region" required oninput="loadDivisions(event)">
-                                    <option value=""></option>
-                                    @foreach(\App\Models\Region::all() as $value)
-                                        <option value="{{ $value->id }}" {{ $application->region == $value->id ? 'selected' : '' }}>{{ $value->region }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="py-2 col-sm-6 col-md-4 col-lg-3">
-                            <label class="text-secondary  text-capitalize">{{ __('text.word_division') }}</label>
-                            <div class="">
-                                <select class="form-control text-primary"  name="division" required id="divisions">
-                                    
-                                </select>
-                            </div>
-                        </div>
-                        <div class="py-2 col-sm-6 col-md-4 col-lg-3">
-                            <label class="text-secondary  text-capitalize">{{ __('text.word_residence_bilang') }}</label>
+                        
+                        <div class="py-2 col-sm-6 col-md-4 col-xl-3">
+                            <label class="text-secondary  text-capitalize">{{ __('text.permanent_address_bilang') }}</label>
                             <div class="">
                                 <input type="text" class="form-control text-primary"  name="residence" value="{{ $application->residence }}" required>
                             </div>
                         </div>
-                        <div class="py-2 col-sm-6 col-md-4 col-lg-5">
+                        <div class="py-2 col-sm-6 col-md-4 col-xl-3">
                             <label class="text-secondary  text-capitalize">{{ __('text.telephone_number_bilang') }}</label>
                             <div class="">
                                 <input type="tel" class="form-control text-primary"  name="phone" value="{{ auth('student')->user()->phone }}" readonly required>
                             </div>
                         </div>
-                        <div class="py-2 col-sm-6 col-md-4 col-lg-4">
+                        <div class="py-2 col-sm-6 col-md-4 col-xl-4">
                             <label class="text-secondary  text-capitalize">{{ __('text.word_email_bilang') }}</label>
                             <div class="">
                                 <input type="email" class="form-control text-primary"  name="email" value="{{ auth('student')->user()->email }}" required readonly>
-                            </div>
-                        </div>
-                        <div class="py-2 col-sm-6 col-md-4 col-lg-3">
-                            <label class="text-secondary  text-capitalize">{{ __('text.where_did_you_hear_about_us') }}</label>
-                            <div class="">
-                                <select class="form-control text-primary"  name="referer" required>
-                                    <option value=""></option>
-                                    <option value="OTHERS" {{ $application->referer== 'OTHERS' ? 'selected' : '' }}>OTHERS</option>
-                                    <option value="CHURCH" {{ $application->referer== 'CHURCH' ? 'selected' : '' }}>CHURCH</option>
-                                    <option value="CURRENT STUDENT OF THE SCHOOL" {{ $application->referer== 'CURRENT STUDENT OF THE SCHOOL' ? 'selected' : '' }}>CURRENT STUDENT OF THE SCHOOL</option>
-                                    <option value="FACEBOOK" {{ $application->referer== 'FACEBOOK' ? 'selected' : '' }}>FACEBOOK</option>
-                                    <option value="FLYERS" {{ $application->referer== 'FLYERS' ? 'selected' : '' }}>FLYERS</option>
-                                    <option value="FROM A FRIEND" {{ $application->referer== 'FROM A FRIEND' ? 'selected' : '' }}>FROM A FRIEND</option>
-                                    <option value="MOSQUE" {{ $application->referer== 'MOSQUE' ? 'selected' : '' }}>MOSQUE</option>
-                                    <option value="THE BRAINS" {{ $application->referer== 'THE BRAINS' ? 'selected' : '' }}>THE BRAINS</option>
-                                    <option value="THROUGH MIA" {{ $application->referer== 'THROUGH MIA' ? 'selected' : '' }}>THROUGH MIA</option>
-                                    <option value="TV" {{ $application->referer== 'TV' ? 'selected' : '' }}>TV</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="py-2 col-sm-6 col-md-4 col-lg-3">
-                            <label class="text-secondary  text-capitalize">{{ __('text.last_attended_high_school') }}</label>
-                            <div class="">
-                                <input type="text" class="form-control text-primary"  name="high_school" value="{{ $application->high_school }}" required>
                             </div>
                         </div>
                         <div class="py-2 col-sm-6 col-md-4 col-lg-3">
@@ -172,6 +130,22 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="col-sm-6 col-md-4 col-xl-3">
+                            <label class="text-secondary  text-capitalize">{{ __('text.any_special_needs_bilang') }}</label>
+                            <div>
+                                <select class="form-control" name="has_special_needs" required>
+                                    <option selected></option>
+                                    <option value="yes" {{ $application->has_special_needs == 'yes' ? 'selected' : '' }}>{{ __('text.word_yes') }}</option>
+                                    <option value="no" {{ $application->has_special_needs == 'no' ? 'selected' : '' }} selected>{{ __('text.word_no') }}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-4 col-lg-3">
+                            <label class="text-secondary text-capitalize">{{ __('text.if_yes_mention_bilang') }}</label>
+                            <div>
+                                <textarea class="form-control text-primary"  name="special_needs">{{ $application->special_needs }}</textarea>
+                            </div>
+                        </div>
                         <div class="col-sm-12 col-md-12 col-lg-12 py-4 d-flex justify-content-center">
                             <a href="{{ route('student.application.start', [$step-1, $application->id]) }}" class="px-4 py-1 btn btn-lg btn-danger">{{ __('text.word_back') }}</a>
                             <input type="submit" class="px-4 py-1 btn btn-lg btn-primary" value="{{ __('text.save_and_continue') }}">
@@ -185,7 +159,28 @@
                     @csrf
                     <div class="py-2 row bg-light border-top shadow">
                         <h4 class="py-3 border-bottom border-top bg-white text-primary my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:800;">{{ __('text.word_stage') }} 2: {{ __('text.course_envisaged_bilang') }} : <span class="text-danger">APPLYING FOR A(AN) {{ $degree->deg_name }} PROGRAM</span></h4>
-                        <div class="col-sm-6 col-md-4 col-lg-3">
+                        <div class="col-sm-6 col-md-5 col-lg-5">
+                            <label class="text-secondary  text-capitalize">{{ __('text.emergency_name_bilang') }}</label>
+                            <div class="">
+                                <input class="form-control text-primary"  name="emergency_name" required value="{{ $application->emergency_name??'' }}">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-4 col-lg-4">
+                            <label class=" text-secondary text-capitalize">{{ __('text.emergency_address_bilang') }}</label>
+                            <div class="">
+                                <input class="form-control text-primary"  name="emergency_address" required value="{{ $application->emergency_address??'' }}">
+                            </div>
+                        </div>
+                        <div class="py-2 col-sm-12 col-md-3 col-lg-3">
+                            <label class="text-secondary  text-capitalize">{{ __('text.emergency_tel_bilang') }}</label>
+                            <div class="">
+                                <input class="form-control text-primary"  name="emergency_tel" required value="{{ $application->emergency_tel??'' }}">
+                            </div>
+                        </div>
+
+
+                        <h4 class="py-3 border-bottom border-top bg-white text-primary my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:800;"> {{ __('text.degree_slash_diploma_study_choice') }} : <span class="text-danger">APPLYING FOR A(AN) {{ $degree->deg_name }} PROGRAM</span></h4>
+                        <div class="col-sm-6 col-md-4 col-lg-4">
                             <label class="text-secondary  text-capitalize">{{ __('text.first_choice_bilang') }}</label>
                             <div class="">
                                 <select class="form-control text-primary"  name="program_first_choice" required oninput="loadCplevels(event)">
@@ -198,7 +193,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-4 col-lg-3">
+                        <div class="col-sm-6 col-md-4 col-lg-4">
                             <label class=" text-secondary text-capitalize">{{ __('text.second_choice_bilang') }}</label>
                             <div class="">
                                 <select class="form-control text-primary"  name="program_second_choice" required>
@@ -211,7 +206,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="py-2 col-sm-6 col-md-4 col-lg-3">
+                        <div class="py-2 col-sm-6 col-md-4 col-lg-4">
                             <label class="text-secondary  text-capitalize">{{ __('text.word_level') }}</label>
                             <div class="">
                                 <select class="form-control text-primary"  name="level" required id="cplevels">
@@ -219,107 +214,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="py-2 col-sm-6 col-md-4 col-lg-3">
-                            <label class="text-secondary  text-capitalize">{{ __('text.1st_language_spoken_bilang') }}</label>
-                            <div class="">
-                                <select class="form-control text-primary"  name="first_spoken_language" required>
-                                    <option></option>
-                                    @foreach (config('languages') as $key => $lang)
-                                        <option value="{{ $lang }}" {{ $application->first_spoken_language == $lang ? 'selected' : '' }}>{{ $lang }}</option>   
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="py-2 col-sm-6 col-md-4 col-lg-3">
-                            <label class="text-secondary  text-capitalize">{{ __('text.1st_language_written_bilang') }}</label>
-                            <div class="">
-                                <select class="form-control text-primary"  name="first_written_language" required>
-                                    <option></option>
-                                    @foreach (config('languages') as $key => $lang)
-                                        <option value="{{ $lang }}" {{ $application->first_spoken_language == $lang ? 'selected' : '' }}>{{ $lang }}</option>   
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="py-2 col-sm-6 col-md-4 col-lg-3">
-                            <label class="text-secondary  text-capitalize">{{ __('text.2nd_language_spoken_bilang') }}</label>
-                            <div class="">
-                                <select class="form-control text-primary"  name="second_spoken_language">
-                                    <option></option>
-                                    @foreach (config('languages') as $key => $lang)
-                                        <option value="{{ $lang }}" {{ $application->first_spoken_language == $lang ? 'selected' : '' }}>{{ $lang }}</option>   
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="py-2 col-sm-6 col-md-4 col-lg-3">
-                            <label class="text-secondary  text-capitalize">{{ __('text.2nd_language_written_bilang') }}</label>
-                            <div class="">
-                                <select class="form-control text-primary"  name="second_written_language">
-                                    <option></option>
-                                    @foreach (config('languages') as $key => $lang)
-                                        <option value="{{ $lang }}" {{ $application->first_spoken_language == $lang ? 'selected' : '' }}>{{ $lang }}</option>   
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4 col-lg-3">
-                            <label class="text-secondary  text-capitalize">{{ __('text.any_known_health_problem_bilang') }}</label>
-                            <div>
-                                <select class="form-control" name="has_health_problem" required>
-                                    <option value="yes" {{ $application->has_health_problem == 'yes' ? 'selected' : '' }}>{{ __('text.word_yes') }}</option>
-                                    <option value="no" {{ $application->has_health_problem == 'no' ? 'selected' : '' }} selected>{{ __('text.word_no') }}</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4 col-lg-3">
-                            <label class="text-secondary text-capitalize">{{ __('text.if_yes_mention_bilang') }}</label>
-                            <div>
-                                <input type="text" class="form-control text-primary"  name="health_problem" value="{{ $application->health_problem }}">
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4 col-lg-3">
-                            <label class="text-secondary  text-capitalize">{{ __('text.any_known_health_allergy_bilang') }}</label>
-                            <div>
-                                <select class="form-control" name="has_health_allergy" required>
-                                    <option value="yes" {{ $application->has_health_allergy == 'yes' ? 'selected' : '' }}>{{ __('text.word_yes') }}</option>
-                                    <option value="no" {{ $application->has_health_allergy == 'no' ? 'selected' : '' }} selected>{{ __('text.word_no') }}</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4 col-lg-3">
-                            <label class="text-secondary text-capitalize">{{ __('text.if_yes_mention_bilang') }}</label>
-                            <div>
-                                <input type="text" class="form-control text-primary"  name="health_allergy" value="{{ $application->health_allergy }}">
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4 col-lg-3">
-                            <label class="text-secondary  text-capitalize">{{ __('text.any_disabilities_bilang') }}</label>
-                            <div>
-                                <select class="form-control" name="has_disability" required>
-                                    <option value="yes" {{ $application->has_disability == 'yes' ? 'selected' : '' }}>{{ __('text.word_yes') }}</option>
-                                    <option value="no" {{ $application->has_disability == 'no' ? 'selected' : ''}} selected>{{ __('text.word_no') }}</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4 col-lg-3">
-                            <label class="text-secondary text-capitalize">{{ __('text.if_yes_mention_bilang') }}</label>
-                            <div>
-                                <input type="text" class="form-control text-primary"  name="disability" value="{{ $application->disability }}">
-                            </div>
-                        </div>
                         
-                        <div class="col-sm-6 col-md-4 col-lg-3">
-                            <label class="text-secondary  text-capitalize">{{ __('text.awaiting_results_bilang') }}</label>
-                            <div class="">
-                                <select class="form-control text-primary"  name="awaiting_results" required>
-                                    <option selected></option>
-                                    <option value="yes" {{ $application->awaiting_results == 'yes' ? 'selected' : '' }}>{{ __('text.word_yes') }}</option>
-                                    <option value="no" {{ $application->awaiting_results == 'no' ? 'selected' : '' }}>{{ __('text.word_no') }}</option>
-                                </select>
-                            </div>
-                        </div>
-
                         <div class="col-sm-12 col-md-12 col-lg-12 py-4 d-flex justify-content-center">
                             <a href="{{ route('student.application.start', [$step-1, $application->id]) }}" class="px-4 py-1 btn btn-lg btn-danger">{{ __('text.word_back') }}</a>
                             <input type="submit" class="px-4 py-1 btn btn-lg btn-primary" value="{{ __('text.save_and_continue') }}">

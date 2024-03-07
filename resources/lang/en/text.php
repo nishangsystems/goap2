@@ -984,5 +984,6 @@ return [
 
     
     'by_campus'=>'by campus',
+    'permanent_address_bilang'=>'permanent address / adresse permanente',
     ''
 ];
