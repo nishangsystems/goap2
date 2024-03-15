@@ -11,11 +11,10 @@ class ApplicationForm extends Model
 
     protected $connection = 'mysql2';
     protected $fillable = [
-        'student_id', 'year_id', 'gender', 'name', 'dob', 'pob', 'region', 'division', 'residence', 'phone', 'email',
-        'program_first_choice', 'program_second_choice', 'first_spoken_language', 'first_written_language', 'second_spoken_language', 
-        'second_written_language', 'has_health_problem', 'has_health_allergy', 'has_disability', 'health_problem', 'health_allergy', 'disability',
-        'awaiting_results', 'previous_training', 'employments', 'fee_payer', 'fee_payer_name', 'fee_payer_residence', 'matric',
-        'fee_payer_tel', 'fee_payer_occupation', 'candidate_declaration', 'parent_declaration', 'campus_id', 'degree_id', 'transaction_id', 'admitted'
+        'student_id', 'year_id', 'gender', 'name', 'dob', 'pob', 'residence', 'phone', 'email',
+        'program_first_choice', 'program_second_choice', 'special_needs', 'ol_results', 'al_results', 
+        'matric', 'candidate_declaration', 'parent_declaration', 'campus_id', 'degree_id', 'transaction_id', 'admitted',
+        'emergency_name', 'emergency_address', 'emergency_tel', 'previous_training', 'level'
     ];
 
     public function student()

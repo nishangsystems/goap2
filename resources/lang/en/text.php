@@ -985,5 +985,10 @@ return [
     
     'by_campus'=>'by campus',
     'permanent_address_bilang'=>'permanent address / adresse permanente',
+    'education_qualification'=>'education and/or profession qualification',
+    'advanced_level_results'=>'advanced level results',
+    'center_no'=>'center no',
+    'candidate_no'=>'candidate no',
+    'ordinary_level_results'=>'ordinary level results',
     ''
 ];

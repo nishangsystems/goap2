@@ -220,6 +220,7 @@ class HomeController extends Controller
         switch ($step) {
             case 1:
                 # code...
+                
                 $validity = Validator::make($request->all(), [
                     'campus_id'=>'required', 'degree_id'=>'required'
                 ]);
@@ -227,18 +228,20 @@ class HomeController extends Controller
             
             case 2:
                 # code...
-                // return $request->all();
                 $validity = Validator::make($request->all(), [
                     "name"=>'required',"gender"=> "required","dob"=> "required", "pob"=> "required", "nationality"=> "required",
                     "residence"=> "required", "phone"=> "required", "email"=> "required|email",
                     "entry_qualification"=> "required"
                 ]);
                 break;
-            
+                
             case 3:
                 # code...
+                
                 $validity = Validator::make($request->all(), [
                     'program_first_choice'=>'required', 'program_second_choice'=>'required',
+                    'level'=>'required', 'emergency_name'=>'required', 
+                    'emergency_address'=>'required', 'emergency_tel'=>'required'
                 ]);
                 break;
             
@@ -246,26 +249,22 @@ class HomeController extends Controller
                 # code...
                 
                 $validity = Validator::make($request->all(), [
-                    // 'first_spoken_language'=>'required', 'first_written_language'=>'required',
-                    'employments'=>'array', 'previous_training'=>'array'
+                    'previous_training'=>'array'
                 ]);
                 break;
                 
             case 5:
-                # code...
-                // return $request->all();
-                // $validity = Validator::make($request->all(), [
-                //     'has_health_problem'=>'required|', 'has_health_allergy'=>'required', 'has_disability'=>'required',
-                //     'health_problem'=>'required_if:has_health_problem,yes', 'health_allergy'=>'required_if:has_health_allergy,yes', 
-                //     'disability'=>'required_if:has_disability,yes',
-                // ]);
+                
+                
                 $validity = Validator::make($request->all(), [
-                    'fee_payer'=>'required', 'fee_payer_name'=>'required', 'fee_payer_residence'=>'required',
-                    'fee_payer_tel'=>'required', 'fee_payer_occupation'=>'required'
+                    'al_center_number'=>'required', 'al_candidate_number'=>'required', 'al_year'=>'required',
+                    'ol_center_number'=>'required', 'ol_candidate_number'=>'required', 'ol_year'=>'required',
+                    'al_results'=>'required', 'ol_results'=>'required'
                 ]);
                 break;
                 
             case 6:
+                // dd($request->all());
                 $validity = Validator::make($request->all(), [
                     
                 ]);
@@ -352,21 +351,21 @@ class HomeController extends Controller
             // $application = ApplicationForm::updateOrInsert(['id'=> $application_id, 'student_id'=>auth('student')->id()], $data);
         }else{
             $data = $request->all();
-            $data = collect($data)->filter(function($value, $key){return $key != '_token';})->toArray();
+            $data = collect($data)->filter(function($value, $key){return $key != '_token' and $value != null;})->toArray();
             $application = ApplicationForm::updateOrInsert(['id'=> $application_id, 'student_id'=>auth('student')->id()], $data);
         }
         // $application->update($data);
-        if($step == 3){
-            // Form fully filled
-            $appl = ApplicationForm::find($application_id);
-            // return 'xyz';
-                $degs = json_decode($this->api_service->campusDegrees($appl->campus_id))->data;
-                if (($degree = collect($degs)->where('id', $appl->degree_id)->first()) != null) {
-                    if($degree->deg_name != 'MASTER DEGREE PROGRAMS'){
-                        return redirect(route('student.application.start', [$step+1, $application_id]));
-                    }
-                }
-        }
+        // if($step == 3){
+        //     // Form fully filled
+        //     $appl = ApplicationForm::find($application_id);
+        //     // return 'xyz';
+        //         $degs = json_decode($this->api_service->campusDegrees($appl->campus_id))->data;
+        //         if (($degree = collect($degs)->where('id', $appl->degree_id)->first()) != null) {
+        //             if($degree->deg_name != 'MASTER DEGREE PROGRAMS'){
+        //                 return redirect(route('student.application.start', [$step+1, $application_id]));
+        //             }
+        //         }
+        // }
         $step = $request->step;
         return redirect(route('student.application.start', [$step, $application_id]));
     }

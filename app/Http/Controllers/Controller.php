@@ -253,9 +253,9 @@ class Controller extends BaseController
         # code...
         $request->validate(['api_root'=>'required|url']);
 
-        $instance = new File(['name'=>'api_root', 'path'=>$request->api_root]);
+        File::UpdateOrInsert(['name'=>'api_root'], ['path'=>$request->api_root]);
         $instance->save();
-        return back()->with('success', 'Done');
+        return back()->with('s', 'Done');
     }
 
     public function campusDegreeCertPrograms(Request $request, $campus_id, $degree_id, $cert_id)
