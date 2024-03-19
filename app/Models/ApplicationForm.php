@@ -9,6 +9,7 @@ class ApplicationForm extends Model
 {
     use HasFactory;
 
+    protected $nullables = [];
     protected $connection = 'mysql2';
     protected $fillable = [
         'student_id', 'year_id', 'gender', 'name', 'dob', 'pob', 'residence', 'phone', 'email',
@@ -50,6 +51,26 @@ class ApplicationForm extends Model
     public function campus_banks()
     {
         return CampusBank::where('campus_id', $this->campus_id);
+    }
+
+    public function is_filled()
+    {
+        # code...
+        $data = $this->toArray();
+        $null_fields = array_filter(array_keys($data), function($element)use($data){
+            return $data[$element] == null;
+        });
+        // dd($null_fields);
+        if (count($null_fields) > 0) {
+            # code...
+            foreach ($null_fields as $key => $value) {
+                # code...
+                if(!in_array($value, $this->nullables))
+                    return false;
+            }
+        }
+        return true;
+
     }
 
 }

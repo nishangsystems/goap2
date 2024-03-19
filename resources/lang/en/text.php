@@ -934,7 +934,7 @@ return [
     'general_reports'=>'general reports',
     'word_reports'=>'reports',
     'word_certificate'=>'certificate',
-    'stlo_portal'=>'st. louis online application portal',
+    'stlo_portal'=>'BIAKA UNIVERSITY INSTITUTE APPLICATION PORTAL',
     'word_admit'=>'admit',
     'program_first_choice'=>"program: 1st choice",
     'program_second_choice'=>"program: 2nd choice",
@@ -990,5 +990,6 @@ return [
     'center_no'=>'center no',
     'candidate_no'=>'candidate no',
     'ordinary_level_results'=>'ordinary level results',
+    'special_needs'=>'special needs',
     ''
 ];

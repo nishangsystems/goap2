@@ -146,9 +146,9 @@ class HomeController extends Controller
         $data['campuses'] = json_decode($this->api_service->campuses())->data;
         foreach ($data['campuses'] as $key => $value) {
             # code...
-            $data['campuses'][$key]->programs = collect(json_decode($this->api_service->campusPrograms($value->id))->data)->unique();
+            $data['campuses'][$key]->programs = collect(json_decode($this->api_service->campusProgramsBySchool($value->id))->data)->unique()->groupBy('school');
         }
-        // return $data;
+        // dd($data);
         return view('student.online.programs', $data);
     }
 
@@ -164,6 +164,7 @@ class HomeController extends Controller
             if(!(Helpers::instance()->application_open())){
                 return redirect(route('student.home'))->with('error', 'Application closed for '.Batch::find(Config::all()->last()->year_id)->name);
             }
+            
             # code...
             $data['step'] = $step;
             // return $this->api_service->campuses();
@@ -175,6 +176,12 @@ class HomeController extends Controller
                 $application->year_id = Helpers::instance()->getCurrentAccademicYear();
                 $application->save();
             }
+
+            if ($request->_prg != null) {
+                # code...
+                $application->program_first_choice = $request->_prg;
+            }
+
             $data['application'] = $application;
     
             if($data['application']->degree_id != null){
@@ -193,12 +200,16 @@ class HomeController extends Controller
                 // dd($this->api_service->campusDegreeCertificatePrograms($data['application']->campus_id, $data['application']->degree_id, $data['application']->entry_qualification));
                 $data['programs'] = json_decode($this->api_service->campusDegreeCertificatePrograms($data['application']->campus_id, $data['application']->degree_id, $data['application']->entry_qualification))->data;
                 $data['cert'] = collect($data['certs'])->where('id', $data['application']->entry_qualification)->first();
+                // dd($data['programs']);
             }
             if($data['application']->program_first_choice != null){
                 $data['program1'] = collect($data['programs'])->where('id', $data['application']->program_first_choice)->first();
                 $data['program2'] = collect($data['programs'])->where('id', $data['application']->program_second_choice)->first();
                 // return $data;
             }
+            // $data['al_results'] = json_decode($application->al_results??'[]');
+            // $data['ol_results'] = json_decode($application->ol_results??'[]');
+            // dd($data);
             
             $data['title'] = (isset($data['degree']) and ($data['degree'] != null)) ? $data['degree']->deg_name." APPLICATION FOR DOUALA-BONABERI" : "APPLICATION FOR DOUALA-BONABERI";
             return view('student.online.fill_form', $data);
@@ -482,7 +493,8 @@ class HomeController extends Controller
         # code...
         $data['title'] = "Download Application Form";
         $data['_this'] = $this;
-        $data['applications'] = auth('student')->user()->applicationForms->whereNotNull('transaction_id');
+        // $data['applications'] = auth('student')->user()->applicationForms->whereNotNull('transaction_id');
+        $data['applications'] = auth('student')->user()->applicationForms;
         return view('student.online.download_form', $data);
     }
 
@@ -508,7 +520,7 @@ class HomeController extends Controller
             $data['title'] = $title;
 
             // if(in_array(null, array_values($data))){ return redirect(route('student.application.start', [0, $application_id]))->with('message', "Make sure your form is correctly filled and try again.");}
-            // return view('student.online.form_dawnloadable', $data);
+            return view('student.online.form_dawnloadable', $data);
             $pdf = PDF::loadView('student.online.form_dawnloadable', $data);
             $filename = $title.' - '.$application->name.'.pdf';
             return $pdf->download($filename);

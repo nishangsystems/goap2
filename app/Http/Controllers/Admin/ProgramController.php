@@ -955,6 +955,7 @@ class ProgramController extends Controller
         if($campus_id != null){
             $degs = $this->api_service->campusDegrees($campus_id);
             if($degs != null){
+                // dd($degs);
                 $data['campus_degrees'] = collect(json_decode($degs)->data)->pluck('id')->toArray();
             }
         }

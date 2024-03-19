@@ -99,8 +99,8 @@
 
 	<body class="login-layout" id="frame">
 		<div class="main-container px-5" style="padding-inline: 2rem;">
-			<div class="py-5 mx-5 w-100" style="padding: 2rem;">
-				<h4> <span style="color:#DBA622; text-transform: uppercase">{{__('text.stlo_portal')}}</span></h4>
+			<div class="py-5 my-5 w-100 text-center" style="padding: 2rem; margin-block: 3rem;">
+				<h4> <span style="color: rgb(84, 158, 243); text-shadow: -1px -1px 0 #1a55c4, 1px -1px 0 #1a55c4, -1px 1px 0 #1a55c4, 1px 1px 0 #1a55c4; font-weight: bolder; font-size: xx-large; transform: skew(12deg, 17deg) !important;">{{__('text.stlo_portal')}}</span></h4>
 			</div>
 			<div style="max-height: 65vh; overflow:auto">
 				@if(Session::has('success'))

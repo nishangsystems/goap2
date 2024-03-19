@@ -11,9 +11,9 @@
                                 <label class="text-capitalize"><span style="font-weight: 700;">{{ __('text.word_campus') }}</span></label>
                                 <select name="campus_id" class="form-control text-primary"  oninput="setDegreeTypes(event)">
                                     <option>{{ __('text.select_campus') }}</option>
-                                    @foreach ($campuses as $campus)
-                                        <option value="{{ $campus->id }}" {{ $application->campus_id == $campus->id ? 'selected' : '' }}>{{ $campus->name }}</option>  
-                                    @endforeach
+                                    @if (count($campuses) > 0)
+                                        <option selected value="{{ $campuses[0]->id }}" {{ $application->campus_id == $campuses[0]->id ? 'selected' : '' }}>{{ $campuses[0]->name }}</option>  
+                                    @endif
                                 </select>
                             </div>
                             <div class="col-sm-12 col-md-6">
@@ -131,7 +131,7 @@
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-5 col-lg-6 col-xl-4">
-                            <label class="text-secondary text-capitalize">{{ __('text.if_yes_mention_bilang') }}</label>
+                            <label class="text-secondary text-capitalize">{{ __('text.special_needs') }}</label>
                             <div>
                                 <textarea class="form-control text-primary"  name="special_needs">{{ $application->special_needs }}</textarea>
                             </div>
@@ -175,11 +175,9 @@
                             <div class="">
                                 <select class="form-control text-primary"  name="program_first_choice" required oninput="loadCplevels(event)">
                                     <option>{{ __('text.select_program') }}</option>
-                                    @forelse ($programs as $program)
+                                    @foreach ($programs as $program)
                                         <option value="{{ $program->id }}" {{ $application->program_first_choice == $program->id ? 'selected' : '' }}>{{ $program->name }}</option>
-                                    @empty
-                                        <option>{{ __('text.no_data_available') }}</option>
-                                    @endforelse
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -188,11 +186,9 @@
                             <div class="">
                                 <select class="form-control text-primary"  name="program_second_choice" required>
                                     <option>{{ __('text.select_program') }}</option>
-                                    @forelse ($programs as $program)
+                                    @foreach ($programs as $program)
                                         <option value="{{ $program->id }}" {{ $application->program_second_choice == $program->id ? 'selected' : '' }}>{{ $program->name }}</option>
-                                    @empty
-                                        <option>{{ __('text.no_data_available') }}</option>
-                                    @endforelse
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -307,8 +303,8 @@
                                         <tbody id="al_results">
                                             @foreach (json_decode($application->al_results)??[] as $key=>$result)
                                                 <tr class="text-capitalize">
-                                                    <td><input class="form-control text-primary"  name="al_results[subject][$key]" required value="{{ $result->subject }}"></td>
-                                                    <td><input class="form-control text-primary"  name="al_results[grade][$key]" required value="{{ $result->grade }}"></td>
+                                                    <td><input class="form-control text-primary"  name="al_results[$key][subject]" required value="{{ $result->subject }}"></td>
+                                                    <td><input class="form-control text-primary"  name="al_results[$key][grade]" required value="{{ $result->grade }}"></td>
                                                     <td><span class="btn btn-sm px-4 py-1 btn-danger rounded fa fa-trash" onclick="dropAlResult(event)">{{ __('text.word_drop') }}</span></td>
                                                 </tr>
                                             @endforeach
@@ -353,8 +349,8 @@
                                         <tbody id="ol_results">
                                             @foreach (json_decode($application->ol_results)??[] as $key=>$result)
                                                 <tr class="text-capitalize">
-                                                    <td><input class="form-control text-primary"  name="ol_results[subject][$key]" required value="{{ $result->subject }}"></td>
-                                                    <td><input class="form-control text-primary"  name="ol_results[grade][$key]" required value="{{ $result->grade }}"></td>
+                                                    <td><input class="form-control text-primary"  name="ol_results[$key][subject]" required value="{{ $result->subject }}"></td>
+                                                    <td><input class="form-control text-primary"  name="ol_results[$key][grade]" required value="{{ $result->grade }}"></td>
                                                     <td><span class="btn btn-sm px-4 py-1 btn-danger rounded fa fa-trash" onclick="dropOlResult(event)">{{ __('text.word_drop') }}</span></td>
                                                 </tr>
                                             @endforeach
@@ -546,6 +542,7 @@
                                     <tr>
                                 </thead>
                                 <tbody id="previous_trainings">
+                                    {{-- @dd(json_decode($application->al_results)) --}}
                                     @foreach (json_decode($application->al_results)??[] as $key=>$result)
                                         <tr class="text-capitalize">
                                             <td class="border"><label class="form-control text-primary border-0">{{ $result->subject ?? '' }}</label></td>
@@ -599,7 +596,7 @@
                         <div class="col-sm-12 col-md-12 col-lg-12 py-4 mt-5 d-flex justify-content-center text-uppercase">
                             <a href="{{ route('student.application.start', [$step-1, $application->id]) }}" class="px-4 py-1 btn btn-lg btn-danger">{{ __('text.word_back') }}</a>
                             <a href="{{ route('student.home') }}" class="px-4 py-1 btn btn-lg btn-success">{{ __('text.pay_later') }}</a>
-                            @if($application->fee_payer != null)<button type="submit" class="px-4 py-1 btn btn-lg btn-primary text-uppercase">{{ __('text.word_submit') }}</button>@endif
+                            @if(!$application->is_filled())<button type="submit" class="px-4 py-1 btn btn-lg btn-primary text-uppercase">{{ __('text.word_submit') }}</button>@endif
                         </div>
                     </div>
                 </form>
@@ -654,6 +651,8 @@
             if("{{ $application->level }}" != null){
                 setLevels("{{ $application->program_first_choice }}");
             }
+
+            loadCampusDegrees("{{ $campuses[0]->id }}");
         });
         // momo preview generator
         let momoPreview = function(event){
@@ -667,8 +666,8 @@
         let addAlResult = function(){
             let key = `_key_${ Date.now() }_${ Math.random()*1000000 }`;
             let html = `<tr class="text-capitalize">
-                            <td><input class="form-control text-primary"  name="al_results[subject][${key}]" required value="" placeholder="SUBJECT"></td>
-                            <td><input class="form-control text-primary"  name="al_results[grade][${key}]" required value="" placeholder="GRADE"></td>
+                            <td><input class="form-control text-primary"  name="al_results[${key}][subject]" required value="" placeholder="SUBJECT"></td>
+                            <td><input class="form-control text-primary"  name="al_results[${key}][grade]" required value="" placeholder="GRADE"></td>
                             <td><span class="btn btn-sm px-4 py-1 btn-danger rounded fa fa-trash" onclick="dropAlResult(event)">{{ __('text.word_drop') }}</span></td>
                         </tr>`;
             $('#al_results').append(html);
@@ -685,8 +684,8 @@
         let addOlResult = function(){
             let key = `_key_${ Date.now() }_${ Math.random()*1000000 }`;
             let html = `<tr class="text-capitalize">
-                            <td><input class="form-control text-primary"  name="ol_results[subject][${key}]" required value="" placeholder="SUBJECT"></td>
-                            <td><input class="form-control text-primary"  name="ol_results[grade][${key}]" required value="" placeholder="GRADE"></td>
+                            <td><input class="form-control text-primary"  name="ol_results[${key}][subject]" required value="" placeholder="SUBJECT"></td>
+                            <td><input class="form-control text-primary"  name="ol_results[${key}][grade]" required value="" placeholder="GRADE"></td>
                             <td><span class="btn btn-sm px-4 py-1 btn-danger rounded fa fa-trash" onclick="dropOlResult(event)">{{ __('text.word_drop') }}</span></td>
                         </tr>`;
             $('#ol_results').append(html);

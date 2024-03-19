@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Request;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -33,9 +34,12 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-    //     $this->reportable(function (Throwable $e) {
-    //         //
-    //     });
+        // $this->reportable(function (Throwable $e) {
+        //     // catch and return error messages without throwing exceptions
+        //     Log::info($e->getMessage());
+        //     session()->flash('error', $e->getMessage());
+        //     return redirect(route('admin.home'))->withInput();
+        // });
 
         $this->renderable(function (\Exception $e) {
             if ($e->getPrevious() instanceof \Illuminate\Session\TokenMismatchException) {
@@ -45,6 +49,8 @@ class Handler extends ExceptionHandler
                 # code...
                 return redirect(route('admin.home'));
             }
+            session()->flash('error', $e->getMessage());
+            return back()->withInput();
         });
         
     }

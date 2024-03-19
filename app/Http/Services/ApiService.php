@@ -8,6 +8,10 @@ class ApiService{
     
     // get campuses
     public function campuses(){
+
+        // static data for a campus since current system has just one campus
+        // return json_encode(['data'=>[['id'=>1, 'name'=>'BIAKA UNIVERSITY CAMPUS', 'address'=>'MOLYKO, BUEA, SWR-CAMEROON', 'telephone'=>'679135426', 'school_id'=>'1']]]);
+
         // dd(Helpers::instance()->getApiRoot().'/'.config('api_routes.campuses'));
         return Http::get(Helpers::instance()->getApiRoot().'/'.config('api_routes.campuses'))->body();
     }
@@ -79,6 +83,12 @@ class ApiService{
     public function campusPrograms($campus_id){
         // dd( [Http::get(Helpers::instance()->getApiRoot().'/'.config('api_routes.campus_programs').'/'.$campus_id)->body(), Helpers::instance()->getApiRoot().'/'.config('api_routes.campus_programs').'/'.$campus_id]);
         return Http::get(Helpers::instance()->getApiRoot().'/'.config('api_routes.campus_programs').'/'.$campus_id)->body();
+    }
+
+
+    public function campusProgramsBySchool($campus_id){
+        // dd( [Http::get(Helpers::instance()->getApiRoot().'/'.config('api_routes.campus_programs').'/'.$campus_id)->body(), Helpers::instance()->getApiRoot().'/'.config('api_routes.campus_programs').'/'.$campus_id]);
+        return Http::get(Helpers::instance()->getApiRoot().'/'.config('api_routes.campus_programs_by_school').'/'.$campus_id)->body();
     }
 
     public function setCampusDegrees($campus_id, $degrees)
