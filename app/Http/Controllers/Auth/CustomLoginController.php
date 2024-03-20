@@ -62,22 +62,26 @@ class CustomLoginController extends Controller
             $update1['password'] = Hash::make($request->password);
             
             $up1 = User::where('username', $request->username)->update($update1);
-             }else{
-                 $insert['name'] = $request->name;
-                $insert['email'] = $request->email;
-                $insert['username'] = $request->username;
-                $insert['type'] = 'student';
-                $insert['gender'] = '';
-                $insert['password'] = Hash::make($request->password);
-            
+            auth('student')->login($up1);
+
+            }else{
+                $insert['name'] = $request->name;
+            $insert['email'] = $request->email;
+            $insert['username'] = $request->username;
+            $insert['type'] = 'student';
+            $insert['gender'] = '';
+            $insert['password'] = Hash::make($request->password);
+        
             $up2 = User::create($insert);
-             }
+            auth('student')->login($up2);
+            }
         //      if( Auth::guard('student')->attempt(['matric'=>$request->username,'password'=>$request->password], $request->remember)){
         //     // return "Spot 1";
         //     return redirect()->intended(route('student.home'));
         // }else{
         //     return redirect()->route('login')->with('s','Account created successfully.');   
         // }
+            
             return redirect()->route('login')->with('s','Account created successfully.');   
             //return redirect()->route('student.home')->with('s','Account created successfully.');   
             
