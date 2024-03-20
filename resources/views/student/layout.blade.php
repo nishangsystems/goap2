@@ -206,7 +206,7 @@
 
             <li>
                 <a href="{{route('student.programs.index')}}">
-                    <i  style="color: {{$bg1}};" class="menu-icon fa fa-dashboard"></i>
+                    <i  style="color: {{$bg1}};" class="menu-icon fa fa-filter"></i>
                     <span class="menu-text text-capitalize">{{__('text.all_our_programs')}}</span>
                 </a>
                 <b class="arrow"></b>
@@ -214,7 +214,7 @@
 
             <li>
                 <a href="{{route('student.payment.data')}}">
-                    <i  style="color: {{$bg1}};" class="menu-icon fa fa-dashboard"></i>
+                    <i  style="color: {{$bg1}};" class="menu-icon fa fa-money"></i>
                     <span class="menu-text text-capitalize">{{__('text.payment_data')}}</span>
                 </a>
                 <b class="arrow"></b>
@@ -222,7 +222,7 @@
 
             <li>
                 <a href="{{route('student.application.start', 0)}}">
-                    <i  style="color: {{$bg1}};" class="menu-icon fa fa-dashboard"></i>
+                    <i  style="color: {{$bg1}};" class="menu-icon fa fa-asterisk"></i>
                     <span class="menu-text text-capitalize">{{__('text.start_application')}}</span>
                 </a>
                 <b class="arrow"></b>
@@ -230,7 +230,7 @@
 
             <li>
                 <a href="{{route('student.application.submit')}}">
-                    <i  style="color: {{$bg1}};" class="menu-icon fa fa-dashboard"></i>
+                    <i  style="color: {{$bg1}};" class="menu-icon fa fa-bank"></i>
                     <span class="menu-text text-capitalize">{{__('text.submit_form')}}</span>
                 </a>
                 <b class="arrow"></b>
@@ -238,7 +238,7 @@
 
             <li>
                 <a href="{{route('student.application.form.download')}}">
-                    <i  style="color: {{$bg1}};" class="menu-icon fa fa-dashboard"></i>
+                    <i  style="color: {{$bg1}};" class="menu-icon fa fa-download"></i>
                     <span class="menu-text text-capitalize">{{__('text.download_form')}}</span>
                 </a>
                 <b class="arrow"></b>
@@ -246,7 +246,7 @@
 
             <li>
                 <a href="{{route('student.application.admission_letter.download')}}">
-                    <i  style="color: {{$bg1}};" class="menu-icon fa fa-dashboard"></i>
+                    <i  style="color: {{$bg1}};" class="menu-icon fa fa-certificate"></i>
                     <span class="menu-text text-capitalize">{{__('text.admission_letter')}}</span>
                 </a>
                 <b class="arrow"></b>

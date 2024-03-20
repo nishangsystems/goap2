@@ -286,7 +286,7 @@
             @if (\Auth::user()->hasPermissionTo('manage_admissions'))
             <li>
                 <a href="#" class="dropdown-toggle text-capitalize">
-                    <i  style="color: {{$bg1}}"class="menu-icon  fa fa-cog"></i>
+                    <i  style="color: {{$bg1}}"class="menu-icon  fa fa-file"></i>
                     <span class="menu-text"> {{__('text.applicants_center')}}</span>
 
                     <b class="arrow fa fa-angle-down"></b>
@@ -375,7 +375,7 @@
             @if (\Auth::user()->hasPermissionTo('access_reports'))
             <li>
                 <a href="#" class="dropdown-toggle text-capitalize">
-                    <i  style="color: {{$bg1}}"class="menu-icon  fa fa-cog"></i>
+                    <i  style="color: {{$bg1}}"class="menu-icon  fa fa-asterisk"></i>
                     <span class="menu-text"> {{__('text.word_reports')}}</span>
 
                     <b class="arrow fa fa-angle-down"></b>

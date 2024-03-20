@@ -56,7 +56,7 @@
 				width: 100%;
 				height: 100%;
 				min-height: fit-content;
-				background: #DBA622;
+				background: {{ $bg2 }};
 				border-radius: 24px;
 				top: -9px;
 			}
@@ -68,7 +68,7 @@
 				height: 100%;
 				min-height: fit-content;
 				margin-inline: auto;
-				background: #670404;
+				background: {{ $bg1 }};
 				box-shadow: 0px 0px 34px rgba(0, 0, 0, 0.25);
 				border-radius: 24px;
 				left: 9px;
@@ -105,7 +105,7 @@
 	<body class="login-layout" id="frame">
 		<div class="main-container px-5" style="padding-inline: 2rem;">
 			<div class="py-5 mx-5 w-100" style="padding: 2rem;">
-				<h4> <span style="color:#DBA622; text-transform: uppercase">{{__('text.stlo_portal')}}</h4>
+				<h4> <span style="color: {{ $bg3 }}; text-shadow: -1px -1px 0 #1a55c4, 1px -1px 0 #1a55c4, -1px 1px 0 #1a55c4, 1px 1px 0 #1a55c4; font-weight: bolder; font-size: xx-large; transform: skew(12deg, 17deg) !important;">{{__('text.stlo_portal')}}</span></h4>
 			</div>
 			<div style="max-height: 65vh; overflow:auto">
 				@if(Session::has('success'))

@@ -1203,7 +1203,7 @@ class ProgramController extends Controller
             return view('admin.student.applications', $data);
         }
         if(!$request->has('matric') or ($request->matric == null)){
-            // 
+            // dd($request->matric);
             // GENERATE MATRICULE
             $application = ApplicationForm::find($id);
             if(($programs = json_decode($this->api_service->programs())->data) != null){
@@ -1212,6 +1212,7 @@ class ProgramController extends Controller
                     // dd($program);
                     $year = substr(Batch::find(Helpers::instance()->getCurrentAccademicYear())->name, 2, 2);
                     $prefix = $program->prefix??null;//3 char length
+                    $suffix = $program->suffix??null;//3 char length
                     $max_count = '';
                     if($prefix == null){
                         return back()->with('error', 'Matricule generation prefix not set.');
@@ -1226,7 +1227,7 @@ class ProgramController extends Controller
 
                     NEXT_MATRIC:
                     $next_count = substr('0000'.(++$max_count), -4);
-                    $student_matric = $prefix.'/'.$year.'/'.$next_count;
+                    $student_matric = $prefix.$year.$suffix.$next_count;
                     // dd($student_matric);
                     if(ApplicationForm::where('matric', $student_matric)->where('id', '!=', $id)->count() == 0){
                         $data['title'] = "Student Admission";
@@ -1234,6 +1235,7 @@ class ProgramController extends Controller
                         $data['program'] = $program;
                         $data['matricule'] = $student_matric;
                         $data['campus'] = collect(json_decode($this->api_service->campuses())->data)->where('id', $application->campus_id)->first();
+                        // dd($data);
                         return view('admin.student.confirm_admission', $data);
                     }else{
                         # code...
@@ -1258,8 +1260,9 @@ class ProgramController extends Controller
 
         // dd($application);
         // POST STUDENT TO SCHOOL SYSTEM
-        $application->matric = $request->matric;
+        $application->update(['matric' => $request->matric]);
 
+        // dd($request->matric);
         $resp = json_decode($this->api_service->store_student($application->toArray()))->data??null;
         // dd($resp);
         if($resp != null and !is_string($resp)){
