@@ -45,7 +45,10 @@ class HomeController extends Controller
 
     public function index()
     {
-        return view('student.dashboard');
+        if(auth('student')->user()->applicationForms()->whereNotNull('transaction_id')->where('year_id', Helpers::instance()->getCurrentAccademicYear())->count() > 0){
+            return redirect(route('student.programs.index'));
+        }
+        return redirect(route('student.application.start', 0));
     }
 
     public function fee()
@@ -240,9 +243,11 @@ class HomeController extends Controller
             case 2:
                 # code...
                 $validity = Validator::make($request->all(), [
-                    "name"=>'required',"gender"=> "required","dob"=> "required", "pob"=> "required", "nationality"=> "required",
-                    "residence"=> "required", "phone"=> "required", "email"=> "required|email",
-                    "entry_qualification"=> "required"
+                    "name"=>'required',"gender"=> "required","dob"=> "required", "pob"=> "required", 
+                    "nationality"=> "required", "residence"=> "required", "phone"=> "required", 
+                    "email"=> "required|email", 'emergency_name'=>'required', 'emergency_address'=>'required', 
+                    'emergency_tel'=>'required', "entry_qualification"=> "required", 'region'=>'required', 
+                    'division'=>'required'
                 ]);
                 break;
                 
@@ -251,8 +256,7 @@ class HomeController extends Controller
                 
                 $validity = Validator::make($request->all(), [
                     'program_first_choice'=>'required', 'program_second_choice'=>'required',
-                    'level'=>'required', 'emergency_name'=>'required', 
-                    'emergency_address'=>'required', 'emergency_tel'=>'required'
+                    'level'=>'required'
                 ]);
                 break;
             
@@ -264,13 +268,21 @@ class HomeController extends Controller
                 ]);
                 break;
                 
+            case 4.5:
+                
+                
+                $validity = Validator::make($request->all(), [
+                    'al_center_number'=>'required', 'al_candidate_number'=>'required', 
+                    'al_year'=>'required', 'al_results'=>'required'
+                ]);
+                break;
+
             case 5:
                 
                 
                 $validity = Validator::make($request->all(), [
-                    'al_center_number'=>'required', 'al_candidate_number'=>'required', 'al_year'=>'required',
-                    'ol_center_number'=>'required', 'ol_candidate_number'=>'required', 'ol_year'=>'required',
-                    'al_results'=>'required', 'ol_results'=>'required'
+                    'ol_center_number'=>'required', 'ol_candidate_number'=>'required', 
+                    'ol_year'=>'required', 'ol_results'=>'required'
                 ]);
                 break;
                 

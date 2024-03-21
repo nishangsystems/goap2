@@ -184,7 +184,7 @@
 													<div class="space"></div>
 
 													<div class="clearfix">
-														<button type="submit" class="form-control btn-black btn-sm" style="border-radius: 2rem; background-color: black; border: 1px solid black; color: white;">
+														<button type="submit" class="form-control btn-black btn-sm" style="border-radius: 2rem; background-color: {{ $bg2 }}; border: 1px solid {{ $bg1 }}; color: white; font-weight: semibold !important;">
 															{{-- <i class="ace-icon fa fa-key"></i> --}}
 															<span class="bigger-110">{{__('text.log_in')}}</span>
 														</button>
@@ -202,7 +202,7 @@
 												</a>
 											</div> --}}
 											
-												<a  href="#" data-target="#forgot-box" class="text-center form-control btn-black btn-sm" style="border-radius: 2rem; background-color: black; border: 1px solid black; color: white; font-weight: normal !important;">
+												<a  href="#" data-target="#forgot-box" class="text-center form-control btn-black btn-sm" style="border-radius: 2rem; background-color: {{ $bg2 }}; border: 1px solid {{ $bg1 }}; color: white; font-weight: semibold !important;">
 													<span class="bigger-110">{{__('text._forgot_password')}}</span>
 												</a>
 											<div>

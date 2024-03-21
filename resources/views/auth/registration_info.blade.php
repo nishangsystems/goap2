@@ -208,7 +208,7 @@
 												</label>
 
 												<div class="clearfix">
-													<button type="submit" id="btnSubmit" class="form-control btn-black btn-sm"  style="border-radius: 2rem; background-color: black; border: 1px solid black; color: white; text-transform: capitalize; margin-block: 2rem;">
+													<button type="submit" id="btnSubmit" class="form-control btn-black btn-sm"  style="border-radius: 2rem; background-color: {{ $bg2 }}; border: 1px solid {{ $bg1 }}; color: white; text-transform: capitalize; margin-block: 2rem;">
 														<span class="bigger-110">{{__('text.word_register')}}</span>
 													</button>
 												</div>
@@ -219,7 +219,7 @@
 
 									</div><!-- /.widget-main -->
 									<div  class="clearfix" style="border: 0px; padding-inline: 1rem;">
-										<a href="{{route('login')}}" data-target="#login-box" class="form-control btn-black btn-sm text-center"  style="border-radius: 2rem; background-color: black; border: 1px solid black; color: white; text-transform: capitalize; font-weight: normal !important;">
+										<a href="{{route('login')}}" data-target="#login-box" class="form-control btn-black btn-sm text-center"  style="border-radius: 2rem; background-color: {{ $bg2 }}; border: 1px solid {{ $bg1 }}; color: white; text-transform: capitalize; font-weight: normal !important;">
 											<i class="ace-icon fa fa-arrow-left"></i>
 											{{__('text.back_to_login')}}
 										</a>
