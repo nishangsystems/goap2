@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers\Helpers;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\AdmittedStudentResource;
 use App\Mail\AdmissionMail;
 use App\Models\ApplicationForm;
 use App\Models\Batch;
@@ -1263,7 +1264,26 @@ class ProgramController extends Controller
         $application->update(['matric' => $request->matric]);
 
         // dd($request->matric);
-        $resp = json_decode($this->api_service->store_student($application->toArray()))->data??null;
+        $student_data = [
+            'name'=>$application->name??null, 
+            'email'=>$application->email??null, 
+            'phone'=>$application->phone??null,
+            'residence'=>$application->residence??null, 
+            'gender'=>$application->gender??null,
+            'matric'=>$application->matric??null, 
+            'dob'=>$application->dob??null, 
+            'pob'=>$application->pob??null,
+            'year_id'=>$application->year_id??null,
+            'campus_id'=>$application->campus_id??null, 
+            'admission_batch_id'=>$application->year_id??null,
+            'fee_payer_name'=>$application->fee_payer_name??null, 
+            'program_first_choice'=>$application->program_first_choice??null, 
+            'region'=>$application->_region->name??null,
+            'fee_payer_tel'=>$application->fee_payer_tel??null, 
+            'division'=>$application->_division->name??null,
+            'level'=>$application->level??null
+        ];
+        $resp = json_decode($this->api_service->store_student($student_data))->data??null;
         // dd($resp);
         if($resp != null and !is_string($resp)){
            if($resp->status == 1){
@@ -1278,7 +1298,7 @@ class ProgramController extends Controller
                     $phone_number = '237'.$phone_number;
                 }
                 // dd($phone_number);
-                $message="Congratulations {$application->name}. You have been admitted into ST LOUIS UNIVERSITY INSTITUTE for {$application->year->name} . Access your admission portal to download your admission letter";
+                $message="Congratulations {$application->name}. You have been admitted into ".($chool_name??"BUIB")." for {$application->year->name} . Access your admission portal to download your admission letter";
                 $sent = $this->sendSMS($phone_number, $message);
 
                 // Send student admission letter to email
