@@ -245,9 +245,9 @@ class HomeController extends Controller
                 $validity = Validator::make($request->all(), [
                     "name"=>'required',"gender"=> "required","dob"=> "required", "pob"=> "required", 
                     "nationality"=> "required", "residence"=> "required", "phone"=> "required", 
-                    "email"=> "required|email", 'emergency_name'=>'required', 'emergency_address'=>'required', 
-                    'emergency_tel'=>'required', "entry_qualification"=> "required", 'region'=>'required', 
-                    'division'=>'required'
+                    "email"=> "required|email", 'division'=>'required', 'emergency_tel'=>'required', 
+                    "entry_qualification"=> "required", 'region'=>'required', 
+                    
                 ]);
                 break;
                 
@@ -273,7 +273,7 @@ class HomeController extends Controller
                 
                 $validity = Validator::make($request->all(), [
                     'al_center_number'=>'required', 'al_candidate_number'=>'required', 
-                    'al_year'=>'required', 'al_results'=>'required'
+                    'al_year'=>'required'
                 ]);
                 break;
 
@@ -282,7 +282,7 @@ class HomeController extends Controller
                 
                 $validity = Validator::make($request->all(), [
                     'ol_center_number'=>'required', 'ol_candidate_number'=>'required', 
-                    'ol_year'=>'required', 'ol_results'=>'required'
+                    'ol_year'=>'required'
                 ]);
                 break;
                 
