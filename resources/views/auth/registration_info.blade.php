@@ -104,8 +104,13 @@
 
 	<body class="login-layout" id="frame">
 		<div class="main-container px-5" style="padding-inline: 2rem;">
-			<div class="py-5 mx-5 w-100" style="padding: 2rem;">
+			
+			<div class="w-100 text-center" style="padding: 2rem; margin-block: 1rem;">
 				<h4> <span style="color: {{ $bg3 }}; text-shadow: -1px -1px 0 #1a55c4, 1px -1px 0 #1a55c4, -1px 1px 0 #1a55c4, 1px 1px 0 #1a55c4; font-weight: bolder; font-size: xx-large; transform: skew(12deg, 17deg) !important;">{{__('text.stlo_portal')}}</span></h4>
+			</div>
+			
+			<div style="display: flex; justify-content: center; padding-bottom: 3rem; text-align: center; text-transform: capitalize; color: black !important;">
+				<span style="text-shadow: -1px 0px 0 #3369ce, 1px 0px 0 #1a55c4;">{{__('text.powered_by')}} <b style="font-size:large; font-weight:bold;"> {{__('text.nishang_system')}} </b></span>
 			</div>
 			<div style="max-height: 65vh; overflow:auto">
 				@if(Session::has('success'))
@@ -232,9 +237,7 @@
 				</div><!-- /.row -->
 			</div><!-- /.main-content -->
 
-			<div style="display: flex; justify-content: center; padding-block: 3rem; text-align: center; text-transform: capitalize; color: black !important;">
-				<span>{{__('text.powered_by')}} <b> {{__('text.nishang_system')}} </b></span>
-			</div>
+			
 		</div><!-- /.main-container -->
 
 		<script src="{{asset('assets/js/jquery-2.1.4.min.js')}}"></script>

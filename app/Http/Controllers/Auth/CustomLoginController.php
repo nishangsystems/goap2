@@ -55,25 +55,31 @@ class CustomLoginController extends Controller
             
             $up = Students::where('matric', $request->username)->update($update);
              if (User::where('username', $request->username)->exists()) {  
-            $update1['name'] = $request->name;
-            $update1['email'] = $request->email;
-            $update1['username'] = $request->username;
-            $update1['type'] = 'student';
-            $update1['password'] = Hash::make($request->password);
-            
-            $up1 = User::where('username', $request->username)->update($update1);
-            auth('student')->login($up1);
+                $update1['name'] = $request->name;
+                $update1['email'] = $request->email;
+                $update1['username'] = $request->username;
+                $update1['type'] = 'student';
+                $update1['password'] = Hash::make($request->password);
+                
+                $up1 = User::where('username', $request->username)->update($update1);
+                auth('student')->login($up1);
+                return redirect()->to(route('student.home'))->with('s','Account created successfully.'); 
 
             }else{
                 $insert['name'] = $request->name;
-            $insert['email'] = $request->email;
-            $insert['username'] = $request->username;
-            $insert['type'] = 'student';
-            $insert['gender'] = '';
-            $insert['password'] = Hash::make($request->password);
-        
-            $up2 = User::create($insert);
-            auth('student')->login($up2);
+                $insert['email'] = $request->email;
+                $insert['username'] = $request->username;
+                $insert['type'] = 'student';
+                $insert['gender'] = '';
+                $insert['password'] = Hash::make($request->password);
+            
+                $up2 = User::create($insert);
+                auth()->login($up2);
+                if($up2->type == 'teacher'){
+                    return redirect()->to(route('user.home'))->with('s','Account created successfully.'); 
+                }else{
+                    return redirect()->to(route('admin.home'))->with('s','Account created successfully.'); 
+                }
             }
         //      if( Auth::guard('student')->attempt(['matric'=>$request->username,'password'=>$request->password], $request->remember)){
         //     // return "Spot 1";

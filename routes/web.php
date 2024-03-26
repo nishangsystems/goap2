@@ -198,7 +198,7 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
 });
 
 
-Route::prefix('student')->name('student.')->middleware('isStudent')->group(function () {
+Route::prefix('student')->name('student.')->middleware('isStudent')->middleware('plcharge')->group(function () {
     Route::get('', 'Student\HomeController@index')->name('home');
     Route::get('edit_profile', 'Student\HomeController@edit_profile')->name('edit_profile');
     Route::post('update_profile', 'Student\HomeController@update_profile')->name('update_profile');
@@ -265,13 +265,14 @@ Route::prefix('student')->name('student.')->middleware('isStudent')->group(funct
     Route::get('reset_password', 'Controller@reset_password')->name('reset_password');
     Route::post('reset_password', 'Controller@reset_password_save')->name('reset_password');
 
-    Route::get('platform/pay', 'Student\HomeController@pay_platform_charges')->name('platform_charge.pay');
-    Route::post('charges/pay', 'Student\HomeController@pay_charges_save')->name('charge.pay')->withoutMiddleware('isStudent');
+    Route::get('platform/pay', 'Student\HomeController@pay_platform_charges')->name('platform_charge.pay')->withoutMiddleware('plcharge');
+    Route::post('charges/pay', 'Student\HomeController@pay_charges_save')->name('charge.pay')->withoutMiddleware('isStudent')->withoutMiddleware('plcharge');
     Route::get('result/pay', 'Student\HomeController@pay_semester_results')->name('result.pay');
     Route::get('transcript/pay', 'Student\HomeController@pay_transcript_charges')->name('transcript.pay');
 
     Route::get('online_payments/history', 'Student\HomeController@online_payment_history')->name('online.payments.history');
 
+    Route::get('student/tranzak/processing', [Student\HomeController::class, 'tranzak_payment_processing'])->name('tranzak.processing');
 
 
     // ONLINE APPLICATION PORTAL ROUTES

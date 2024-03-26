@@ -102,6 +102,10 @@
 			<div class="w-100 text-center" style="padding: 2rem; margin-block: 1rem;">
 				<h4> <span style="color: {{ $bg3 }}; text-shadow: -1px -1px 0 #1a55c4, 1px -1px 0 #1a55c4, -1px 1px 0 #1a55c4, 1px 1px 0 #1a55c4; font-weight: bolder; font-size: xx-large; transform: skew(12deg, 17deg) !important;">{{__('text.stlo_portal')}}</span></h4>
 			</div>
+			
+			<div style="display: flex; justify-content: center; padding-bottom: 3rem; text-align: center; text-transform: capitalize; color: black !important;">
+				<span style="text-shadow: -1px 0px 0 #3369ce, 1px 0px 0 #1a55c4;">{{__('text.powered_by')}} <b style="font-size:large; font-weight:bold;"> {{__('text.nishang_system')}} </b></span>
+			</div>
 			<div style="max-height: 65vh; overflow:auto">
 				@if(Session::has('success'))
 					<div class="alert alert-success fade in">
@@ -127,13 +131,13 @@
 
 							<div class="rect1"></div>
 
-				  			<div class="rect2"></div>
+							  <div class="rect2"></div>
 							<div class="position-relative main-rect " >
 								<div id="login-box" class="login-box visible widget-box no-border">
 									<div class="widget-body">
 										<div class="widget-main">
 											<h4 class="bigger text-capitalize" style="color: black; font-size: xlarge;">
-											 	<b>{{__('text.log_in')}}</b>
+												 <b>{{__('text.log_in')}}</b>
 											</h4>
 											<span style="font-size: small; margin-bottom: 1rem;">{{__('auth.auth_request')}}</span>
 
@@ -224,7 +228,7 @@
 									<div class="widget-body">
 										<div class="widget-main">
 											<h4 class="bigger text-capitalize" style="color: black; font-size: xlarge;">
-											 	<b>{{__('text.forgot_password')}}</b>
+												 <b>{{__('text.forgot_password')}}</b>
 											</h4>
 											<span style="font-size: small; margin-bottom: 1rem;">{{__('text.pass_reset_phrase')}}</span>
 
@@ -273,7 +277,7 @@
 									<div class="widget-body">
 										<div class="widget-main">
 											<h4 class="bigger text-capitalize" style="color: black; font-size: xlarge;">
-											 	<b>{{__('text.recover_your_username')}}</b>
+												 <b>{{__('text.recover_your_username')}}</b>
 											</h4>
 											<span style="font-size: small; margin-bottom: 1rem;">{{__('text.recover_username_phrase')}}</span>
 
@@ -316,10 +320,6 @@
 						</div>
 				</div><!-- /.row -->
 			</div><!-- /.main-content -->
-
-			<div style="display: flex; justify-content: center; padding-block: 3rem; text-align: center; text-transform: capitalize; color: black !important;">
-				<span>{{__('text.powered_by')}} <b> {{__('text.nishang_system')}} </b></span>
-			</div>
 		</div><!-- /.main-container -->
 
 
