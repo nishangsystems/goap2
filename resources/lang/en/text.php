@@ -1006,5 +1006,8 @@ return [
     'guardian_address'=>'guardian\'s address',
     'guardian_tel'=>'guardian\'s tel',
     'degree_slash_diploma_study_choice'=>'degree / diploma study choice',
+    'inst_tapplication_form'=>'BUIB :degree application form',
+    'word_nationality'=>'nationality',
+    'previous_higher_education_training'=>'previous higher education training',
     ''
 ];

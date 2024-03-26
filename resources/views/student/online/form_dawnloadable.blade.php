@@ -1,247 +1,233 @@
 @extends('student.printable')
 @section('section')
     <div class="py-1">
-        
-        <div class="py-2 mx-5">
-            <h4 class="text-dark my-1 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">1</span>{{ __('text.personal_details_bilang') }}</h4>
-            <div class="row py-2">
-                <span class="d-block mr-5 text-secondary col-md-4  text-capitalize">{{ __('text.word_gender_bilang') }}</span>
-                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $application->gender??null }}</span>
-            </div>
-            <div class="row py-2">
-                <span class="d-block mr-5 text-secondary col-md-4 text-capitalize">{{ __('text.word_surname_bilang') }}</span>
-                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ explode(" ", $application->name)[0]??null }}</span>
-            </div>
-            <div class="row py-2">
-                <span class="d-block mr-5 text-secondary col-md-4 text-capitalize">{{ __('text.first_name_bilang') }}</span>
-                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $application->name??null }}</span>
-            </div>
-            <div class="row py-2">
-                <span class="d-block mr-5 text-secondary col-md-4 text-capitalize">{{ __('text.date_of_birth_bilang') }}</span>
-                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $application->dob??null }}</span>
-            </div>
-            <div class="row py-2">
-                <span class="d-block mr-5 text-secondary col-md-4 text-capitalize">{{ __('text.place_of_birth_bilang') }}</span>
-                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $application->pob??null }}</span>
-            </div>
-            <div class="row py-2">
-                <span class="d-block mr-5 text-secondary col-md-4 text-capitalize">{{ __('text.word_region_bilang') }}</span>
-                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $application->_region->region??null }}</span>
-            </div>
-            <div class="row py-2">
-                <span class="d-block mr-5 text-secondary col-md-4 text-capitalize">{{ __('text.word_division_bilang') }}</span>
-                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $application->_division->name??null }}</span>
-            </div>
-            <div class="row py-2">
-                <span class="d-block mr-5 text-secondary col-md-4 text-capitalize">{{ __('text.word_residence_bilang') }}</span>
-                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $application->residence??null }}</span>
-            </div>
-            <div class="row py-2">
-                <span class="d-block mr-5 text-secondary col-md-4 text-capitalize">{{ __('text.telephone_number_bilang') }}</span>
-                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $application->phone??null }}</span>
-            </div>
-            <div class="row py-2">
-                <span class="d-block mr-5 text-secondary col-md-4 text-capitalize">{{ __('text.word_email_bilang') }}</span>
-                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $application->email??null }}</span>
-            </div>
-        </div>
-                    
-        <div class="py-2 mx-5">
-            <h4 class="text-dark my-1 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">2</span>{{ __('text.course_envisaged_bilang') }}</h4>
-            <div class="row py-2">
-                <span class="d-block mr-5 text-secondary  text-capitalize col-md-4">{{ __('text.first_choice_bilang') }}</span>
-                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $program1->name??null }}</span>
-            </div>
-            <div class="row py-2">
-                <span class="d-block mr-5 text-secondary  text-capitalize col-md-4">{{ __('text.second_choice_bilang') }}</span>
-                <span class="d-block text-uppercase text-black col-md-8" style="font-weight: 600; font-style: italic;">{{ $program2->name??null }}</span>
-            </div>
-        </div>
-                    
-        <div class="py-2 mx-5">
-            <h4 class="text-dark my-1 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">3</span>{{ __('text.language_proficiency_bilang') }}</h4>
-            <div class="row py-2">
-                <table class="border border-dark">
-                    <thead><tr>
-                        <th colspan="2" class="text-center border border-dark">{{ __('text.1st_language_bilang') }}</th>
-                        <th colspan="2" class="text-center border border-dark">{{ __('text.2nd_language_bilang') }}</th>
-                    <tr></thead>
-                    <tbody>
-                        <tr class="text-capitalize">
-                            <td class="border border-dark">{{ __('text.word_spoken_bilang') }}</td>
-                            <td class="border border-dark">{{ $application->first_spoken_language??null }}</td>
-                            <td class="border border-dark">{{ __('text.word_spoken_bilang') }}</td>
-                            <td class="border border-dark">{{ $application->second_spoken_language??null }}</td>
-                        </tr>
-                        <tr class="text-capitalize">
-                            <td class="border border-dark">{{ __('text.word_written_bilang') }}</td>
-                            <td class="border border-dark">{{ $application->first_written_language??null }}</td>
-                            <td class="border border-dark">{{ __('text.word_written_bilang') }}</td>
-                            <td class="border border-dark">{{ $application->second_written_language??null }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-                    
-        <div class="py-2 mx-5">
-            <h4 class="text-dark my-1 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">4</span>{{ __('text.medical_history_bilang') }}</h4>
-            {{-- pair start --}}
-            <div class="row py-2">
-                <span class="text-secondary text-capitalize mr-5">{{ __('text.any_known_health_problem_bilang') }}</span>
-                <span class="d-block text-black text-capitalize" style="font-weight:600; font-style: italic;">{{ $application->has_health_problem??null }}</span>
-            </div>
-            <div class="row py-2">
-                <span class="text-secondary text-capitalize mr-5">{{ __('text.if_yes_mention_bilang') }}</span>
-                <span class="d-block text-black text-capitalize" style="font-weight:600; font-style: italic;">{{ $application->health_problem ??null }}</span>
-            </div>
-            {{-- pair end --}}
-            {{-- pair start --}}
-            <div class="row py-2">
-                <span class="text-secondary  text-capitalize mr-5">{{ __('text.any_known_health_allergy_bilang') }}</span>
-                <span class="d-block text-black text-capitalize" style="font-weight:600; font-style: italic;">{{ $application->has_health_allergy??null }}</span>
-            </div>
-            <div class="row py-2">
-                <span class="text-secondary text-capitalize mr-5">{{ __('text.if_yes_mention_bilang') }}</span>
-                <span class="d-block text-black text-capitalize" style="font-weight:600; font-style: italic;">{{ $application->health_allergy??null }}</span>
-            </div>
-            {{-- pair end --}}
-            {{-- pair start --}}
-            <div class="row py-2">
-                <span class="text-secondary  text-capitalize mr-5">{{ __('text.any_disabilities_bilang') }}</span>
-                <span class="d-block text-black text-capitalize" style="font-weight:600; font-style: italic;">{{ $application->has_disability??null }}</span>
-            </div>
-            <div class="row py-2">
-                <span class="text-secondary text-capitalize mr-5">{{ __('text.if_yes_mention_bilang') }}</span>
-                <span class="d-block text-black text-capitalize" style="font-weight:600; font-style: italic;">{{ $application->disability??null }}</span>
-            </div>
-            {{-- pair end --}}
-            
-        </div>
-                    
-        <div class="py-2 mx-5">
-            <h4 class="text-dark my-1 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">5</span>{{ __('text.entry_qualification_bilang') }}</h4>
-            {{-- pair start --}}
-            <div class="row py-2">
-                <span class="text-secondary  text-capitalize mr-5">{{ __('text.awaiting_results_bilang') }}</span>
-                <span class="d-block text-black text-capitalize" style="font-weight:600; font-style: italic;">{{ $application->awaiting_results??null }}</div>
-            </div>
-            {{-- pair end --}}
-            
-        </div>
-
-        @if($degree->deg_name == 'MASTER DEGREE PROGRAMS')
-            <div class="py-2 mx-5">
-                <h4 class="text-dark my-1 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">6</span>{{ __('text.previous_higher_education_training_bilang') }}</h4>
-                <div class="row py-2">
-                    <table class="border border-black text-black">
-                        <thead>
-                            <tr class="text-capitalize">
-                                <th class="text-center border border-black" style="border: 1px solid black">{{ __('text.word_school_bilang') }}</th>
-                                <th class="text-center border border-black" style="border: 1px solid black">{{ __('text.word_year_bilang') }}</th>
-                                <th class="text-center border border-black" style="border: 1px solid black">{{ __('text.word_course_bilang') }}</th>
-                                <th class="text-center border border-black" style="border: 1px solid black">{{ __('text.word_certificate_bilang') }}</th>
-                            <tr>
-                        </thead>
-                        <tbody id="previous_trainings">
-                            @foreach (json_decode($application->previous_training)??[] as $key=>$training)
-                                <tr class="text-capitalize" style="font-weight: 600; font-style: italic;">
-                                    <td class="border border-black" style="border: 1px solid black">{{ $training->school??null }}</td>
-                                    <td class="border border-black" style="border: 1px solid black">{{ $training->year??null }}</td>
-                                    <td class="border border-black" style="border: 1px solid black">{{ $training->course??null }}</td>
-                                    <td class="border border-black" style="border: 1px solid black">{{ $training->certificate??null }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-                        
-            <div class="py-2 mx-5">
-                <h4 class="text-dark my-1 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">7</span>{{ __('text.employment_history_bilang') }}</h4>
-                <div class="row py-2">
-                    <table class="border">
-                        <thead>
-                            <tr class="text-capitalize">
-                                <th class="text-center border" style="border: 1px solid black">{{ __('text.employer_name_and_address_bilang') }}</th>
-                                <th class="text-center border" style="border: 1px solid black">{{ __('text.post_held_bilang') }}</th>
-                                <th class="text-center border" style="border: 1px solid black">{{ __('text.word_from_bilang') }}</th>
-                                <th class="text-center border" style="border: 1px solid black">{{ __('text.word_to_bilang') }}</th>
-                                <th class="text-center border" style="border: 1px solid black">{{ __('text.full_or_parttime_bilang') }}</th>
-                            <tr>
-                        </thead>
-                        <tbody id="employments">
-                            @foreach (json_decode($application->employments)??[] as $key=>$emp)
-                                <tr class="text-capitalize">
-                                    <td class="border" style="border: 1px solid black">{{ $emp->employer??null }}</td>
-                                    <td class="border" style="border: 1px solid black">{{ $emp->post??null }}</td>
-                                    <td class="border" style="border: 1px solid black">{{ $emp->start??null }}</td>
-                                    <td class="border" style="border: 1px solid black">{{ $emp->end??null }}</td>
-                                    <td class="border" style="border: 1px solid black">{{ $emp->type??null }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+        <table class="border border-light" style="table-layout: fixed;">
+            <thead>
+                <tr>
+                    <th colspan="4" class="text-capitalize text-center header font-weight-bold py-2 border-bottom border-dark">{{ __('text.inst_tapplication_form', ['degree'=>$degree->deg_name]) }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th colspan="4" class="text-uppercase text-center heading py-2 border-top border-bottom border-secondary"><b>@lang('text.personal_information')</b></th>
+                </tr>
+                <tr>
+                    <td class="border p-2">
+                        <div style="display: flex;">
+                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.word_name'):</span>
+                            <span style="flex:auto; color:black;">{{ $application->name??null }}</span>
+                        </div>
+                    </td>
+                    <td class="border p-2">
+                        <div style="display: flex;">
+                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.word_gender'):</span>
+                            <span style="flex:auto; color:black;">{{ $application->gender??null }}</span>
+                        </div>
+                    </td>
+                    <td class="border p-2">
+                        <div style="display: flex;">
+                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.date_of_birth'):</span>
+                            <span style="flex:auto; color:black;">{{ $application->dob??null }}</span>
+                        </div>
+                    </td>
+                    <td class="border p-2">
+                        <div style="display: flex;">
+                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.place_of_birth'):</span>
+                            <span style="flex:auto; color:black;">{{ $application->pob??null }}</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="border p-2">
+                        <div style="display: flex;">
+                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.word_nationality'):</span>
+                            <span style="flex:auto; color:black;">{{ $application->nationality??null }}</span>
+                        </div>
+                    </td>
+                    <td class="border p-2">
+                        <div style="display: flex;">
+                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.region_of_origin'):</span>
+                            <span style="flex:auto; color:black;">{{ $application->_region->region??null }}</span>
+                        </div>
+                    </td>
+                    <td class="border p-2">
+                        <div style="display: flex;">
+                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.word_division'):</span>
+                            <span style="flex:auto; color:black;">{{ $application->_division->name??null }}</span>
+                        </div>
+                    </td>
+                    <td class="border p-2">
+                        <div style="display: flex;">
+                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.word_address'):</span>
+                            <span style="flex:auto; color:black;">{{ $application->residence??null }}</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="border p-2">
+                        <div style="display: flex;">
+                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.phone_number'):</span>
+                            <span style="flex:auto; color:black;">{{ $application->phone??null }}</span>
+                        </div>
+                    </td>
+                    <td class="border p-2">
+                        <div style="display: flex;">
+                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.word_email'):</span>
+                            <span style="flex:auto; color:black;">{{ $application->email??null }}</span>
+                        </div>
+                    </td>
+                    <td class="border p-2">
+                        <div style="display: flex;">
+                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.word_division'):</span>
+                            <span style="flex:auto; color:black;">{{ $application->_division->name??null }}</span>
+                        </div>
+                    </td>
+                    <td class="border p-2">
+                        <div style="display: flex;">
+                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.special_needs'):</span>
+                            <span style="flex:auto; color:black;">{{ $application->special_needs??null }}</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="4" class="text-uppercase text-center heading py-2 border-top border-bottom border-secondary"><b>@lang('text.additional_personal_details')</b></th>
+                </tr>
+                <tr>
+                    <td class="border p-2" colspan="2">
+                        <div style="display: flex;">
+                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.emergency_name_bilang'):</span>
+                            <span style="flex:auto; color:black;">{{ $program1->emergency_name??null }}</span>
+                        </div>
+                    </td>
+                    <td class="border p-2">
+                        <div style="display: flex;">
+                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.emergency_address_bilang'):</span>
+                            <span style="flex:auto; color:black;">{{ $program2->emergency_address??null }}</span>
+                        </div>
+                    </td>
+                    <td class="border p-2">
+                        <div style="display: flex;">
+                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.emergency_tel_bilang'):</span>
+                            <span style="flex:auto; color:black;">{{ $application->emergency_tel??null }}</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="4" class="text-uppercase text-center heading py-2 border-top border-bottom border-secondary"><b>@lang('text.degree_slash_diploma_study_choice')</b></th>
+                </tr>
+                <tr>
+                    <td class="border p-2" colspan="2">
+                        <div style="display: flex;">
+                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.program_first_choice'):</span>
+                            <span style="flex:auto; color:black;">{{ $program1->name??null }}</span>
+                        </div>
+                    </td>
+                    <td class="border p-2">
+                        <div style="display: flex;">
+                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.program_second_choice'):</span>
+                            <span style="flex:auto; color:black;">{{ $program2->name??null }}</span>
+                        </div>
+                    </td>
+                    <td class="border p-2">
+                        <div style="display: flex;">
+                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.word_level'):</span>
+                            <span style="flex:auto; color:black;">{{ $application->level??null }}</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="4" class="text-uppercase text-center heading py-2 border-top border-bottom border-secondary"><b>@lang('text.education_qualification')</b></th>
+                </tr>
+                <tr>
+                    <th colspan="4" class="text-uppercase text-center heading py-2 border-top border-bottom border-secondary text-secondary"><b>@lang('text.ordinary_level_results')</b></th>
+                </tr>
+                <tr class="text-capitalize">
+                    <th class="border" colspan="2">
+                        <div style="display: flex;">
+                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.center_no'):</span>
+                            <span style="flex:auto; color:black;">{{ $application->ol_center_number??null }}</span>
+                        </div>
+                    </th>
+                    <th class="border">
+                        <div style="display: flex;">
+                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.candidate_no'):</span>
+                            <span style="flex:auto; color:black;">{{ $application->ol_candidate_number??null }}</span>
+                        </div>
+                    </th>
+                    <th class="border">
+                        <div style="display: flex;">
+                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.word_year'):</span>
+                            <span style="flex:auto; color:black;">{{ $application->ol_year??null }}</span>
+                        </div>
+                    </th>
+                </tr>
+                <tr class="text-capitalize">
+                    <th class="border" colspan="3">@lang('text.word_school')</th>
+                    <th class="border">@lang('text.word_year')</th>
+                </tr>
+                @foreach (json_decode($application->ol_results)??[] as $key=>$result)
+                    <tr>
+                        <td class="border p-2" colspan="3">{{ $result->subject }}</td>
+                        <td class="border p-2">{{ $result->grade }}</td>
+                    </tr>
+                @endforeach
+                <tr>
+                    <th colspan="4" class="text-uppercase text-center heading py-2 border-top border-bottom border-secondary text-secondary"><b>@lang('text.advanced_level_results')</b></th>
+                </tr>
+                <tr class="text-capitalize">
+                    <th class="border" colspan="2">
+                        <div style="display: flex;">
+                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.center_no'):</span>
+                            <span style="flex:auto; color:black;">{{ $application->al_center_number??null }}</span>
+                        </div>
+                    </th>
+                    <th class="border">
+                        <div style="display: flex;">
+                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.candidate_no'):</span>
+                            <span style="flex:auto; color:black;">{{ $application->al_candidate_number??null }}</span>
+                        </div>
+                    </th>
+                    <th class="border">
+                        <div style="display: flex;">
+                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.word_year'):</span>
+                            <span style="flex:auto; color:black;">{{ $application->al_year??null }}</span>
+                        </div>
+                    </th>
+                </tr>
+                <tr class="text-capitalize">
+                    <th class="border" colspan="3">@lang('text.word_school')</th>
+                    <th class="border">@lang('text.word_year')</th>
+                </tr>
+                @foreach (json_decode($application->al_results)??[] as $key=>$result)
+                    <tr>
+                        <td class="border p-2" colspan="3">{{ $result->subject }}</td>
+                        <td class="border p-2">{{ $result->grade }}</td>
+                    </tr>
+                @endforeach
+                <tr>
+                    <th colspan="4" class="text-capitalize text-center heading py-2 border-top border-bottom border-secondary"><b>@lang('text.previous_higher_education_training')</b></th>
+                </tr>
+                <tr class="text-capitalize">
+                    <th class="border">@lang('text.word_school')</th>
+                    <th class="border">@lang('text.word_year')</th>
+                    <th class="border">@lang('text.word_course')</th>
+                    <th class="border">@lang('text.word_certificate')</th>
+                </tr>
+                @foreach (json_decode($application->previous_training)??[] as $key=>$training)
+                    <tr>
+                        <td class="border p-2">{{ $training->school }}</td>
+                        <td class="border p-2">{{ $training->year }}</td>
+                        <td class="border p-2">{{ $training->course }}</td>
+                        <td class="border p-2">{{ $training->certificate }}</td>
+                    </tr>
+                @endforeach
                 
-            </div>      
-        @endif       
-                    
-        <div class="py-2 mx-5">
-            <h4 class="text-dark my-1 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">8</span>{{ __('text.financial_obligation_bilang') }}</h4>
-            {{-- pair start --}}
-            <div class="row py-2">
-                <span class="text-secondary  text-capitalize mr-5">{{ __('text.who_is_responsible_for_your_fee_bilang') }}</span>
-                <span class="d-block text-black text-capitalize" style="font-weight:600; font-style: italic;">{{ $application->fee_payer??null }}</span>
-            </div>
-            <div class="row py-2">
-                <span class="text-secondary text-capitalize mr-5">{{ __('text.word_name_bilang') }}</span>
-                <span class="d-block text-black text-capitalize" style="font-weight:600; font-style: italic;">{{ $application->fee_payer_name??null }}</span>
-            </div>
-            <div class="row py-2">
-                <span class="text-secondary text-capitalize mr-5">{{ __('text.word_residence') }}</span>
-                <span class="d-block text-black text-capitalize" style="font-weight:600; font-style: italic;">{{ $application->fee_payer_residence??null }}</span>
-            </div>
-            <div class="row py-2">
-                <span class="text-secondary text-capitalize mr-5">{{ __('text.word_tel') }}</span>
-                <span class="d-block text-black text-capitalize" style="font-weight:600; font-style: italic;">{{ $application->fee_payer_tel??null }}</span>
-            </div>
-            <div class="row py-2 border-bottom">
-                <span class="text-secondary text-capitalize mr-5">{{ __('text.word_occupation_bilang') }}</span>
-                <span class="d-block text-black text-capitalize" style="font-weight:600; font-style: italic;">{{ $application->fee_payer_occupation??null }}</span>
-            </div>
-            {{-- pair end --}}
-            
-            
-        </div>           
-    
-        <div class="py-2 mx-5">
-            <h4 class="text-dark my-1 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">9</span>{{ __('text.declaration_by_candidate_bilang') }}</h4>
-            {{-- pair start --}}
-            <div class="py-2" style="font-size: large;">
-                <p class="py-2">{!! __('text.student_application_confirmation', ['name'=>($application->first_name??null) .' '. ($application->surname??null),'school'=>'ST LOUIS UNIVERSITY INSTITUTE, DOUALA.']) !!}</p>
-                <p class="py-2">{!! __('text.student_application_confirmation_french', ['name'=>($application->first_name??null) .' '. ($application->surname??null), 'school'=>'L’INSTITUT UNIERSITAIRE ST LOUIS, DOUALA.']) !!}</p>
-            </div>
-            {{-- pair end --}}
-            
-        </div>
+                
+            </tbody>
+        </table>
 
-        <div class="py-2 mx-5">
-            <h4 class="text-dark my-1 text-uppercase" style="font-weight: 700;"><span style="font-weight:700; font-size: 1.5rem; border-radius: 50%; background: black; color: white;" class="py-2 px-3 mr-5">10</span>{{ __('text.declaration_by_parent_or_guardian_bilang') }}</h4>
-            {{--  pair start --}}
-            <div class="py-2" style="font-size: large;">
-                <p class="py-2">{!! __('text.parent_application_confirmation', ['name'=>$application->fee_payer_name??null]) !!}</p>
-                <p class="py-2">{!! __('text.parent_application_confirmation_french', ['name'=>$application->fee_payer_name??null]) !!}</p>
-            </div>
-            {{-- pair end --}}
-
-            <div class="py-4 px-5 d-flex justify-content-between">
-                <span class="d-block text-center text-capitalize">_________________<br>{{ __('text.word_signature') }}</span>
-                <span class="d-block text-center text-capitalize">{{ date('l d-m-Y', time()) }}<br>{{ __('text.word_date') }}</span>
-            </div>
-            
-        </div>
-
+        
+        
         <div class="py-2 mx-5">
             {{-- <h4 class="text-dark my-4 text-uppercase" style="font-weight: 700;">{{ __('text.admission_information') }}</h4> --}}
             <div class=" py-2 text-dark" style="font-size: 1.5rem;">

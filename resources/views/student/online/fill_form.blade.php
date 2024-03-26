@@ -1,4 +1,7 @@
 @extends('student.layout')
+@php
+$___year = intval(now()->format('Y'));
+@endphp
 @section('section')
     <div class="py-4">
         @switch($step)
@@ -7,7 +10,7 @@
                     @csrf
                     <div class="px-5 py-5 border-top shadow bg-light">
                         <div class="row w-100">
-                            <div class="col-sm-12 col-md-6">
+                            {{-- <div class="col-sm-12 col-md-6">
                                 <label class="text-capitalize"><span style="font-weight: 700;">{{ __('text.word_campus') }}</span></label>
                                 <select name="campus_id" class="form-control text-primary"  oninput="setDegreeTypes(event)">
                                     <option>{{ __('text.select_campus') }}</option>
@@ -15,8 +18,9 @@
                                         <option selected value="{{ $campuses[0]->id }}" {{ $application->campus_id == $campuses[0]->id ? 'selected' : '' }}>{{ $campuses[0]->name }}</option>  
                                     @endif
                                 </select>
-                            </div>
-                            <div class="col-sm-12 col-md-6">
+                            </div> --}}
+                            <input type="hidden" name="campus_id" value="{{ $campuses[0]->id }}">
+                            <div class="col-sm-12 col-md-12">
                                 <label class="text-capitalize"><span style="font-weight: 700;">{{ __('text.applying_for_phrase') }}</span><i class="text-danger text-xs">*</i></label>
                                 <select name="degree_id" class="form-control text-primary"  id="degree_types">  
                                     @if($application->degree_id != null)
@@ -155,17 +159,17 @@
                                 <textarea class="form-control text-primary"  name="special_needs">{{ $application->special_needs }}</textarea>
                             </div>
                         </div>
-                        <div class="py-2 col-sm-6 col-md-4 col-xl-2">
+                        {{-- <div class="py-2 col-sm-6 col-md-4 col-xl-2">
                             <label class="text-secondary  text-capitalize">{{ __('text.id_slash_passport_number') }}(<i class="text-success text-xs">optional</i>)</label>
                             <div class="">
                                 <input class="form-control text-primary"  name="id_number" value="{{ $application->id_number }}">
                             </div>
-                        </div>
+                        </div> --}}
 
 
 
                         <h4 class="py-3 border-bottom border-top bg-white text-primary my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:600;"> {{ __('text.additional_personal_details') }} </h4>
-                        <div class="col-sm-12 col-md-4 col-lg-4 col-xl-3">
+                        {{-- <div class="col-sm-12 col-md-4 col-lg-4 col-xl-3">
                             <label class="text-secondary  text-capitalize">{{ __('text.father_name') }}</label>
                             <div class="">
                                 <input class="form-control text-primary"  name="father_name" value="{{ $application->father_name??'' }}">
@@ -218,17 +222,17 @@
                             <div class="">
                                 <input class="form-control text-primary"  name="guardian_tel" value="{{ $application->guardian_tel??'' }}">
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="col-sm-12 col-md-4 col-lg-4 col-xl-3">
-                            <label class="text-secondary  text-capitalize">{{ __('text.emergency_name_bilang') }}<i class="text-danger text-xs">*</i></label>
+                            <label class="text-secondary  text-capitalize">{{ __('text.emergency_name_bilang') }}</label>
                             <div class="">
-                                <input class="form-control text-primary"  name="emergency_name" required value="{{ $application->emergency_name??'' }}">
+                                <input class="form-control text-primary"  name="emergency_name" value="{{ $application->emergency_name??'' }}">
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-4 col-lg-4 col-xl-3">
-                            <label class=" text-secondary text-capitalize">{{ __('text.emergency_address_bilang') }}<i class="text-danger text-xs">*</i></label>
+                            <label class=" text-secondary text-capitalize">{{ __('text.emergency_address_bilang') }}</label>
                             <div class="">
-                                <input class="form-control text-primary"  name="emergency_address" required value="{{ $application->emergency_address??'' }}">
+                                <input class="form-control text-primary"  name="emergency_address" value="{{ $application->emergency_address??'' }}">
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-4 col-lg-4 col-xl-3">
@@ -317,12 +321,13 @@
                                     <tr>
                                 </thead>
                                 <tbody id="previous_trainings">
+                                    
                                     @foreach (json_decode($application->previous_training)??[] as $key=>$training)
                                         <tr class="text-capitalize">
                                             <td class="border"><input class="form-control text-primary"  name="previous_training[school][$key]" required value="{{ $training->school }}"></td>
                                             <td class="border"><select class="form-control text-primary"  name="previous_training[year][$key]" required>
                                                 <option value=""></option>
-                                                @for($i = 1980; $i <= 2500; $i++)
+                                                @for($i = $___year; $i >=  $___year-100; $i--)
                                                     <option value="{{ $i }}" {{ $training->year == $i ? 'selected' : '' }}>{{ $i }}</option>
                                                 @endfor
                                             </select></td>
@@ -344,80 +349,8 @@
                 @break
         
             @case(4)
-                <form enctype="multipart/form-data" id="application_form" method="post" action="{{ route('student.application.start', [4.5, $application->id]) }}">
-                    @csrf
-                    <div class="py-2 row bg-light border-top shadow">
-                        <h4 class="py-3 border-bottom border-top bg-white text-primary my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:600;">{{ __('text.word_stage') }} 4: {{ __('text.education_qualification') }} : <span class="text-danger">APPLYING FOR A(AN) {{ $degree->deg_name }} PROGRAM</span></h4>
-                        <div class="col-sm-12 col-md-12 col-lg-12">
-                            
-                            <div class="card my-1">
-                                <div class="card-body">
-                                    <h5 class="font-weight-bold text-capitalize text-center h4">{{ __('text.advanced_level_results') }}</h5>
-                                    <table class="table-light">
-                                        <thead class="text-capitalize">
-                                            <tr>
-                                                <th colspan="3">
-                                                    <h5 class="text-dark font-weight-semibold text-uppercase text-center d-flex justify-content-between h5">{{ __('text.word_subjects') }} <span class="btn btn-sm btn-primary rounded fa fa-plus" onclick="addAlResult()">add</span> </h5>
-                                                </th>
-                                            </tr>
-                                            <tr>
-                                                <th>
-                                                    <div class="row border rounded mx-1 my-1">
-                                                        <div class="col-md-6 col-lg-6 text-capitalize bg-secondary text-white">@lang('text.center_no')<i class="text-danger text-xs">*</i>:</div>
-                                                        <div class="col-md-6 col-lg-6"><input type="text" name="al_center_number" class="form-control rounded border-0" placeholder="center number" value="{{ old('al_center_number', $application->al_center_number) }}"></div>
-                                                    </div>
-                                                </th>
-                                                <th>
-                                                    <div class="row border rounded mx-1 my-1">
-                                                        <div class="col-md-6 col-lg-6 text-capitalize bg-secondary text-white">@lang('text.candidate_no')<i class="text-danger text-xs">*</i>:</div>
-                                                        <div class="col-md-6 col-lg-6"><input type="text" name="al_candidate_number" class="form-control rounded border-0" placeholder="candidate number" value="{{ old('al_candidate_number', $application->al_candidate_number) }}"></div>
-                                                    </div>
-                                                </th>
-                                                <th>
-                                                    <div class="row border rounded mx-1 my-1">
-                                                        <div class="col-md-6 col-lg-6 text-capitalize bg-secondary text-white">@lang('text.word_year')<i class="text-danger text-xs">*</i>:</div>
-                                                        <div class="col-md-6 col-lg-6"><input type="text" name="al_year" class="form-control rounded border-0" placeholder="year" value="{{ old('al_year', $application->al_year) }}"></div>
-                                                    </div>
-                                                </th>
-                                            <tr>
-                                                <th>{{ trans_choice('text.word_subject', 1) }}<i class="text-danger text-xs">*</i></th>
-                                                <th>@lang('text.word_grade')<i class="text-danger text-xs">*</i></th>
-                                                <th></th>
-                                        </thead>
-                                        <tbody id="al_results">
-                                            @foreach (json_decode($application->al_results)??[] as $key=>$result)
-                                                <tr class="text-capitalize">
-                                                    <td><input class="form-control text-primary"  name="al_results[$key][subject]" required value="{{ $result->subject }}"></td>
-                                                    <td>
-                                                        <select class="form-control text-primary"  name="al_results[$key][grade]" required value="{{ $result->grade }}">
-                                                            <option value=""></option>
-                                                            <option value="A" {{ $result->grade == 'A' ? 'selected' : '' }}>A</option>
-                                                            <option value="B" {{ $result->grade == 'B' ? 'selected' : '' }}>B</option>
-                                                            <option value="C" {{ $result->grade == 'C' ? 'selected' : '' }}>C</option>
-                                                            <option value="D" {{ $result->grade == 'D' ? 'selected' : '' }}>D</option>
-                                                            <option value="E" {{ $result->grade == 'E' ? 'selected' : '' }}>E</option>
-                                                            <option value="F" {{ $result->grade == 'F' ? 'selected' : '' }}>F</option>
-                                                            <option value="U" {{ $result->grade == 'U' ? 'selected' : '' }}>U</option>
-                                                        </select>
-                                                    </td>
-                                                    <td><span class="btn btn-sm px-4 py-1 btn-danger rounded fa fa-trash" onclick="dropAlResult(event)">{{ __('text.word_drop') }}</span></td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="col-sm-12 col-md-12 col-lg-12 py-4 d-flex justify-content-center">
-                            <a href="{{ route('student.application.start', [$step-1, $application->id]) }}" class="px-4 py-1 btn btn-lg btn-danger">{{ __('text.word_back') }}</a>
-                            <input type="submit" class="px-4 py-1 btn btn-lg btn-primary" value="{{ __('text.save_and_continue') }}">
-                        </div>
-                    </div>
-                </form>
-                @break
             @case(4.5)
-                <form enctype="multipart/form-data" id="application_form" method="post" action="{{ route('student.application.start', [5, $application->id]) }}">
+                <form enctype="multipart/form-data" id="application_form" method="post" action="{{ route('student.application.start', [4.5, $application->id]) }}">
                     @csrf
                     <div class="py-2 row bg-light border-top shadow">
                         <h4 class="py-3 border-bottom border-top bg-white text-primary my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:600;">{{ __('text.word_stage') }} 4: {{ __('text.education_qualification') }} : <span class="text-danger">APPLYING FOR A(AN) {{ $degree->deg_name }} PROGRAM</span></h4>
@@ -449,7 +382,17 @@
                                                 <th>
                                                     <div class="row border rounded mx-1 my-1">
                                                         <div class="col-md-6 col-lg-6 text-capitalize bg-secondary text-white">@lang('text.word_year')<i class="text-danger text-xs">*</i>:</div>
-                                                        <div class="col-md-6 col-lg-6"><input type="text" name="ol_year" class="form-control rounded border-0" placeholder="year" value="{{ old('al_year', $application->al_year) }}"></div>
+                                                        <div class="col-md-6 col-lg-6">
+                                                            @php
+                                                                $__y = intval(now()->format('Y'));
+                                                            @endphp
+                                                            <select name="ol_year" class="form-control rounded border-0">
+                                                                <option value=""></option>
+                                                                @for($i = $__y; $i > $__y - 100; $i--)
+                                                                    <option value="{{ $i }}" {{ old('ol_year', $application->ol_year == $i ? 'selected' : '') }}>{{ $i }}</option>
+                                                                @endfor
+                                                            </select>
+                                                        </div>
                                                     </div>
                                                 </th>
                                             <tr>
@@ -485,7 +428,87 @@
                         
                         
                         <div class="col-sm-12 col-md-12 col-lg-12 py-4 d-flex justify-content-center">
-                            <a href="{{ route('student.application.start', [$step-0.5, $application->id]) }}" class="px-4 py-1 btn btn-lg btn-danger">{{ __('text.word_back') }}</a>
+                            <input type="submit" class="px-4 py-1 btn btn-lg btn-primary" value="{{ __('text.save_and_continue') }}">
+                        </div>
+                    </div>
+                </form>
+                <form enctype="multipart/form-data" id="application_form" method="post" action="{{ route('student.application.start', [5, $application->id]) }}">
+                    @csrf
+                    <div class="py-2 row bg-light border-top shadow">
+                        {{-- <h4 class="py-3 border-bottom border-top bg-white text-primary my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:600;">{{ __('text.word_stage') }} 4: {{ __('text.education_qualification') }} : <span class="text-danger">APPLYING FOR A(AN) {{ $degree->deg_name }} PROGRAM</span></h4> --}}
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                            
+                            <div class="card my-1">
+                                <div class="card-body">
+                                    <h5 class="font-weight-bold text-capitalize text-center h4">{{ __('text.advanced_level_results') }}</h5>
+                                    <table class="table-light">
+                                        <thead class="text-capitalize">
+                                            <tr>
+                                                <th colspan="3">
+                                                    <h5 class="text-dark font-weight-semibold text-uppercase text-center d-flex justify-content-between h5">{{ __('text.word_subjects') }} <span class="btn btn-sm btn-primary rounded fa fa-plus" onclick="addAlResult()">add</span> </h5>
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <th>
+                                                    <div class="row border rounded mx-1 my-1">
+                                                        <div class="col-md-6 col-lg-6 text-capitalize bg-secondary text-white">@lang('text.center_no')<i class="text-danger text-xs">*</i>:</div>
+                                                        <div class="col-md-6 col-lg-6"><input type="text" name="al_center_number" class="form-control rounded border-0" placeholder="center number" value="{{ old('al_center_number', $application->al_center_number) }}"></div>
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                    <div class="row border rounded mx-1 my-1">
+                                                        <div class="col-md-6 col-lg-6 text-capitalize bg-secondary text-white">@lang('text.candidate_no')<i class="text-danger text-xs">*</i>:</div>
+                                                        <div class="col-md-6 col-lg-6"><input type="text" name="al_candidate_number" class="form-control rounded border-0" placeholder="candidate number" value="{{ old('al_candidate_number', $application->al_candidate_number) }}"></div>
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                    <div class="row border rounded mx-1 my-1">
+                                                        <div class="col-md-6 col-lg-6 text-capitalize bg-secondary text-white">@lang('text.word_year')<i class="text-danger text-xs">*</i>:</div>
+                                                        <div class="col-md-6 col-lg-6">
+                                                            @php
+                                                                $__y = intval(now()->format('Y'));
+                                                            @endphp
+                                                            <select name="al_year" class="form-control rounded border-0">
+                                                                <option value=""></option>
+                                                                @for($i = $__y; $i > $__y - 100; $i--)
+                                                                    <option value="{{ $i }}" {{ old('al_year', $application->al_year == $i ? 'selected' : '') }}>{{ $i }}</option>
+                                                                @endfor
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                            <tr>
+                                                <th>{{ trans_choice('text.word_subject', 1) }}<i class="text-danger text-xs">*</i></th>
+                                                <th>@lang('text.word_grade')<i class="text-danger text-xs">*</i></th>
+                                                <th></th>
+                                        </thead>
+                                        <tbody id="al_results">
+                                            @foreach (json_decode($application->al_results)??[] as $key=>$result)
+                                                <tr class="text-capitalize">
+                                                    <td><input class="form-control text-primary"  name="al_results[$key][subject]" required value="{{ $result->subject }}"></td>
+                                                    <td>
+                                                        <select class="form-control text-primary"  name="al_results[$key][grade]" required value="{{ $result->grade }}">
+                                                            <option value=""></option>
+                                                            <option value="A" {{ $result->grade == 'A' ? 'selected' : '' }}>A</option>
+                                                            <option value="B" {{ $result->grade == 'B' ? 'selected' : '' }}>B</option>
+                                                            <option value="C" {{ $result->grade == 'C' ? 'selected' : '' }}>C</option>
+                                                            <option value="D" {{ $result->grade == 'D' ? 'selected' : '' }}>D</option>
+                                                            <option value="E" {{ $result->grade == 'E' ? 'selected' : '' }}>E</option>
+                                                            <option value="F" {{ $result->grade == 'F' ? 'selected' : '' }}>F</option>
+                                                            <option value="U" {{ $result->grade == 'U' ? 'selected' : '' }}>U</option>
+                                                        </select>
+                                                    </td>
+                                                    <td><span class="btn btn-sm px-4 py-1 btn-danger rounded fa fa-trash" onclick="dropAlResult(event)">{{ __('text.word_drop') }}</span></td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-sm-12 col-md-12 col-lg-12 py-4 d-flex justify-content-center">
+                            <a href="{{ route('student.application.start', [$step-1, $application->id]) }}" class="px-4 py-1 btn btn-lg btn-danger">{{ __('text.word_back') }}</a>
                             <input type="submit" class="px-4 py-1 btn btn-lg btn-primary" value="{{ __('text.save_and_continue') }}">
                         </div>
                     </div>
@@ -757,7 +780,6 @@
                 </form>
                 @break
         @endswitch
-        
     </div>
 @endsection
 @section('script')
@@ -790,7 +812,6 @@
             let html = `<tr class="text-capitalize">
                             <td><input class="form-control text-primary"  name="al_results[${key}][subject]" required value="" placeholder="SUBJECT"></td>
                             <td>
-                                <input class="form-control text-primary"  name="al_results[${key}][grade]" required value="" placeholder="GRADE">
                                 <select class="form-control text-primary"  name="al_results[${key}][grade]" required>
                                     <option value=""></option>
                                     <option value="A">A</option>
@@ -798,8 +819,6 @@
                                     <option value="C">C</option>
                                     <option value="D">D</option>
                                     <option value="E">E</option>
-                                    <option value="F">F</option>
-                                    <option value="U">U</option>
                                 </select>
                             </td>
                             <td><span class="btn btn-sm px-4 py-1 btn-danger rounded fa fa-trash" onclick="dropAlResult(event)">{{ __('text.word_drop') }}</span></td>
@@ -825,10 +844,6 @@
                                     <option value="A">A</option>
                                     <option value="B">B</option>
                                     <option value="C">C</option>
-                                    <option value="D">D</option>
-                                    <option value="E">E</option>
-                                    <option value="F">F</option>
-                                    <option value="U">U</option>
                                 </select>
                             </td>
                             <td><span class="btn btn-sm px-4 py-1 btn-danger rounded fa fa-trash" onclick="dropOlResult(event)">{{ __('text.word_drop') }}</span></td>
@@ -850,7 +865,7 @@
                             <td class="border"><input class="form-control text-primary"  name="previous_training[school][${key}]" required value="" placeholder="SCHOOL"></td>
                             <td class="border"><select class="form-control text-primary"  name="previous_training[year][${key}]" required>
                                                     <option></option>
-                                                    @for($i = 1980; $i <= 2500; $i++)
+                                                    @for($i = $___year; $i >= $___year-100; $i--)
                                                         <option value="{{ $i }}">{{ $i }}</option>
                                                     @endfor
                                                 </select></td>
