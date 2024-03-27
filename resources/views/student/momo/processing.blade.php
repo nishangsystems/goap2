@@ -44,7 +44,7 @@
                 response_data = data.data
                 console.log(response_data);
                 if((response_data.status == "SUCCESSFUL") || (response_data.status == "CANCELLED") || (response_data.status == "FAILED") || (response_data.status == "REVERSED")){
-                    url = "{{route('student.application.payment.complete', $form_id)}}";
+                    url = "{{route('student.tranzak.complete')}}";
                     let form_markup = `<form method="post" id="_temp_form" action="${url}" enctype="application/json">
                         @csrf`;
                     console.log(Object.entries(response_data));

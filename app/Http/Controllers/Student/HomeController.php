@@ -604,45 +604,51 @@ class HomeController extends Controller
             'payment_purpose'=>'required',
             'payment_id'=>'required|numeric'
         ]);
-        
-        
-        if ($validator->fails()) {
-            # code...
-            return back()->with('error', $validator->errors()->first());
-        }
-        // return $request->all();
-
-        // BRIDGE PROCESS BY PAYING WITH TRANZAK
-        {
-            $data = $request->all();
-            $data_key = $request->payment_purpose == '_TRANSCRIPT_' ? config('tranzak.tranzak._transcript_data') : config('tranzak.tranzak.platform_data');
-            session()->put($data_key, $data);
-            // dd($data);
-            return $this->tranzak_pay($request->payment_purpose, $request);
-        }
-
         try {
             //code...
-            $data = $request->all();
-            $response = Http::post(env('CHARGES_PAYMENT_URL'), $data);
-            // dd($response->body());
-            if(!$response->ok()){
-                // throw $response;
-                return back()->with('error', 'Operation failed. '.$response->body());
+            if ($validator->fails()) {
+                # code...
+                return back()->with('error', $validator->errors()->first());
+            }
+            // return $request->all();
+    
+            // BRIDGE PROCESS BY PAYING WITH TRANZAK
+            {
+                $data = $request->all();
+                $data_key = $request->payment_purpose == '_TRANSCRIPT_' ? config('tranzak.tranzak._transcript_data') : config('tranzak.tranzak.platform_data');
+                session()->put($data_key, $data);
+                // dd($data);
+                return $this->tranzak_pay($request->payment_purpose, $request);
+            }
+    
+            try {
+                //code...
+                $data = $request->all();
+                $response = Http::post(env('CHARGES_PAYMENT_URL'), $data);
                 // dd($response->body());
+                if(!$response->ok()){
+                    // throw $response;
+                    return back()->with('error', 'Operation failed. '.$response->body());
+                    // dd($response->body());
+                }
+                
+                if($response->ok()){
+                
+                    $_data['title'] = "Pending Confirmation";
+                    $_data['transaction_id'] = $response->collect()->first();
+                    // return $_data;
+                    return view('student.platform.payment_waiter', $_data);
+                }
+            } 
+            catch(ConnectException $e){
+                return back()->with('error', $e->getMessage());
             }
-            
-            if($response->ok()){
-            
-                $_data['title'] = "Pending Confirmation";
-                $_data['transaction_id'] = $response->collect()->first();
-                // return $_data;
-                return view('student.platform.payment_waiter', $_data);
-            }
-        } 
-        catch(ConnectException $e){
-            return back()->with('error', $e->getMessage());
+        } catch (\Throwable $th) {
+            //throw $th;
+            session()->flash('error', "F::{$th->getFile()}, L::{$th->getLine()}, M::{$th->getMessage()}");
+            return back();
         }
+        
     }
 
     public function complete_charges_transaction(Request $request, $ts_id)
@@ -847,6 +853,7 @@ class HomeController extends Controller
         $application = auth('student')->user()->applicationForms()->where('year_id', Helpers::instance()->getCurrentAccademicYear())->first();
         $tranzak_credentials = TranzakCredential::where('campus_id', 6)->first();
         if(cache($tranzak_credentials->cache_token_key) == null or Carbon::parse(cache($tranzak_credentials->cache_token_expiry_key))->isAfter(now())){
+            GEN_TOKEN:
             $response = Http::post(config('tranzak.base').config('tranzak.token'), ['appId'=>$tranzak_credentials->app_id, 'appKey'=>$tranzak_credentials->api_key]);
             if($response->status() == 200){
                 cache([$tranzak_credentials->cache_token_key => json_decode($response->body())->data->token]);
@@ -857,16 +864,18 @@ class HomeController extends Controller
         $tel = strlen($request->tel) >= 12 ? $request->tel : '237'.$request->tel;
         $headers = ['Authorization'=>'Bearer '.cache($tranzak_credentials->cache_token_key)];
         $request_data = ['mobileWalletNumber'=>$tel, 'mchTransactionRef'=>'_'.str_replace(' ', '_', $request->payment_purpose).'_payment_'.time().'_'.random_int(1, 9999), "amount"=> $request->amount, "currencyCode"=> "XAF", "description"=>"Payment for {$request->payment_purpose} - BUIB."];
-        
+        // dd($headers);
         $_response = Http::withHeaders($headers)->post(config('tranzak.base').config('tranzak.direct_payment_request'), $request_data);
         
         // dd($_response->collect());
-        // if($_response->status() == 200){
-            session()->put('processing_tranzak_transaction_details', json_encode(json_decode($_response->body())->data));
+        if($_response->collect()['success'] == true){
+            session()->put('processing_tranzak_transaction_details', json_encode($_response->collect()['data']));
             session()->put('tranzak_credentials', json_encode($tranzak_credentials));
             return redirect()->to(route('student.tranzak.processing', $request->payment_purpose));
-        // }
-        return back()->with();
+        }else {
+            goto GEN_TOKEN;
+        }
+        return back()->with('error', 'Unknown error occured');
 
     }
 
@@ -874,9 +883,74 @@ class HomeController extends Controller
     {
         # code...
         $data['title'] = "Processing Payment Request";
+        $data['tranzak_credentials'] = TranzakCredential::where('campus_id', 6)->first();
         $data['transaction'] = json_decode(session('processing_tranzak_transaction_details'));
+        // dd(1573);
         return view('student.momo.processing', $data);
     }
 
+
+    public function tranzak_complete(Request $request)
+    {
+        # code...
+        try {
+            //code...
+            // return $request;
+            switch ($request->status) {
+                case 'SUCCESSFUL':
+                    # code...
+                    // save transaction and update application_form
+                    DB::beginTransaction();
+                    $transaction = ['request_id'=>$request->requestId??'', 'amount'=>$request->amount??'', 'currency_code'=>$request->currencyCode??'', 'purpose'=>$request->payment_purpose??'', 'mobile_wallet_number'=>$request->mobileWalletNumber??'', 'transaction_ref'=>$request->mchTransactionRef??'', 'app_id'=>$request->appId??'', 'transaction_id'=>$request->transactionId??'', 'transaction_time'=>$request->transactionTime??'', 'payment_method'=>$request->payer['paymentMethod']??'', 'payer_user_id'=>$request->payer['userId']??'', 'payer_name'=>$request->payer['name']??'', 'payer_account_id'=>$request->payer['accountId']??'', 'merchant_fee'=>$request->merchant['fee']??'', 'merchant_account_id'=>$request->merchant['accountId']??'', 'net_amount_recieved'=>$request->merchant['netAmountReceived']??''];
+                    if(TranzakTransaction::where($transaction)->count() == 0){
+                        $transaction_instance = new TranzakTransaction($transaction);
+                        $transaction_instance->save();
+                    }else{
+                        $transaction_instance = TranzakTransaction::where($transaction)->first();
+                    }
+    
+                    $trans = session()->get(config('tranzak.tranzak.platform_data'));
+                    $data = ['student_id'=>$trans['student_id'], 'year_id'=>$trans['year_id'], 'type'=>'PLATFORM', 'item_id'=>$trans['payment_id'], 'amount'=>$transaction_instance->amount, 'financialTransactionId'=>$transaction_instance->transaction_id, 'used'=>1];
+                    $instance = new Charge($data);
+                    $instance->save();
+                    $message = "Hello ".(auth('student')->user()->name??'').", You have successfully paid a sum of ".($transaction_instance->amount??'')." as ".($trans['payment_purpose']??'')." for ".($transaction_instance->year->name??'')." ST. LOUIS UNIVERSITY INSTITUTE.";
+                    $this->sendSmsNotificaition($message, [auth('student')->user()->phone]);
+                    
+                    ($pending = PendingTranzakTransaction::where('request_id', $request->requestId)->first()) != null ? $pending->delete() : null;
+                    DB::commit();
+                    return redirect(route('student.home'))->with('success', "Payment successful.");
+                    break;
+                
+                case 'CANCELLED':
+                    # code...
+                    // notify user
+                    ($pending = PendingTranzakTransaction::where('request_id', $request->requestId)->first()) != null ? $pending->delete() : null;
+                    return redirect(route('student.home'))->with('message', 'Payment Not Made. The request was cancelled.');
+                    break;
+                
+                case 'FAILED':
+                    # code...
+                    ($pending = PendingTranzakTransaction::where('request_id', $request->requestId)->first()) != null ? $pending->delete() : null;
+                    return redirect(route('student.home'))->with('error', 'Payment failed.');
+                    break;
+                
+                case 'REVERSED':
+                    # code...
+                    ($pending = PendingTranzakTransaction::where('request_id', $request->requestId)->first()) != null ? $pending->delete() : null;
+                    return redirect(route('student.home'))->with('message', 'Payment failed. The request was reversed.');
+                    break;
+                
+                default:
+                    # code...
+                    break;
+            }
+
+            return redirect(route('student.home'))->with('error', 'Payment failed. Unrecognised transaction status.');
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollBack();
+            return back()->with('error', $th->getMessage());
+        }
+    }
 
 }
