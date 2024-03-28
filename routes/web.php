@@ -265,8 +265,7 @@ Route::prefix('student')->name('student.')->middleware('isStudent')->middleware(
     Route::get('reset_password', 'Controller@reset_password')->name('reset_password');
     Route::post('reset_password', 'Controller@reset_password_save')->name('reset_password');
     
-    Route::get('platform/pay', 'Student\HomeController@pay_platform_charges')->name('platform_charge.pay')->withoutMiddleware('plcharge');
-    Route::post('charges/pay', 'Student\HomeController@pay_charges_save')->name('charge.pay')->withoutMiddleware('plcharge');
+    
     Route::get('result/pay', 'Student\HomeController@pay_semester_results')->name('result.pay');
     Route::get('transcript/pay', 'Student\HomeController@pay_transcript_charges')->name('transcript.pay');
     
@@ -294,8 +293,8 @@ Route::prefix('student')->name('student.')->middleware('isStudent')->middleware(
     Route::get('application/payment/complete/{form_id}', [StudentHomeController::class, 'pending_complete'])->name('application.payment.complete');
     Route::post('application/payment/complete/{form_id}', [StudentHomeController::class, 'pending_complete']);
 });
-// Route::post('student/charges/pay', 'Student\HomeController@pay_charges_save')->name('student.charge.pay');
-Route::get('platform/pay', 'Student\HomeController@pay_platform_charges')->name('platform_charge.pay')->middleware('isStudent');
+Route::post('student/charges/pay', 'Student\HomeController@pay_charges_save')->name('student.charge.pay');
+Route::get('student/platform/pay', 'Student\HomeController@pay_platform_charges')->name('student.platform_charge.pay');
 Route::get('student/charges/complete_transaction/{ts_id}', 'Student\HomeController@complete_charges_transaction')->name('student.charges.complete');
 Route::get('student/charges/failed_transaction/{ts_id}', 'Student\HomeController@failed_charges_transaction')->name('student.charges.failed');
 Route::get('student/tranzak/processing', 'Student\HomeController@tranzak_payment_processing')->name('student.tranzak.processing');
