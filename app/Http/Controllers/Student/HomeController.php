@@ -9,6 +9,7 @@ use App\Models\ApplicationForm;
 use App\Models\Batch;
 use App\Models\Config;
 use App\Models\PlatformCharge;
+use App\Models\Charge;
 use App\Models\Transaction;
 use App\Models\TranzakCredential;
 use Illuminate\Http\Request;
@@ -17,6 +18,7 @@ use Throwable;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -170,7 +172,6 @@ class HomeController extends Controller
             }
             
             # code...
-            $data['step'] = $step;
             // return $this->api_service->campuses();
             $data['campuses'] = json_decode($this->api_service->campuses())->data;
             $application = ApplicationForm::where(['student_id'=>auth('student')->id(), 'year_id'=>Helpers::instance()->getCurrentAccademicYear()])->first();
@@ -214,6 +215,14 @@ class HomeController extends Controller
             // $data['al_results'] = json_decode($application->al_results??'[]');
             // $data['ol_results'] = json_decode($application->ol_results??'[]');
             // dd($data);
+            $data['step'] = $step;
+            $isMaster = in_array('degree', $data) and stristr($data['degree']->deg_name??"", "master");
+            if ($step == 3) {
+                if(!$isMaster){
+                    $data['step'] = 4;
+                    $data['isMaster'] = $isMaster;
+                }
+            }
             
             $data['title'] = (isset($data['degree']) and ($data['degree'] != null)) ? $data['degree']->deg_name." APPLICATION" : "APPLICATION";
             return view('student.online.fill_form', $data);
@@ -337,7 +346,8 @@ class HomeController extends Controller
             $data = collect($data)->filter(function($value, $key){return $key != '_token';})->toArray();
             $application = ApplicationForm::updateOrInsert(['id'=> $application_id, 'student_id'=>auth('student')->id()], $data);
         }
-        elseif($step ==7){
+        
+        elseif($step == 7){
             
             // MAKE API CALL TO PERFORM PAYMENT OF APPLICATION FEE
             // check if token exist and hasn't expired or get new token otherwise
@@ -561,7 +571,14 @@ class HomeController extends Controller
             $data['title'] = "ADMISSION LETTER";
             $data['name'] = $appl->name;
             $data['matric'] =  $appl->matric;
-            $data['registrar'] = "Mandi Derick Ediange";
+            $data['auth_no'] =  time().'/'.random_int(150553, 998545).'/XGS4';
+            $data['registrar'] = "Registrar Place holder";
+            $data['chancellor'] = "Chancellor place holder";
+            $data['p_chancellor'] = "P. Chancellor place holder";
+            $data['v_chancellor'] = "V. Chancellor place holder";
+            $data['dvc1'] = "D. V1. Chancellor place holder";
+            $data['dvc2'] = "D. V2. Chancellor place holder";
+            $data['dvc3'] = "D. V3. Chancellor place holder";
             $data['fee1_dateline'] = $config->fee1_latest_date;
             $data['fee2_dateline'] = $config->fee2_latest_date;
             $data['help_email'] =  $config->help_email;
@@ -569,6 +586,7 @@ class HomeController extends Controller
             $data['degree'] = $degree->deg_name??null;
             $data['program'] = str_replace($data['degree'], ' ', $program->name??"");
     
+            return view('admin.student.admission_letter', $data);
             $pdf = Pdf::loadView('admin.student.admission_letter', $data);
             return $pdf->download($appl->matric.'_ADMISSION_LETTER.pdf');            
         }
@@ -579,7 +597,8 @@ class HomeController extends Controller
     {
         # code...
         $charge = PlatformCharge::first();
-        // if($charge == null || $charge->yearly_amount == null || $charge->yearly_amount == 0){return back()->with('error', 'Platform charges not set.');}
+        if($charge == null || $charge->yearly_amount == null || $charge->yearly_amount == 0){return back()->with('error', 'Platform charges not set.');}
+        if(Charge::where(['item_id'=>$charge->id, 'student_id'=>auth('student')->id()])){return redirect(route('student.home'))->with('message', 'Platform charges already paid for this year.');}
         $data['title'] = "Pay Platform Charges";
         $data['amount'] = $charge->yearly_amount;
         $data['purpose'] = 'PLATFORM';
@@ -644,7 +663,7 @@ class HomeController extends Controller
                 return back()->with('error', $e->getMessage());
             }
         } catch (\Throwable $th) {
-            //throw $th;
+            // throw $th;
             session()->flash('error', "F::{$th->getFile()}, L::{$th->getLine()}, M::{$th->getMessage()}");
             return back();
         }
@@ -672,7 +691,7 @@ class HomeController extends Controller
                     $data = [
                         "student_id"=>$transaction->student_id,
                         "year_id"=>$transaction->year_id,
-                        'semester_id'=>$transaction->semester_id ?? Helpers::instance()->getSemester(Students::find($transaction->student_id)->_class($transaction->year_id)->id),
+                        'semester_id'=>$transaction->semester_id??0,
                         'type'=>$transaction->payment_purpose,
                         "item_id"=>$transaction->payment_id,
                         "amount"=>$transaction->amount,
@@ -851,7 +870,7 @@ class HomeController extends Controller
         // MAKE API CALL TO PERFORM PAYMENT OF APPLICATION FEE
         // check if token exist and hasn't expired or get new token otherwise
         $application = auth('student')->user()->applicationForms()->where('year_id', Helpers::instance()->getCurrentAccademicYear())->first();
-        $tranzak_credentials = TranzakCredential::where('campus_id', 6)->first();
+        $tranzak_credentials = \App\Models\TranzakCredential::where('campus_id', 6)->first();
         if(cache($tranzak_credentials->cache_token_key) == null or Carbon::parse(cache($tranzak_credentials->cache_token_expiry_key))->isAfter(now())){
             GEN_TOKEN:
             $response = Http::post(config('tranzak.base').config('tranzak.token'), ['appId'=>$tranzak_credentials->app_id, 'appKey'=>$tranzak_credentials->api_key]);
@@ -863,12 +882,20 @@ class HomeController extends Controller
 
         $tel = strlen($request->tel) >= 12 ? $request->tel : '237'.$request->tel;
         $headers = ['Authorization'=>'Bearer '.cache($tranzak_credentials->cache_token_key)];
-        $request_data = ['mobileWalletNumber'=>$tel, 'mchTransactionRef'=>'_'.str_replace(' ', '_', $request->payment_purpose).'_payment_'.time().'_'.random_int(1, 9999), "amount"=> $request->amount, "currencyCode"=> "XAF", "description"=>"Payment for {$request->payment_purpose} - BUIB."];
-        // dd($headers);
-        $_response = Http::withHeaders($headers)->post(config('tranzak.base').config('tranzak.direct_payment_request'), $request_data);
-        
+        $request_data = ['mobileWalletNumber'=>$tel, 'mchTransactionRef'=>'_'.str_replace(' ', '_', $request->payment_purpose).'_payment_'.time().'_'.random_int(1, 9999), "amount"=> $request->amount, "currencyCode"=> "XAF", "description"=>"Payment for {$request->payment_purpose} - ST LOUIS UNIVERSITY INSTITUTE."];
+        $_response = Http::withHeaders($headers)->post(config('tranzak.tranzak.base').config('tranzak.tranzak.direct_payment_request'), $request_data);
         // dd($_response->collect());
         if($_response->collect()['success'] == true){
+
+            // create pending transaction
+            $resp_data = $_response->collect()['data'];
+            $pending_tranzaktion = [
+                "request_id"=>$resp_data['requestId'],"amount"=>$resp_data['amount'],"currency_code"=>$resp_data['currencyCode'],"description"=>$resp_data['description'],"transaction_ref"=>$resp_data['mchTransactionRef'],"app_id"=>$resp_data['appId'], 'transaction_time'=>$resp_data['createdAt'],'user_type'=>'student', 'purpose'=>$request->payment_purpose,
+                "payment_id"=>$request->payment_id,"student_id"=>auth('student')->id(),"batch_id"=>$request->year_id,'unit_id'=>0,"original_amount"=>$request->amount,"reference_number"=>'platform.tranzak_momo_payment_'.time().'_'.random_int(100000, 999999).'_'.auth('student')->id(), 'paid_by'=>'TRANZAK_MOMO'
+            ];
+            $pt_instance = new \App\Models\PendingTranzakTransaction($pending_tranzaktion);
+            $pt_instance->save();
+
             session()->put('processing_tranzak_transaction_details', json_encode($_response->collect()['data']));
             session()->put('tranzak_credentials', json_encode($tranzak_credentials));
             return redirect()->to(route('student.tranzak.processing', $request->payment_purpose));
@@ -896,27 +923,32 @@ class HomeController extends Controller
         try {
             //code...
             // return $request;
+            // dd(session()->get('processing_tranzak_transaction_details'));
+            // dd($request->all());
             switch ($request->status) {
                 case 'SUCCESSFUL':
                     # code...
                     // save transaction and update application_form
                     DB::beginTransaction();
                     $transaction = ['request_id'=>$request->requestId??'', 'amount'=>$request->amount??'', 'currency_code'=>$request->currencyCode??'', 'purpose'=>$request->payment_purpose??'', 'mobile_wallet_number'=>$request->mobileWalletNumber??'', 'transaction_ref'=>$request->mchTransactionRef??'', 'app_id'=>$request->appId??'', 'transaction_id'=>$request->transactionId??'', 'transaction_time'=>$request->transactionTime??'', 'payment_method'=>$request->payer['paymentMethod']??'', 'payer_user_id'=>$request->payer['userId']??'', 'payer_name'=>$request->payer['name']??'', 'payer_account_id'=>$request->payer['accountId']??'', 'merchant_fee'=>$request->merchant['fee']??'', 'merchant_account_id'=>$request->merchant['accountId']??'', 'net_amount_recieved'=>$request->merchant['netAmountReceived']??''];
-                    if(TranzakTransaction::where($transaction)->count() == 0){
-                        $transaction_instance = new TranzakTransaction($transaction);
+                    if(\App\Models\TranzakTransaction::where($transaction)->count() == 0){
+                        $transaction_instance = new \App\Models\TranzakTransaction($transaction);
                         $transaction_instance->save();
                     }else{
-                        $transaction_instance = TranzakTransaction::where($transaction)->first();
+                        $transaction_instance = \App\Models\TranzakTransaction::where($transaction)->first();
                     }
     
-                    $trans = session()->get(config('tranzak.tranzak.platform_data'));
-                    $data = ['student_id'=>$trans['student_id'], 'year_id'=>$trans['year_id'], 'type'=>'PLATFORM', 'item_id'=>$trans['payment_id'], 'amount'=>$transaction_instance->amount, 'financialTransactionId'=>$transaction_instance->transaction_id, 'used'=>1];
-                    $instance = new Charge($data);
+                    $trans = json_decode(session()->get('processing_tranzak_transaction_details'));
+                    $payment_data = session()->get(config('tranzak.tranzak.platform_data'));
+                    // dd($payment_data);
+                    // dd($transaction_instance);
+                    $data = ['student_id'=>$payment_data['student_id'], 'year_id'=>$payment_data['year_id'], 'type'=>'PLATFORM', 'item_id'=>$payment_data['payment_id'], 'amount'=>$transaction_instance->amount, 'financialTransactionId'=>$transaction_instance->transaction_id, 'used'=>1];
+                    $instance = new \App\Models\Charge($data);
                     $instance->save();
-                    $message = "Hello ".(auth('student')->user()->name??'').", You have successfully paid a sum of ".($transaction_instance->amount??'')." as ".($trans['payment_purpose']??'')." for ".($transaction_instance->year->name??'')." ST. LOUIS UNIVERSITY INSTITUTE.";
+                    $message = "Hello ".(auth('student')->user()->name??'').", You have successfully paid a sum of ".($transaction_instance->amount??'')." as ".($trans->payment_purpose??'')." for ".($transaction_instance->year->name??'')." ST. LOUIS UNIVERSITY INSTITUTE.";
                     $this->sendSmsNotificaition($message, [auth('student')->user()->phone]);
                     
-                    ($pending = PendingTranzakTransaction::where('request_id', $request->requestId)->first()) != null ? $pending->delete() : null;
+                    ($pending = \App\Models\PendingTranzakTransaction::where('request_id', $request->requestId)->first()) != null ? $pending->delete() : null;
                     DB::commit();
                     return redirect(route('student.home'))->with('success', "Payment successful.");
                     break;
@@ -924,19 +956,19 @@ class HomeController extends Controller
                 case 'CANCELLED':
                     # code...
                     // notify user
-                    ($pending = PendingTranzakTransaction::where('request_id', $request->requestId)->first()) != null ? $pending->delete() : null;
+                    ($pending = \App\Models\PendingTranzakTransaction::where('request_id', $request->requestId)->first()) != null ? $pending->delete() : null;
                     return redirect(route('student.home'))->with('message', 'Payment Not Made. The request was cancelled.');
                     break;
                 
                 case 'FAILED':
                     # code...
-                    ($pending = PendingTranzakTransaction::where('request_id', $request->requestId)->first()) != null ? $pending->delete() : null;
+                    ($pending = \App\Models\PendingTranzakTransaction::where('request_id', $request->requestId)->first()) != null ? $pending->delete() : null;
                     return redirect(route('student.home'))->with('error', 'Payment failed.');
                     break;
                 
                 case 'REVERSED':
                     # code...
-                    ($pending = PendingTranzakTransaction::where('request_id', $request->requestId)->first()) != null ? $pending->delete() : null;
+                    ($pending = \App\Models\PendingTranzakTransaction::where('request_id', $request->requestId)->first()) != null ? $pending->delete() : null;
                     return redirect(route('student.home'))->with('message', 'Payment failed. The request was reversed.');
                     break;
                 
@@ -949,7 +981,8 @@ class HomeController extends Controller
         } catch (\Throwable $th) {
             //throw $th;
             DB::rollBack();
-            return back()->with('error', $th->getMessage());
+            session()->flash('error', "F::{$th->getFile()}, L::{$th->getLine()}, M::{$th->getMessage()}");
+            return back();
         }
     }
 

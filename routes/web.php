@@ -299,7 +299,7 @@ Route::get('platform/pay', 'Student\HomeController@pay_platform_charges')->name(
 Route::get('student/charges/complete_transaction/{ts_id}', 'Student\HomeController@complete_charges_transaction')->name('student.charges.complete');
 Route::get('student/charges/failed_transaction/{ts_id}', 'Student\HomeController@failed_charges_transaction')->name('student.charges.failed');
 Route::get('student/tranzak/processing', 'Student\HomeController@tranzak_payment_processing')->name('student.tranzak.processing');
-Route::post('student/tranzak/complete', 'Student\HomeController@tranzak_payment_processing')->name('student.tranzak.complete');
+Route::post('student/tranzak/complete', 'Student\HomeController@tranzak_complete')->name('student.tranzak.complete');
 
 Route::get('section-children/{parent}', 'HomeController@children')->name('section-children');
 Route::get('section-subjects/{parent}', 'HomeController@subjects')->name('section-subjects');
