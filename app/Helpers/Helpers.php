@@ -220,12 +220,12 @@ class Helpers
     public function getHeader()
     {
         # code...
-        $lt = File::where('name','=', 'letter-head');
-        if ($lt->count() > 0) {
-            # code...
-            return asset('assets/images/avatars').'/'.$lt->first()->path;
-        }
-        return '';
+        // $lt = File::where('name','=', 'letter-head');
+        // if ($lt->count() > 0) {
+        //     # code...
+        //     return asset('assets/images/avatars').'/'.$lt->first()->path;
+        // }
+        return asset('assets/images/header.jpg');
     }
 
     public function getBackground()

@@ -557,8 +557,10 @@ class HomeController extends Controller
     {
         $appl = ApplicationForm::find($appl_id);
         if($appl != null){
+            $programs = collect(json_decode($this->api_service->programs())->data);
             $campus = collect(json_decode($this->api_service->campuses())->data)->where('id', $appl->campus_id)->first()??null;
-            $program = collect(json_decode($this->api_service->programs())->data)->where('id', $appl->program_first_choice)->first()??null;
+            $program = $programs->where('id', $appl->program_first_choice)->first()??null;
+            $program = $programs->where('id', $appl->program_first_choice)->first()??null;
             $degree = collect(json_decode($this->api_service->degrees())->data)->where('id', $appl->degree_id)->first()??null;
             $config = Config::where('year_id', Helpers::instance()->getCurrentAccademicYear())->first();
 
@@ -583,8 +585,10 @@ class HomeController extends Controller
             $data['fee2_dateline'] = $config->fee2_latest_date;
             $data['help_email'] =  $config->help_email;
             $data['campus'] = $campus->name??null;
-            $data['degree'] = $degree->deg_name??null;
+            $data['degree'] = $program->deg_name == null ? ("NOT SET") : $program->deg_name;
             $data['program'] = str_replace($data['degree'], ' ', $program->name??"");
+            $data['_program'] = $program;
+            $data['matric_sn'] = substr($appl->matric, -3);
     
             return view('admin.student.admission_letter', $data);
             $pdf = Pdf::loadView('admin.student.admission_letter', $data);

@@ -40,10 +40,10 @@
                 <div class="d-flex my-3 py-2 justify-content-between">
                     <b>
                         <span class="text-capitalize">@lang('text.your_ref')</span>: _______________________ <br><br>
-                        <span class="text-capitalize">@lang('text.our_ref')</span>:  _______________________
+                        <span class="text-capitalize">@lang('text.our_ref')</span>:  <span style="">BUIB/AL/{{ $_program->prefix??'' }}/{{ $matric_sn??'' }}</span>
                     </b>
                     <b>
-                        <span class="text-capitalize">@lang('text.word_date')</span>: _______________________
+                        <span class="text-capitalize">@lang('text.word_date')</span>: <span style="text-decoration: underline;">{{ "  ".now()->format('d/m/Y')."  " }}</span>
                     </b>
                 </div>
                 <div class="my-3 py-2 text-capitalize">
@@ -54,7 +54,7 @@
                     <b>@lang('text.offer_of_admission')</b>
                 </div>
                 <div class="my-3 py-2">
-                    <span>@lang('text.admission_letter_text_block1')</span>
+                    <span>@lang('text.admission_letter_text_block1', ['degree'=>$degree])</span>
                 </div>
                 <div class="my-3 py-2">
                     <span>@lang('text.the_tution_fee_amount_should_be_paid_at'):</span><br>
@@ -139,11 +139,17 @@
                     <span class="text-capitalize">@lang('text.yours_sincerely')</span>,
                 </div>
                 <div class="my-3 py-2">
-                    <div style="display:flex;">
+                    <div style="display:flex; justify-content:space-between">
                         <div class="text-center">
                             ___________________________ <br>
                             <b class="my-1 py-1 d-block">{{ $registrar??'' }}</b> <br>
                             <b class="text-capitalize">@lang('text.word_registrar')</b>
+                        </div>
+                        <div class="">
+                            <div class="position-relative">
+                                <img src="{{ asset('assets/images/signature.png') }}" alt="" srcset="" style="height:16rem; width:20rem; position:absolute; bottom:-60%; left: -45%;">
+                                <img src="{{ asset('assets/images/stamp.png') }}" alt="" srcset="" style="height:12rem; width:15rem;">
+                            </div>
                         </div>
                     </div>
                 </div>
