@@ -1058,5 +1058,8 @@ return [
     'to_be_obtained_from_the_department'=>'To be obtained from the department',
     'admission_letter_summary_welcome_phrase'=>'We welcome you to Biaka University Institute of Buea and hopt that you will help us make your stay at the University fruitful and pleasant.',
     'yours_sincerely'=>'yours sincerely',
+    'word_international'=>'international',
+    'first_instalment'=>'first instalment',
+    'word_bank'=>'bank',
     ''
 ]; 

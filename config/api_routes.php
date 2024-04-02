@@ -20,4 +20,5 @@ return [
     'set_root'=>'_api/root/create',
     'matric_exist'=>'matric/exists',
     'degree_certificates'=>'degree/certificates', ///{degree_id}
+    'portal_fee_structure'=>'portal_fee_structure', ///{year_id?}
 ];

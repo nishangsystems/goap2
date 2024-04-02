@@ -122,8 +122,13 @@ class ApiService{
         // dd(Helpers::instance()->getApiRoot().'/degree/certificates/'.$degree_id);
         return Http::get(Helpers::instance()->getApiRoot().'/degree/certificates/'.$degree_id)->body();
     }
-
+    
     public function set_degree_certificates($degree_id, array $certificate_ids){
         return Http::post(Helpers::instance()->getApiRoot().'/degree/certificates/'.$degree_id, ['certificates'=>$certificate_ids])->body();
+    }
+
+    public function portal_fee_structure($year_id = null){
+        // dd(Helpers::instance()->getApiRoot().'/degree/certificates/'.$degree_id);
+        return Http::get(Helpers::instance()->getApiRoot().'/portal_fee_structure'.$year_id)->collect();
     }
 }

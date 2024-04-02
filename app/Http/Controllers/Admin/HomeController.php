@@ -26,14 +26,29 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use MongoDB\Driver\Session;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Http\Services\ApiService;
 
 use function PHPUnit\Framework\returnSelf;
 
 class HomeController  extends Controller
 {
+    var $api_service;
+    public function __construct(ApiService $api_service)
+    {
+        # code...
+        $this->api_service = $api_service;
+    }
+
     public function index()
     {
-        return view('admin.dashboard');
+        $raw =  $this->api_service->portal_fee_structure()['data']??[];
+        $data = [];
+        if($raw != null){
+            $data = collect($raw)->sortBy('class_name')->groupBy('school')->groupBy('department')->groupBy('program');
+        }
+        $_data['data'] = $data;
+        return view('admin.dashboard', $_data);
+
     }
 
     public function set_letter_head()
