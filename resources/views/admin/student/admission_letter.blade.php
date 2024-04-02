@@ -54,7 +54,7 @@
                     <b>@lang('text.offer_of_admission')</b>
                 </div>
                 <div class="my-3 py-2">
-                    <span>@lang('text.admission_letter_text_block1', ['degree'=>$degree])</span>
+                    <span>@lang('text.admission_letter_text_block1', ['degree'=>$degree, 'department'=>$department])</span>
                 </div>
                 <div class="my-3 py-2">
                     <span>@lang('text.the_tution_fee_amount_should_be_paid_at'):</span><br>
