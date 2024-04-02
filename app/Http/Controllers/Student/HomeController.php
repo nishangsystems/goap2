@@ -149,7 +149,7 @@ class HomeController extends Controller
     {
         # code...
         $data['title'] = "Our programs";
-        $data['campuses'] = json_decode($this->api_service->campuses())->data;
+        $data['campuses'] = json_decode($this->api_service->campuses())->data??[];
         foreach ($data['campuses'] as $key => $value) {
             # code...
             $data['campuses'][$key]->programs = collect(json_decode($this->api_service->campusProgramsBySchool($value->id))->data)->unique()->groupBy('school');
