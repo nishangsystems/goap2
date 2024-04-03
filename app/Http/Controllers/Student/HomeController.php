@@ -188,6 +188,7 @@ class HomeController extends Controller
             }
 
             $data['application'] = $application;
+            $data['programs'] = collect(json_decode($this->api_service->programs())->data);
     
             if($data['application']->degree_id != null){
                 $data['degree'] = collect(json_decode($this->api_service->degrees())->data)->where('id', $data['application']->degree_id)->first();
