@@ -396,7 +396,7 @@ $___year = intval(now()->format('Y'));
                                                         </div class="col-sm-6 col-md-4">
                                                         <div class="col-sm-6 col-md-4">
                                                             <div class="row border rounded mx-1 my-1">
-                                                                <div class="col-md-6 col-lg-6 text-capitalize bg-secondary text-white">@lang('text.word_year')<i class="text-danger text-xs">*</i>:</div>
+                                                                <div class="col-md-6 col-lg-6 text-capitalize bg-secondary text-white">@lang('text.word_year'):</div>
                                                                 <div class="col-md-6 col-lg-6">
                                                                     @php
                                                                         $__y = intval(now()->format('Y'));
@@ -445,7 +445,8 @@ $___year = intval(now()->format('Y'));
                         
                         
                         <div class="col-sm-12 col-md-12 col-lg-12 py-4 d-flex justify-content-center">
-                            <input type="submit" class="px-4 py-1 btn btn-lg btn-primary" value="{{ __('text.save_and_continue') }}">
+                            <input type="submit" class="px-4 py-1 btn btn-lg btn-primary" value="{{ __('text.word_save') }}">
+                            <button type="button" class="px-4 py-1 btn btn-lg btn-success" onclick="window.location=``"> {{ __('text.word_next') }}</button>
                         </div>
                     </div>
                 </form>

@@ -350,31 +350,50 @@ class HomeController extends Controller
         
         elseif($step == 7){
             
+            // dd('check point');
             // MAKE API CALL TO PERFORM PAYMENT OF APPLICATION FEE
             // check if token exist and hasn't expired or get new token otherwise
+            $token_refreshed = 0;
             $application = auth('student')->user()->applicationForms()->where('year_id', Helpers::instance()->getCurrentAccademicYear())->first();
             $tranzak_credentials = TranzakCredential::where('campus_id', $application->campus_id)->first();
             if(cache($tranzak_credentials->cache_token_key) == null or Carbon::parse(cache($tranzak_credentials->cache_token_expiry_key))->isAfter(now())){
+
+                GEN_TOKEN:
                 $response = Http::post(config('tranzak.base').config('tranzak.token'), ['appId'=>$tranzak_credentials->app_id, 'appKey'=>$tranzak_credentials->api_key]);
+                $token_refreshed++;
                 if($response->status() == 200){
                     cache([$tranzak_credentials->cache_token_key => json_decode($response->body())->data->token]);
                     cache([$tranzak_credentials->cache_token_expiry_key=>Carbon::createFromTimestamp(time() + json_decode($response->body())->data->expiresIn)]);
                 }
+
             }
+            // dd('check point X1');
+            
             $headers = ['Authorization'=>'Bearer '.cache($tranzak_credentials->cache_token_key)];
-            $request_data = ['mobileWalletNumber'=>'237'.$request->momo_number, 'mchTransactionRef'=>'_apl_fee_'.time().'_'.random_int(1, 9999), "amount"=> $request->amount, "currencyCode"=> "XAF", "description"=>"Payment for application fee into ST LOUIS UNIVERSITY INSTITUTE"];
+            $request_data = ['mobileWalletNumber'=>'237'.$request->momo_number, 'mchTransactionRef'=>'_apl_fee_'.time().'_'.random_int(1, 9999), "amount"=> $request->amount, "currencyCode"=> "XAF", "description"=>"Payment for application fee into BIAKA UNIVERSITY INSTITUTE OF BUEA"];
             $_response = Http::withHeaders($headers)->post(config('tranzak.base').config('tranzak.direct_payment_request'), $request_data);
+            // dd($_response->collect());
             if($_response->status() == 200){
 
                 session()->put('processing_tranzak_transaction_details', json_encode(json_decode($_response->body())->data));
                 session()->put('tranzak_credentials', json_encode($tranzak_credentials));
                 return redirect()->to(route('student.application.payment.processing', $application_id));
+            }elseif($token_refreshed < 2){
+                // considering the existing token is no longer valid
+                goto GEN_TOKEN;
             }
 
+            session()->flash('error', 'Payment Failed. Make sure you have an internet connection and try again later.');
+            return back()->withInput();
+
+            // dd('check point X2');
         }else{
+            // dd('check point X3');
             $data = $request->all();
             $data = collect($data)->filter(function($value, $key){return $key != '_token' and $value != null;})->toArray();
             $application = ApplicationForm::updateOrInsert(['id'=> $application_id, 'student_id'=>auth('student')->id()], $data);
+            // dd('check point X4');
+
         }
         $step = $request->step;
         return redirect(route('student.application.start', [$step, $application_id]));
@@ -430,7 +449,7 @@ class HomeController extends Controller
                         $phone_number = '237'.$phone_number;
                     }
                     // dd($phone_number);
-                    $message="Application form for ST. LOUIS UNIVERSITY INSTITUTE submitted successfully.";
+                    $message="Application form for BIAKA UNIVERSITY INSTITUTE submitted successfully.";
                     $sent = $this->sendSMS($phone_number, $message);
     
                     return redirect(route('student.application.form.download'))->with('success', "Payment successful. ".($sent != true ? $sent : null));
@@ -846,7 +865,7 @@ class HomeController extends Controller
         // // Moving to performing the payment request proper
         // $tel = strlen($request->tel) >= 12 ? $request->tel : '237'.$request->tel;
         // $headers = ['Authorization'=>'Bearer '.cache($tranzak_credentials->cache_token_key)];
-        // $request_data = ['mobileWalletNumber'=>$tel, 'mchTransactionRef'=>'_'.str_replace(' ', '_', $request->payment_purpose).'_payment_'.time().'_'.random_int(1, 9999), "amount"=> $request->amount, "currencyCode"=> "XAF", "description"=>"Payment for {$request->payment_purpose} - ST LOUIS UNIVERSITY INSTITUTE."];
+        // $request_data = ['mobileWalletNumber'=>$tel, 'mchTransactionRef'=>'_'.str_replace(' ', '_', $request->payment_purpose).'_payment_'.time().'_'.random_int(1, 9999), "amount"=> $request->amount, "currencyCode"=> "XAF", "description"=>"Payment for {$request->payment_purpose} - BIAKA UNIVERSITY INSTITUTE OF BUEA."];
         // // dd($headers);
         // $_response = Http::withHeaders($headers)->post(config('tranzak.tranzak.base').config('tranzak.tranzak.direct_payment_request'), $request_data);
         // // dd($_response->collect());
@@ -888,7 +907,7 @@ class HomeController extends Controller
 
         $tel = strlen($request->tel) >= 12 ? $request->tel : '237'.$request->tel;
         $headers = ['Authorization'=>'Bearer '.cache($tranzak_credentials->cache_token_key)];
-        $request_data = ['mobileWalletNumber'=>$tel, 'mchTransactionRef'=>'_'.str_replace(' ', '_', $request->payment_purpose).'_payment_'.time().'_'.random_int(1, 9999), "amount"=> $request->amount, "currencyCode"=> "XAF", "description"=>"Payment for {$request->payment_purpose} - ST LOUIS UNIVERSITY INSTITUTE."];
+        $request_data = ['mobileWalletNumber'=>$tel, 'mchTransactionRef'=>'_'.str_replace(' ', '_', $request->payment_purpose).'_payment_'.time().'_'.random_int(1, 9999), "amount"=> $request->amount, "currencyCode"=> "XAF", "description"=>"Payment for {$request->payment_purpose} - BIAKA UNIVERSITY INSTITUTE OF BUEA."];
         $_response = Http::withHeaders($headers)->post(config('tranzak.tranzak.base').config('tranzak.tranzak.direct_payment_request'), $request_data);
         // dd($_response->collect());
         if($_response->collect()['success'] == true){
@@ -951,7 +970,7 @@ class HomeController extends Controller
                     $data = ['student_id'=>$payment_data['student_id'], 'year_id'=>$payment_data['year_id'], 'type'=>'PLATFORM', 'item_id'=>$payment_data['payment_id'], 'amount'=>$transaction_instance->amount, 'financialTransactionId'=>$transaction_instance->transaction_id, 'used'=>1];
                     $instance = new \App\Models\Charge($data);
                     $instance->save();
-                    $message = "Hello ".(auth('student')->user()->name??'').", You have successfully paid a sum of ".($transaction_instance->amount??'')." as ".($trans->payment_purpose??'')." for ".($transaction_instance->year->name??'')." ST. LOUIS UNIVERSITY INSTITUTE.";
+                    $message = "Hello ".(auth('student')->user()->name??'').", You have successfully paid a sum of ".($transaction_instance->amount??'')." as ".($trans->payment_purpose??'')." for ".($transaction_instance->year->name??'')." BIAKA UNIVERSITY INSTITUTE.";
                     $this->sendSmsNotificaition($message, [auth('student')->user()->phone]);
                     
                     ($pending = \App\Models\PendingTranzakTransaction::where('request_id', $request->requestId)->first()) != null ? $pending->delete() : null;

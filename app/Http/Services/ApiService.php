@@ -73,11 +73,11 @@ class ApiService{
         return Http::get(Helpers::instance()->getApiRoot().'/'.config('api_routes.campus_degree_certificate_programs').'/'.$campus_id.'/'.$degree_id.'/'.$certificate_id)->body();
     }
 
-    public function programs()
+    public function programs($program_id = null)
     {
         # code...
         // dd([ Http::get(Helpers::instance()->getApiRoot().'/'.config('api_routes.programs'))->body(), Helpers::instance()->getApiRoot().'/'.config('api_routes.programs')]);
-        return Http::get(Helpers::instance()->getApiRoot().'/'.config('api_routes.programs'))->body();
+        return Http::get(Helpers::instance()->getApiRoot().'/'.config('api_routes.programs').'/'.$program_id)->body();
     }
 
 

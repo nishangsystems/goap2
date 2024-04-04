@@ -503,4 +503,52 @@ class HomeController  extends Controller
             return back()->with('success', __('text.word_done'));
         }
     }
+
+
+    public function bypass_platform_charge()
+    {
+        # code...
+        $data['title'] = "Bypass Platform Charges Payment";
+        return view('admin.student.bypass_platform', $data);
+    }
+    
+    public function bypass_platform_charge_save(Request $request)
+    {
+        # code...
+        if($request->student_id == null){
+            session()->flash('error', 'Student not specified');
+            return back()->withInput();
+        }
+        $year = \App\Helpers\Helpers::instance()->getCurrentAccademicYear();
+
+        $data = ['student_id'=>$request->student_id, 'year_id'=>$year, 'amount'=>0, 'financialTransactionId'=>'0', 'item_id'=>0, 'transaction_id'=>'0', 'used'=>1, 'type'=>'PLATFORM'];
+        $instance = new \App\Models\Charge($data);
+        $instance->save();
+        return back()->with('success', 'Done');
+    }
+
+    public function _search_student(Request $request)
+    {
+        # code...
+        $search_key = $request->key??'';
+        
+        return \App\Models\Students::where('name', 'LIKE', "%{$search_key}%")->orWhere('email', 'LIKE', "%{$search_key}%")->orWhere('phone', 'LIKE', "%{$search_key}%")->take(15)->get();
+    }
+
+    public function all_programs()
+    {
+        # code...
+        $data['title'] = "All programs";
+        $data['programs'] = collect(json_decode($this->api_service->programs())->data)->unique();
+        return view('admin.programs.index', $data);
+    }
+
+    public function set_admins($prog_id)
+    {
+        # code...
+        $program = collect(json_decode($this->api_service->programs($prog_id))->data);
+        $data['title'] = "Set Administrators For {$program['name']}";
+        $data['admins'] = null;
+        return view('admin.programs.set_admins', $data);
+    }
 }
