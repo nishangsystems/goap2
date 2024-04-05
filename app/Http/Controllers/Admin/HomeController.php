@@ -43,6 +43,7 @@ class HomeController  extends Controller
     {
         $raw =  $this->api_service->portal_fee_structure()['data']??[];
         $data = [];
+        // dd($raw);
         if($raw != null){
             $data = collect($raw)->sortBy('class_name')->groupBy('school')->groupBy('department')->groupBy('program');
         }
@@ -548,7 +549,31 @@ class HomeController  extends Controller
         # code...
         $program = collect(json_decode($this->api_service->programs($prog_id))->data);
         $data['title'] = "Set Administrators For {$program['name']}";
-        $data['admins'] = null;
+        $data['admins'] = \App\Models\ProgramAdmin::where(['program_id'=>$prog_id])->first();
         return view('admin.programs.set_admins', $data);
+    }
+
+    public function save_admins(Request $request, $prog_id)
+    {
+        //code...
+        $validity = Validator::make($request->all(), [
+            'chancellor'=>'required',
+            'pro_chancellor'=>'required',
+            'vice_chancellor'=>'required',
+            'registrar'=>'required'
+            ]
+        );
+        if ($validity->fails()) {
+            # code...
+            session()->flash('error', $validity->errors()->first());
+            return back()->withInput();
+        }
+
+        $data = collect($request->all())->filter(function($value, $key){return $key != '_token';})->toArray();
+        // dd($data);
+        \App\Models\ProgramAdmin::updateOrInsert(['program_id'=>$prog_id], $data);
+        
+        return back()->with('sucess', 'Done');
+        
     }
 }

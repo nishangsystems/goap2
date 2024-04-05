@@ -583,6 +583,14 @@ class HomeController extends Controller
             $department = $programs->where('id', $program->parent_id)->first()??null;
             $degree = collect(json_decode($this->api_service->degrees())->data)->where('id', $appl->degree_id)->first()??null;
             $config = Config::where('year_id', Helpers::instance()->getCurrentAccademicYear())->first();
+            $admins = \App\Models\ProgramAdmin::where(['program_id'=>$program->id??null])->first();
+            $fees = $this->api_service->class_portal_fee_structure($appl->program_first_choice, $appl->level)['data'];
+            dd($fees);
+            if ($admins == null) {
+                # code...
+                session()->flash('error', 'Administrators not yet set for this program');
+                return back()->withInput();
+            }
 
             $data['platform_links'] = [
                 'BONABERI'=>'https://bnb.stlouissystems.org',

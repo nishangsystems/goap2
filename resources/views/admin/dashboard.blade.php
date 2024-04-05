@@ -30,7 +30,7 @@ $user = \Auth()->user()
                     @foreach ($department as $program)
                         <tr class="border-y text-center">
                             <td colspan="5"> <span class="heading">{{ ($program->first()['program']) ?? '----' }}</span> </td>
-                            <td><a href="{{ route('admin.programs.set_admins', $program->program_id) }}" class="btn btn-xs btn-primary rounded">@lang('text.word_administrators')</a></td>
+                            <td><a href="{{ route('admin.programs.set_admins', $program->first()['program_id']) }}" class="btn btn-xs btn-primary rounded">@lang('text.word_administrators')</a></td>
                         </tr>
                         @foreach ($program as $class)
                             <tr>

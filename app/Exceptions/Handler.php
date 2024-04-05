@@ -49,7 +49,7 @@ class Handler extends ExceptionHandler
                 # code...
                 return redirect(route('admin.home'));
             }
-            return $e;
+            // return $e;
             session()->flash('error', "F::{$e->getFile()}, L::{$e->getLine()}, M::{$e->getMessage()}");
             return back()->withInput();
         });

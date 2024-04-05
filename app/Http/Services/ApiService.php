@@ -129,6 +129,11 @@ class ApiService{
 
     public function portal_fee_structure($year_id = null){
         // dd(Helpers::instance()->getApiRoot().'/degree/certificates/'.$degree_id);
-        return Http::get(Helpers::instance()->getApiRoot().'/portal_fee_structure'.$year_id)->collect();
+        return Http::get(Helpers::instance()->getApiRoot()."/portal_fee_structure/{$year_id}")->collect();
+    }
+
+    public function class_portal_fee_structure($program, $level, $year_id = null){
+        // dd(Helpers::instance()->getApiRoot().'/degree/certificates/'.$degree_id);
+        return Http::get(Helpers::instance()->getApiRoot()."/class_portal_fee_structure/{$program}/{$level}/{$year_id}")->collect();
     }
 }
