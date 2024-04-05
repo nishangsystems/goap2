@@ -41,19 +41,13 @@ class HomeController  extends Controller
 
     public function index()
     {
-        try {
-            //code...
-            $raw =  $this->api_service->portal_fee_structure()['data']??[];
-            $data = [];
-            if($raw != null){
-                $data = collect($raw)->sortBy('class_name')->groupBy('school')->groupBy('department')->groupBy('program');
-            }
-            $_data['data'] = $data;
-            return view('admin.dashboard', $_data);
-        } catch (\Throwable $th) {
-            //throw $th;
-            dd($th);
+        $raw =  $this->api_service->portal_fee_structure()['data']??[];
+        $data = [];
+        if($raw != null){
+            $data = collect($raw)->sortBy('class_name')->groupBy('school')->groupBy('department')->groupBy('program');
         }
+        $_data['data'] = $data;
+        return view('admin.dashboard', $_data);
 
     }
 
