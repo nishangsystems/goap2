@@ -585,7 +585,7 @@ class HomeController extends Controller
             $config = Config::where('year_id', Helpers::instance()->getCurrentAccademicYear())->first();
             $admins = \App\Models\ProgramAdmin::where(['program_id'=>$program->id??null])->first();
             $fees = $this->api_service->class_portal_fee_structure($appl->program_first_choice, $appl->level)['data'];
-            dd($fees);
+            // dd($fees);
             if ($admins == null) {
                 # code...
                 session()->flash('error', 'Administrators not yet set for this program');
