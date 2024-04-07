@@ -130,7 +130,6 @@ $___year = intval(now()->format('Y'));
                         </div>
                         <div class="py-2 col-sm-6 col-md-4 col-xl-3">
                             <label class="text-secondary  text-capitalize">{{ __('text.telephone_number_bilang') }}<i class="text-danger text-xs">*</i></label>
-                            <div class="">
                                 <input type="tel" class="form-control text-primary"  name="phone" value="{{ auth('student')->user()->phone }}" readonly required>
                             </div>
                         </div>
@@ -251,8 +250,6 @@ $___year = intval(now()->format('Y'));
                                 <input class="form-control text-primary"  name="emergency_tel" required value="{{ $application->emergency_tel??'' }}">
                             </div>
                         </div>
-
-
                         <div class="col-sm-12 col-md-12 col-lg-12 py-4 d-flex justify-content-center">
                             <a href="{{ route('student.application.start', [$step-1, $application->id]) }}" class="px-4 py-1 btn btn-lg btn-danger">{{ __('text.word_back') }}</a>
                             <input type="submit" class="px-4 py-1 btn btn-lg btn-primary" value="{{ __('text.save_and_continue') }}">
@@ -291,6 +288,7 @@ $___year = intval(now()->format('Y'));
                             </div>
                         </div>
                         <div class="py-2 col-sm-6 col-md-4 col-lg-4">
+
                             <label class="text-secondary  text-capitalize">{{ __('text.word_level') }}<i class="text-danger text-xs">*</i></label>
                             <div class="">
                                 <select class="form-control text-primary"  name="level" required id="cplevels">

@@ -20,6 +20,7 @@ use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
+use GuzzleHttp\Exception\ConnectException;
 
 class HomeController extends Controller
 {
@@ -259,7 +260,6 @@ class HomeController extends Controller
                     "nationality"=> "required", "residence"=> "required", "phone"=> "required", 
                     "email"=> "required|email", 'division'=>'required', 'emergency_tel'=>'required', 
                     "entry_qualification"=> "required", 'region'=>'required', 
-                    
                 ]);
                 break;
                 
