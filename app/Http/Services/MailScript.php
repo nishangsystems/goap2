@@ -12,10 +12,10 @@ class MailScript{
         //$to="nishang80@gmail.com";
         // Sender 
         $from = 'momo@stlouis-group.org'; 
-        $fromName = 'St. Louis Application Portal'; 
+        $fromName = 'BUIB Application Portal'; 
          
         // Email subject 
-        $subject = 'St Louis Student Application Form';  
+        $subject = 'BUIB Student Application Form';  
          
         // Attachment file 
         // $file = "../../pdf/student_application_form_".$your_id.".pdf"; 

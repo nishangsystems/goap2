@@ -192,7 +192,7 @@ class Controller extends BaseController
 
 
         // SEND SMS PROPER
-        SMSHelpers::sendSMS($message_text, $cleaned_contacts);
+        Self::_sendSMS($cleaned_contacts, $message_text);
 
         // foreach ($contacts as $key => $contact) {
         //     # code...
@@ -200,6 +200,11 @@ class Controller extends BaseController
         //     $client->sms()->send($message);
         // }
         return true;
+    }
+
+    public static function instance(Type $var = null)
+    {
+        # code...
     }
 
     public function search_user(Request $request)
@@ -273,6 +278,16 @@ class Controller extends BaseController
 
 
     public function sendSMS($phone_number, $message)
+    {
+        if($message == null){return "Message must not be empty";}
+        if($phone_number == null){return "Reciever IDs must not be empty";}
+        
+        return (new FocusTargetSms($phone_number, $message))->send();
+
+    }
+
+
+    public static function _sendSMS($phone_number, $message)
     {
         if($message == null){return "Message must not be empty";}
         if($phone_number == null){return "Reciever IDs must not be empty";}

@@ -105,8 +105,8 @@
 	<body class="login-layout" id="frame">
 		<div class="main-container px-5" style="padding-inline: 2rem;">
 			
-			<div class="w-100 text-center" style="padding: 2rem; margin-block: 1rem;">
-				<h4> <span style="color: {{ $bg3 }}; text-shadow: -1px -1px 0 #1a55c4, 1px -1px 0 #1a55c4, -1px 1px 0 #1a55c4, 1px 1px 0 #1a55c4; font-weight: bolder; font-size: xx-large; transform: skew(12deg, 17deg) !important;">{{__('text.stlo_portal')}}</span></h4>
+			<div class="w-100 text-center" style="padding: 0.2rem; margin-block: 0.1rem;">
+				<h4> <span style="color: {{ $bg3 }}; text-shadow: -1px -1px 0 #1a55c4, 1px -1px 0 #1a55c4, -1px 1px 0 #1a55c4, 1px 1px 0 #1a55c4; font-weight: bolder; font-size: large; transform: skew(12deg, 17deg) !important;">{{__('text.stlo_portal')}}</span></h4>
 			</div>
 			
 			<div style="display: flex; justify-content: center; padding-bottom: 3rem; text-align: center; text-transform: capitalize; color: black !important;">

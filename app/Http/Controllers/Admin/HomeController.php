@@ -26,14 +26,30 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use MongoDB\Driver\Session;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Http\Services\ApiService;
 
 use function PHPUnit\Framework\returnSelf;
 
 class HomeController  extends Controller
 {
+    var $api_service;
+    public function __construct(ApiService $api_service)
+    {
+        # code...
+        $this->api_service = $api_service;
+    }
+
     public function index()
     {
-        return view('admin.dashboard');
+        $raw =  $this->api_service->portal_fee_structure()['data']??[];
+        $data = [];
+        // dd($raw);
+        if($raw != null){
+            $data = collect($raw)->sortBy('class_name')->groupBy('school')->groupBy('department')->groupBy('program');
+        }
+        $_data['data'] = $data;
+        return view('admin.dashboard', $_data);
+
     }
 
     public function set_letter_head()
@@ -487,5 +503,77 @@ class HomeController  extends Controller
             $wage->delete();
             return back()->with('success', __('text.word_done'));
         }
+    }
+
+
+    public function bypass_platform_charge()
+    {
+        # code...
+        $data['title'] = "Bypass Platform Charges Payment";
+        return view('admin.student.bypass_platform', $data);
+    }
+    
+    public function bypass_platform_charge_save(Request $request)
+    {
+        # code...
+        if($request->student_id == null){
+            session()->flash('error', 'Student not specified');
+            return back()->withInput();
+        }
+        $year = \App\Helpers\Helpers::instance()->getCurrentAccademicYear();
+
+        $data = ['student_id'=>$request->student_id, 'year_id'=>$year, 'amount'=>0, 'financialTransactionId'=>'0', 'item_id'=>0, 'transaction_id'=>'0', 'used'=>1, 'type'=>'PLATFORM'];
+        $instance = new \App\Models\Charge($data);
+        $instance->save();
+        return back()->with('success', 'Done');
+    }
+
+    public function _search_student(Request $request)
+    {
+        # code...
+        $search_key = $request->key??'';
+        
+        return \App\Models\Students::where('name', 'LIKE', "%{$search_key}%")->orWhere('email', 'LIKE', "%{$search_key}%")->orWhere('phone', 'LIKE', "%{$search_key}%")->take(15)->get();
+    }
+
+    public function all_programs()
+    {
+        # code...
+        $data['title'] = "All programs";
+        $data['programs'] = collect(json_decode($this->api_service->programs())->data)->unique();
+        return view('admin.programs.index', $data);
+    }
+
+    public function set_admins($prog_id)
+    {
+        # code...
+        $program = collect(json_decode($this->api_service->programs($prog_id))->data);
+        $data['title'] = "Set Administrators For {$program['name']}";
+        $data['admins'] = \App\Models\ProgramAdmin::where(['program_id'=>$prog_id])->first();
+        return view('admin.programs.set_admins', $data);
+    }
+
+    public function save_admins(Request $request, $prog_id)
+    {
+        //code...
+        $validity = Validator::make($request->all(), [
+            'chancellor'=>'required',
+            'pro_chancellor'=>'required',
+            'vice_chancellor'=>'required',
+            'registrar'=>'required'
+            ]
+        );
+        if ($validity->fails()) {
+            # code...
+            session()->flash('error', $validity->errors()->first());
+            return back()->withInput();
+        }
+
+        $data = collect($request->all())->filter(function($value, $key){return $key != '_token';})->toArray();
+        // dd($data);
+        \App\Models\ProgramAdmin::updateOrInsert(['program_id'=>$prog_id], $data);
+        
+        return back()->with('sucess', 'Done');
+        
     }
 }

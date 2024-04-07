@@ -73,11 +73,11 @@ class ApiService{
         return Http::get(Helpers::instance()->getApiRoot().'/'.config('api_routes.campus_degree_certificate_programs').'/'.$campus_id.'/'.$degree_id.'/'.$certificate_id)->body();
     }
 
-    public function programs()
+    public function programs($program_id = null)
     {
         # code...
         // dd([ Http::get(Helpers::instance()->getApiRoot().'/'.config('api_routes.programs'))->body(), Helpers::instance()->getApiRoot().'/'.config('api_routes.programs')]);
-        return Http::get(Helpers::instance()->getApiRoot().'/'.config('api_routes.programs'))->body();
+        return Http::get(Helpers::instance()->getApiRoot().'/'.config('api_routes.programs').'/'.$program_id)->body();
     }
 
 
@@ -122,8 +122,18 @@ class ApiService{
         // dd(Helpers::instance()->getApiRoot().'/degree/certificates/'.$degree_id);
         return Http::get(Helpers::instance()->getApiRoot().'/degree/certificates/'.$degree_id)->body();
     }
-
+    
     public function set_degree_certificates($degree_id, array $certificate_ids){
         return Http::post(Helpers::instance()->getApiRoot().'/degree/certificates/'.$degree_id, ['certificates'=>$certificate_ids])->body();
+    }
+
+    public function portal_fee_structure($year_id = null){
+        // dd(Helpers::instance()->getApiRoot().'/degree/certificates/'.$degree_id);
+        return Http::get(Helpers::instance()->getApiRoot()."/portal_fee_structure/{$year_id}")->collect();
+    }
+
+    public function class_portal_fee_structure($program, $level, $year_id = null){
+        // dd(Helpers::instance()->getApiRoot().'/degree/certificates/'.$degree_id);
+        return Http::get(Helpers::instance()->getApiRoot()."/class_portal_fee_structure/{$program}/{$level}/{$year_id}")->collect();
     }
 }

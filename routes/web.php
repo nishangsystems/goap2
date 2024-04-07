@@ -195,11 +195,21 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
         Route::get('program/{program?}', [ProgramController::class, 'applicants_report_by_program'])->name('applicants.by_program');
         Route::get('finance/general', [ProgramController::class, 'finance_report_general'])->name('applicants.by_program');
     });
+    Route::get('platform_charge/bypass', [AdminHomeController::class, 'bypass_platform_charge'])->name('platform.bypass');
+    Route::post('platform_charge/bypass', [AdminHomeController::class, 'bypass_platform_charge_save']);
+    Route::get('search_student', [AdminHomeController::class, '_search_student'])->name('search_student');
+
+    Route::name('programs.')->prefix('programs')->group(function(){
+        Route::get('all', [AdminHomeController::class, 'all_programs'])->name('all');
+        Route::get('set_admins/{prog_id}', [AdminHomeController::class, 'set_admins'])->name('set_admins');
+        Route::post('set_admins/{prog_id}', [AdminHomeController::class, 'save_admins']);
+    });
 });
 
 
 Route::prefix('student')->name('student.')->middleware('isStudent')->middleware('plcharge')->group(function () {
-    Route::get('', 'Student\HomeController@index')->name('home');
+    // Route::get('', 'Student\HomeController@index')->name('home');
+    Route::get('', 'Student\HomeController@all_programs')->name('home');
     Route::get('edit_profile', 'Student\HomeController@edit_profile')->name('edit_profile');
     Route::post('update_profile', 'Student\HomeController@update_profile')->name('update_profile');
     Route::get('subject', 'Student\HomeController@subject')->name('subject');
@@ -264,17 +274,15 @@ Route::prefix('student')->name('student.')->middleware('isStudent')->middleware(
     });
     Route::get('reset_password', 'Controller@reset_password')->name('reset_password');
     Route::post('reset_password', 'Controller@reset_password_save')->name('reset_password');
-
-    Route::get('platform/pay', 'Student\HomeController@pay_platform_charges')->name('platform_charge.pay')->withoutMiddleware('plcharge');
-    Route::post('charges/pay', 'Student\HomeController@pay_charges_save')->name('charge.pay')->withoutMiddleware('isStudent')->withoutMiddleware('plcharge');
+    
+    
     Route::get('result/pay', 'Student\HomeController@pay_semester_results')->name('result.pay');
     Route::get('transcript/pay', 'Student\HomeController@pay_transcript_charges')->name('transcript.pay');
-
+    
     Route::get('online_payments/history', 'Student\HomeController@online_payment_history')->name('online.payments.history');
 
-    Route::get('student/tranzak/processing', [Student\HomeController::class, 'tranzak_payment_processing'])->name('tranzak.processing');
-
-
+    
+    
     // ONLINE APPLICATION PORTAL ROUTES
     Route::get('campus/degree/certs/programs/{campus_id}/{degree_id}/{cert_id}', [Controller::class, 'campusDegreeCertPrograms'])->name('campus.degree.cert.programs');
     Route::get('campus/program/levels/{campus_id}/{program_id}', [Controller::class, 'campusProgramLevels'])->name('campus.program.levels');
@@ -295,10 +303,12 @@ Route::prefix('student')->name('student.')->middleware('isStudent')->middleware(
     Route::get('application/payment/complete/{form_id}', [StudentHomeController::class, 'pending_complete'])->name('application.payment.complete');
     Route::post('application/payment/complete/{form_id}', [StudentHomeController::class, 'pending_complete']);
 });
-// Route::post('student/charges/pay', 'Student\HomeController@pay_charges_save')->name('student.charge.pay');
-Route::get('platform/pay', 'Student\HomeController@pay_platform_charges')->name('platform_charge.pay')->middleware('isStudent');
+Route::post('student/charges/pay', 'Student\HomeController@pay_charges_save')->name('student.charge.pay');
+Route::get('student/platform/pay', 'Student\HomeController@pay_platform_charges')->name('student.platform_charge.pay');
 Route::get('student/charges/complete_transaction/{ts_id}', 'Student\HomeController@complete_charges_transaction')->name('student.charges.complete');
 Route::get('student/charges/failed_transaction/{ts_id}', 'Student\HomeController@failed_charges_transaction')->name('student.charges.failed');
+Route::get('student/tranzak/processing', 'Student\HomeController@tranzak_payment_processing')->name('student.tranzak.processing');
+Route::post('student/tranzak/complete', 'Student\HomeController@tranzak_complete')->name('student.tranzak.complete');
 
 Route::get('section-children/{parent}', 'HomeController@children')->name('section-children');
 Route::get('section-subjects/{parent}', 'HomeController@subjects')->name('section-subjects');

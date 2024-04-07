@@ -10,7 +10,7 @@
             </tr></thead>
             <tbody>
                 @php($k = 1)
-                @php($programs = collect(json_decode($_this->api_service->programs())->data))
+                @php($programs = collect(json_decode($_this->api_service->programs())->data??[]))
                 @foreach ($applications->whereNotNull('degree_id') as $appl)
                     <tr class="border-bottom">
                         <td class="border-left border-right">{{ $k++ }}</td>

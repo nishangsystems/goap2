@@ -4,90 +4,52 @@
 $user = \Auth()->user()
 @endphp
 <div>
-    <div id="user-profile-1" class="user-profile row">
-        <div class=" col-md-6 center">
-            <div>
-                <span class="profile-picture">
-                    <img width="200px" height="" id="avatar" class="editable img-responsive" alt="Alex's Avatar" src="{{asset('assets/images/avatars/profile-pic.jpg')}}" />
-                </span>
-
-                <div class="space-4"></div>
-
-                <div class="width-80 label label-info label-xlg arrowed-in arrowed-in-right"  style="background-color: #e30000;">
-                    <div class="inline position-relative" style="background-color: #e30000;">
-                        <a href="#" class="user-title-label dropdown-toggle" data-toggle="dropdown" >
-                            <i class="ace-icon fa fa-circle light-green"></i>
-                            &nbsp
-                            <span class="white">{{$user->name}}</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="space-6"></div>
-
-            <div class="profile-contact-info"></div>
-
-            <div class="hr hr12 dotted"></div>
-
-            <div class="hr hr16 dotted"></div>
-        </div>
-
-
-        <div class="col-md-6">
-
-            <div class="space-12"></div>
-
-            <h3>
-                <b>{{$user->name}}</b>
-            </h3>
-
-
-            <div class="profile-user-info profile-user-info-striped">
-
-                <div class="profile-info-row">
-                    <div class="profile-info-name text-capitalize"> {{__('text.word_gender')}}</div>
-
-                    <div class="profile-info-value">
-                        <span class="editable" id="username"> {{$user->gender}}</span>
-                    </div>
-                </div>
-
-
-                <div class="profile-info-row">
-                    <div class="profile-info-name text-capitalize"> {{__('text.word_email')}}</div>
-
-                    <div class="profile-info-value">
-                        <span class="editable" id="username"> {{$user->email}}</span>
-                    </div>
-                </div>
-                <div class="profile-info-row">
-                    <div class="profile-info-name text-capitalize"> {{__('text.word_address')}}</div>
-
-                    <div class="profile-info-value">
-                        <span class="editable" id="username"> {{$user->address}}</span>
-                    </div>
-                </div>
-                <div class="profile-info-row">
-                    <div class="profile-info-name text-capitalize"> {{__('text.word_contact')}}</div>
-
-                    <div class="profile-info-value">
-                        <span class="editable" id="username"> {{$user->phone}}</span>
-                    </div>
-                </div>
-                <div class="profile-info-row">
-                    <div class="profile-info-name text-capitalize"> {{__('text.word_type')}}</div>
-
-                    <div class="profile-info-value">
-                        <span class="editable" id="username"> {{$user->type}}</span>
-                    </div>
-                </div>
-                <div class="profile-info-row">
-                    <div class="profile-info-name"></div>
-                </div>
-            </div>
-            <div class="space-20"></div>
-        </div>
-    </div>
+    <table class="table">
+        <thead class="text-capitalize">
+            <tr class="border-y">
+                <th colspan="6" class="text-center header">{{ $title ?? 'Fee Settings' }}</th>
+            </tr>
+            <tr class="border-y">
+                <th>#</th>
+                <th>@lang('text.word_class')</th>
+                <th>@lang('text.word_tution')</th>
+                <th>@lang('text.word_international')</th>
+                <th>@lang('text.first_instalment')</th>
+                <th>@lang('text.word_bank')</th>
+            </tr>
+        </thead>
+        <tbody>
+            @php
+                $counter = 1;
+            @endphp
+            
+            @foreach ($data as $school)
+                <tr class="border-y text-center"><td colspan="6"> <span class="heading"> SCHOOL OF {{ ($school->first()->first()->first()['school']) ?? '----' }}</span> </td></tr>
+                @foreach ($school as $department)
+                    <tr class="border-y text-center"><td colspan="6"> <span class="heading"> DEPARTMENT OF {{ ($department->first()->first()['department']) ?? '----' }}</span> </td></tr>
+                    @foreach ($department as $program)
+                        <tr class="border-y text-center">
+                            <td colspan="5"> <span class="heading">{{ ($program->first()['program']) ?? '----' }}</span> </td>
+                            <td><a href="{{ route('admin.programs.set_admins', $program->first()['program_id']) }}" class="btn btn-xs btn-primary rounded">@lang('text.word_administrators')</a></td>
+                        </tr>
+                        @foreach ($program as $class)
+                            <tr>
+                                <td class="border">{{ $counter++ }}</td>
+                                <td class="border">{{ $class['class_name'] }}</td>
+                                <td class="border">{{ $class['amount'] }}</td>
+                                <td class="border">{{ $class['international_amount'] }}</td>
+                                <td class="border">{{ $class['first_instalment'] }}</td>
+                                <td class="border">
+                                    <span> bank: {{ $class['bank_name'] }}</span><br>
+                                    <span> account name: {{ $class['bank_account_name'] }}</span><br>
+                                    <span> account number: {{ $class['bank_account_number'] }}</span>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endforeach
+                @endforeach
+            @endforeach
+        </tbody>
+    </table>
 </div>
 @endsection
