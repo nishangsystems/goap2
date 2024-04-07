@@ -549,7 +549,7 @@ class HomeController  extends Controller
         # code...
         $program = collect(json_decode($this->api_service->programs($prog_id))->data);
         $data['title'] = "Set Administrators For {$program['name']}";
-        $data['admins'] = \App\Models\ProgramAdmin::where(['program_id'=>$prog_id])->first();
+        $data['admins'] = \App\Models\ProgramAdmin::first();
         return view('admin.programs.set_admins', $data);
     }
 
@@ -571,8 +571,7 @@ class HomeController  extends Controller
 
         $data = collect($request->all())->filter(function($value, $key){return $key != '_token';})->toArray();
         // dd($data);
-        \App\Models\ProgramAdmin::updateOrInsert(['program_id'=>$prog_id], $data);
-        
+        \App\Models\ProgramAdmin::first()->update($data);
         return back()->with('sucess', 'Done');
         
     }

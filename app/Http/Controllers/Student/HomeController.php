@@ -630,6 +630,10 @@ class HomeController extends Controller
             $data['_program'] = $program;
             $data['matric_sn'] = substr($appl->matric, -3);
             $data['department'] = $department->name??'-------';
+            if($data['degree'] ==  null){
+                session()->flash('error', 'Program Degree Name not set');
+                return back()->withInput();
+            }
     
             return view('admin.student.admission_letter', $data);
             $pdf = Pdf::loadView('admin.student.admission_letter', $data);
