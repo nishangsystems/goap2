@@ -602,12 +602,7 @@ class HomeController extends Controller
             }
 
 
-            $data['platform_links'] = [
-                'BONABERI'=>'https://bnb.stlouissystems.org',
-                'BONAMOUSSADI'=>'https://bms.stlouissystems.org',
-                'YAOUNDE'=>'https://yde.stlouissystems.org',
-            ];
-
+            $data['platform_links'] = [];
            
 
             $data['title'] = "ADMISSION LETTER";

@@ -444,7 +444,7 @@ $___year = intval(now()->format('Y'));
                         
                         <div class="col-sm-12 col-md-12 col-lg-12 py-4 d-flex justify-content-center">
                             <input type="submit" class="px-4 py-1 btn btn-lg btn-primary" value="{{ __('text.word_save') }}">
-                            <button type="button" class="px-4 py-1 btn btn-lg btn-success" onclick="window.location=``"> {{ __('text.word_next') }}</button>
+                            <button type="button" class="px-4 py-1 btn btn-lg btn-success" onclick="window.location=`{{ route('student.application.start', [5, $application->id]) }}`"> {{ __('text.word_next') }}</button>
                         </div>
                     </div>
                 </form>

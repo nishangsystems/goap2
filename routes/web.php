@@ -177,8 +177,11 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
         Route::post('edit/{id?}', [ProgramController::class, 'update_application_form']);
         Route::get('admit/{id?}', [ProgramController::class, 'admit_application_form'])->name('admit');
         Route::post('admit/{id?}', [ProgramController::class, 'admit_student']);
+        Route::get('uncompleted/bypass/undo/{id?}', [ProgramController::class, 'undo_bypass_application_fee'])->name('bypass.undo');
+        Route::get('uncompleted/bypass/{id?}', [ProgramController::class, 'bypass_application_fee'])->name('bypass');
+        Route::post('uncompleted/bypass/{id?}', [ProgramController::class, 'bypass_application_fee_save']);
+        Route::get('bypass/report', [ProgramController::class, 'application_fee_bypass_report'])->name('bypass.report');
         Route::get('uncompleted/{id?}', [ProgramController::class, 'uncompleted_application_form'])->name('uncompleted');
-        Route::get('uncompleted/{id}/bypass', [ProgramController::class, 'bypass_application_form'])->name('bypass');
         Route::get('distant/{id?}', [ProgramController::class, 'distant_application_form'])->name('distant');
         Route::get('admission_letter/{id?}', [ProgramController::class, 'admission_letter'])->name('admission_letter');
         Route::get('program/change/{id?}', [ProgramController::class, 'application_form_change_program'])->name('change_program');
@@ -201,8 +204,8 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
 
     Route::name('programs.')->prefix('programs')->group(function(){
         Route::get('all', [AdminHomeController::class, 'all_programs'])->name('all');
-        Route::get('set_admins/{prog_id}', [AdminHomeController::class, 'set_admins'])->name('set_admins');
-        Route::post('set_admins/{prog_id}', [AdminHomeController::class, 'save_admins']);
+        Route::get('set_admins/{prog_id?}', [AdminHomeController::class, 'set_admins'])->name('set_admins');
+        Route::post('set_admins/{prog_id?}', [AdminHomeController::class, 'save_admins']);
     });
 });
 

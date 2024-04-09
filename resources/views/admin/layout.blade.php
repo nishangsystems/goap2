@@ -65,6 +65,8 @@
         }
         .nav li {
             display: block;
+            word-wrap: break-word;
+            min-height: fit-content;
             width: 100% !important;
         }
         .dropdown-toggle:after {
@@ -404,14 +406,14 @@
                         <b class="arrow"></b>
 
                         <ul class="submenu">
-                            <li>
+                            {{-- <li>
                                 <a href="{{route('admin.applications.by_degree')}}" class="text-capitalize">
                                     <i class="menu-icon fa fa-caret-right"></i>
                                     {{__('text.by_degree_type')}}
                                 </a>
 
                                 <b class="arrow"></b>
-                            </li>
+                            </li> --}}
                             <li>
                                 <a href="{{route('admin.applications.by_program')}}" class="text-capitalize">
                                     <i class="menu-icon fa fa-caret-right"></i>
@@ -420,14 +422,14 @@
 
                                 <b class="arrow"></b>
                             </li>
-                            <li>
+                            {{-- <li>
                                 <a href="{{route('admin.applications.by_campus')}}" class="text-capitalize">
                                     <i class="menu-icon fa fa-caret-right"></i>
                                     {{__('text.by_campus')}}
                                 </a>
 
                                 <b class="arrow"></b>
-                            </li>
+                            </li> --}}
                         </ul>
                     </li>
                 </ul>
@@ -452,6 +454,14 @@
                                 <b class="arrow"></b>
                             </li>
                         </ul>
+                    </li>
+                    <li>
+                        <a href="{{route('admin.applications.bypass.report')}}" class="text-capitalize">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            {{__('text.bypass_report')}}
+                        </a>
+
+                        <b class="arrow"></b>
                     </li>
                 </ul>
             </li>
@@ -532,9 +542,18 @@
         
             
             <li>
+                <a href="{{route('admin.applications.bypass')}}" class="text-capitalize">
+                    <i  style="color: {{$bg1}};" class="fa fa-dollar menu-icon"></i>
+                    {{__('text.application_bypass')}}
+                </a>
+                <b class="arrow"></b>
+            </li>
+        
+            
+            <li>
                 <a href="{{route('admin.platform.bypass')}}" class="text-capitalize">
-                    <i  style="color: {{$bg1}};" class="fa fa-carret menu-icon"></i>
-                    {{__('text.bypass_platform_charges')}}
+                    <i  style="color: {{$bg1}};" class="fa fa-dollar menu-icon"></i>
+                    {{__('text.platform_bypass')}}
                 </a>
                 <b class="arrow"></b>
             </li>

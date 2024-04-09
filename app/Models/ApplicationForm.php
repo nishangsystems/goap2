@@ -12,11 +12,16 @@ class ApplicationForm extends Model
     protected $nullables = [];
     protected $connection = 'mysql2';
     protected $fillable = [
-        'student_id', 'year_id', 'gender', 'name', 'dob', 'pob', 'nationality', 'region', 'division', 'residence', 'phone', 'email',
-        'program_first_choice', 'program_second_choice', 'special_needs', 'ol_results', 'al_results', 'id_number', 'father_name', 
-        'father_address', 'father_tel', 'mother_name', 'mother_address', 'mother_tel', 'guardian_name', 'guardian_address', 'guardian_tel',
-        'matric', 'candidate_declaration', 'parent_declaration', 'campus_id', 'degree_id', 'transaction_id', 'admitted',
-        'emergency_name', 'emergency_address', 'emergency_tel', 'previous_training', 'level', 'marital_status'
+        'student_id', 'year_id', 'gender', 'name', 'dob', 'pob', 
+        'nationality', 'region', 'division', 'residence', 'phone', 
+        'email', 'program_first_choice', 'program_second_choice', 
+        'special_needs', 'ol_results', 'al_results', 'id_number', 
+        'father_name', 'father_address', 'father_tel', 'mother_name', 
+        'mother_address', 'mother_tel', 'guardian_name', 'guardian_address', 
+        'guardian_tel', 'matric', 'candidate_declaration', 'parent_declaration', 
+        'campus_id', 'degree_id', 'transaction_id', 'admitted',
+        'emergency_name', 'emergency_address', 'emergency_tel', 
+        'previous_training', 'level', 'marital_status', 'bypass_reason'
     ];
 
     public function student()

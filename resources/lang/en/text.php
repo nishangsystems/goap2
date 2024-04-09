@@ -1063,5 +1063,9 @@ return [
     'word_bank'=>'bank',
     'bypass_platform_charges'=>'bypass platform charges',
     'word_administrators'=>'administrators',
+    'bypass_application_fee'=>'bypass application fee',
+    'application_bypass'=>'application bypass',
+    'platform_bypass'=>'platform bypass',
+    'bypass_report'=>'bypass report',
     ''
 ]; 

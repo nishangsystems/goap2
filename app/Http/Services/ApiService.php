@@ -136,4 +136,11 @@ class ApiService{
         // dd(Helpers::instance()->getApiRoot().'/degree/certificates/'.$degree_id);
         return Http::get(Helpers::instance()->getApiRoot()."/class_portal_fee_structure/{$program}/{$level}/{$year_id}")->collect();
     }
+
+    public function school_program_structure()
+    {
+        # code...
+        return Http::get(Helpers::instance()->getApiRoot()."/school_program_structure")->collect();
+
+    }
 }

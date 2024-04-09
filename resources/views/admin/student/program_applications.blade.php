@@ -1,56 +1,55 @@
 @extends('admin.layout')
 @section('section')
-    <div class="py-3">
-        @if(isset($programs))
-            <table class="table">
-                <thead class="text-uppercase border-bottom">
-                    <th class="border-left border-right">{{ __('text.sn') }}</th>
-                    <th class="border-left border-right">{{ __('text.word_programs') }}</th>
-                    <th class="border-left border-right">{{ __('text.word_count') }}</th>
-                    <th class="border-left border-right"></th>
-                </thead>
-                <tbody>
-                    @php($k = 1)
-                    @foreach ($programs as $prog)
-                        <tr class="border-bottom">
-                            <td class="border-left border-right">{{ $k++ }}</td>
-                            <td class="border-left border-right">{{ $prog->name }}</td>
-                            @if ($campus_id != null)
-                                <td class="border-left border-right">{{ \App\Models\ApplicationForm::where('program_first_choice', $prog->id)->whereNotNull('transaction_id')->where('campus_id', $campus_id)->count() }}</td>
-                            @else
-                                <td class="border-left border-right">{{ \App\Models\ApplicationForm::where('program_first_choice', $prog->id)->whereNotNull('transaction_id')->count() }}</td>
-                            @endif
-                            <td class="border-left border-right"><a class="btn btn-sm btn-primary text-capitalize" href="{{ route('admin.applications.by_program', ['id'=>$prog->id]) }}">{{ __('text.word_all') }}</a></td>
+@php
+$user = \Auth()->user()
+@endphp
+<div>
+    <table class="table border">
+        <thead class="text-capitalize">
+            <tr class="border-y">
+                <th colspan="3" class="text-center header">{{ $title ?? '' }}</th>
+            </tr>
+            <tr class="border-y">
+                <th>#</th>
+                <th>@lang('text.word_program')</th>
+                <th>@lang('text.word_totals')</th>
+                {{-- <th>@lang('text.word_international')</th>
+                <th>@lang('text.first_instalment')</th>
+                <th>@lang('text.word_bank')</th> --}}
+            </tr>
+        </thead>
+        <tbody>
+            @php
+                $counter = 1;
+            @endphp
+            <tr class="border-y text-center"><td colspan="3"><b class="heading text-capitalize">@lang('text.total_applicants'): {{ collect($totals)->sum('applicants') }}</b></td></tr>
+            @foreach ($totals as $_sc => $school)
+                <tr class="border-y text-center"><td colspan="3"> <b class="header text-capitalize"> SCHOOL OF {{ $_sc ?? '----' }} :: @lang('text.word_applicants') : {{ $school['applicants'] }}</b> </td></tr>
+                @foreach ($school['depts'] as $_dp => $department)
+                    <tr class="border-y text-center"><td colspan="3"> <span class="heading text-capitalize"> DEPARTMENT OF {{ $_dp ?? '----' }} :: @lang('text.word_applicants') : {{ $department['applicants'] }}</span> </td></tr>
+                    @foreach ($department['progs'] as $_pg => $program)
+                        <tr class="border-y text-center">
+                            <td class="border">{{ $counter++ }}</td>
+                            <td class="border">{{ $program[0]['program'] ?? '----' }}</td>
+                            <td class="border">@lang('text.word_applicants') : {{ $program['applicants'] }} </td>
                         </tr>
+                        {{-- @foreach ($program as $class)
+                            <tr>
+                                <td class="border">{{ $class['class_name'] }}</td>
+                                <td class="border">{{ $class['amount'] }}</td>
+                                <td class="border">{{ $class['international_amount'] }}</td>
+                                <td class="border">{{ $class['first_instalment'] }}</td>
+                                <td class="border">
+                                    <span> bank: {{ $class['bank_name'] }}</span><br>
+                                    <span> account name: {{ $class['bank_account_name'] }}</span><br>
+                                    <span> account number: {{ $class['bank_account_number'] }}</span>
+                                </td>
+                            </tr>
+                        @endforeach --}}
                     @endforeach
-                </tbody>
-            </table>
-        @else
-            <table class="border-left border-right table-stripped table">
-                <thead class="text-capitalize border-bottom">
-                    <th class="border-left border-right">{{ __('text.sn') }}</th>
-                    <th class="border-left border-right">{{ __('text.full_name') }}</th>
-                    <th class="border-left border-right">{{ __('text.word_tel') }}</th>
-                    <th class="border-left border-right">{{ __('text.word_email') }}</th>
-                    <th class="border-left border-right">{{ __('text.first_choice') }}</th>
-                    <th class="border-left border-right">{{ __('text.second_choice') }}</th>
-                    <th class="border-left border-right">{{ __('text.date_applied') }}</th>
-                </thead>
-                <tbody>
-                    @php($k = 1)
-                    @foreach ($appls as $appl)
-                        <tr class="border-bottom">
-                            <td class="border-left border-right">{{ $k++ }}</td>
-                            <td class="border-left border-right">{{ $appl->name }}</td>
-                            <td class="border-left border-right">{{ $appl->phone }}</td>
-                            <td class="border-left border-right">{{ $appl->email }}</td>
-                            <td class="border-left border-right">{{ $progs->where('id', $appl->program_first_choice)->first()->name }}</td>
-                            <td class="border-left border-right">{{ $progs->where('id', $appl->program_second_choice)->first()->name }}</td>
-                            <td class="border-left border-right">{{ $appl->transaction->created_at }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        @endif
-    </div>
+                @endforeach
+            @endforeach
+        </tbody>
+    </table>
+</div>
 @endsection

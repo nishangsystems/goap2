@@ -4,6 +4,9 @@
 $user = \Auth()->user()
 @endphp
 <div>
+    <div class="d-flex justify-content-end py-3">
+        <a href="{{ route('admin.programs.set_admins') }}" class="btn btn-xs btn-primary rounded">@lang('text.word_administrators')</a>
+    </div>
     <table class="table">
         <thead class="text-capitalize">
             <tr class="border-y">
@@ -30,7 +33,7 @@ $user = \Auth()->user()
                     @foreach ($department as $program)
                         <tr class="border-y text-center">
                             <td colspan="5"> <span class="heading">{{ ($program->first()['program']) ?? '----' }}</span> </td>
-                            <td><a href="{{ route('admin.programs.set_admins', $program->first()['program_id']) }}" class="btn btn-xs btn-primary rounded">@lang('text.word_administrators')</a></td>
+                            <td></td>
                         </tr>
                         @foreach ($program as $class)
                             <tr>

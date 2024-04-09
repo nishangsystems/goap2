@@ -20,6 +20,7 @@ use App\Models\StudentClass;
 use App\Models\Students;
 use App\Models\Subjects;
 use App\Models\Transaction;
+use App\Models\TranzakTransaction;
 use App\Session;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
@@ -1429,40 +1430,76 @@ class ProgramController extends Controller
         }
     }
 
-    public function bypass_application_form(Request $request, $id)
+
+    public function bypass_application_fee($application_id = null)
+    {
+        # code...
+        $data['title'] = __('text.bypass_application_fee');
+        $data['_this'] = $this;
+        $data['applications'] = ApplicationForm::whereNull('transaction_id')->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
+        if($application_id != null){
+            $data['application'] = ApplicationForm::find($application_id);
+        }
+        return view('admin.student.bypass_application_fee', $data);
+    }
+
+
+    public function application_fee_bypass_report()
+    {
+        # code...
+        $data['title'] = "Application Fee Bypass Report";
+        $data['_this'] = $this;
+        $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->whereNotNull('bypass_reason')->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
+        // dd($data);
+        return view('admin.student.application_bypass_report', $data);
+    }
+
+
+    public function bypass_application_fee_save(Request $request, $id)
     {
         # code...
         // create a relatively null transaction for the student
+
+        if(!($request->has('bypass_reason'))){
+            session()->flash('error', 'Bypass reason required');
+            return back()->withInput();
+        }
+
         $data = ['request_id'=>auth()->id(), 'amount'=>0, 'currency_code'=>'_____', 'purpose'=>'_____', 'mobile_wallet_number'=>'_______', 'transaction_ref'=>'_______', 'app_id'=>'_______', 'transaction_id'=>'_________', 'transaction_time'=>now()->toDateTimeString(), 'payment_method'=>'______', 'payer_user_id'=>'_________', 'payer_name'=>'_________', 'payer_account_id'=>'________', 'merchant_fee'=>0, 'merchant_account_id'=>'___________', 'net_amount_recieved'=>0];
         $transaction = new Transaction($data);
         $transaction->save();
 
         $application = ApplicationForm::find($id);
-        $application->update(['transaction_id'=>$transaction->id]);
+        $application->update(['transaction_id'=>$transaction->id, 'bypass_reason'=>$request->bypass_reason]);
         return redirect(route('admin.applications.uncompleted'))->with('success', __('text.word_done'));
     }
 
     public function applications_per_program(Request $request, $program_id = null)
     {
         # code...
-        $campus_id = auth()->user()->campus_id;
-        if($program_id == null){
-            // select program
-            $data['title'] = "Select Program";
-            $data['campus_id'] = $campus_id;
-            $data['programs'] = json_decode($this->api_service->programs())->data??[];
-            return view('admin.student.program_applications', $data);
-        }else{
-            $progs = collect(json_decode($this->api_service->programs())->data);
-            $data['title'] = $progs->where('id', $program_id)->first()->name." Applications";
-            $data['progs'] = $progs;
-            if($campus_id != null){
-                $data['appls'] = ApplicationForm::where('program_first_choice', $program_id)->whereNotNull('transaction_id')->where('campus_id', $campus_id)->get();
-            }else{
-                $data['appls'] = ApplicationForm::where('program_first_choice', $program_id)->whereNotNull('transaction_id')->get();
-            }
-            return view('admin.student.program_applications', $data);
-        }
+        $progs = $this->api_service->school_program_structure()['data'];
+        $data['title'] = "Applications Statistics";
+        $data['progs'] = $progs;
+        $data['totals'] = collect($progs)->groupBy('school')->map(function($sch, $key){
+            // dd($key);
+            $program_ids = collect($sch)->pluck('program_id')->toArray();
+            $dt['applicants'] = ApplicationForm::whereIn('program_first_choice', $program_ids)->whereNotNull('transaction_id')->count();
+            $dt['depts'] = $sch->groupBy('department')->map(function($dept, $p_key){
+                $d_program_ids = $dept->pluck('program_id')->toArray();
+                // dd($dept);
+                $dt['applicants'] = ApplicationForm::whereIn('program_first_choice', $d_program_ids)->whereNotNull('transaction_id')->count();
+                $dt['progs'] = $dept->groupBy('program')->map(function($prog, $p_key){
+                    $d_program_ids = $prog->pluck('program_id')->toArray();
+                    // dd($prog);
+                    $prog['applicants'] = ApplicationForm::whereIn('program_first_choice', $d_program_ids)->whereNotNull('transaction_id')->count();
+                    return $prog->toArray();
+                });
+                return $dt;
+            });
+            return $dt;
+        });
+        // dd($data);
+        return view('admin.student.program_applications', $data);
     }
 
     public function applications_per_degree(Request $request, $degree_id = null)
@@ -1556,6 +1593,20 @@ class ProgramController extends Controller
         }
     }
 
-    
+    public function undo_bypass_application_fee($application_id)
+    {
+        # code...
+        $appl = ApplicationForm::find($application_id);
+        if($appl != null){
+            $transaction = TranzakTransaction::find($appl->transaction_id);
+            if($transaction != null)
+                $transaction->delete();
+            
+            $appl->update(['transaction_id'=>null, 'bypass_reason'=>null]);
+            return back()->with('success', 'Done');
+        }
+        session()->flash('error', 'Transaction not found.');
+        return back()->withInput();
+    }
 
 }
