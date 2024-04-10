@@ -43,7 +43,7 @@ class HomeController  extends Controller
     {
         $raw =  $this->api_service->portal_fee_structure()['data']??[];
         $data = [];
-        dd($raw);
+        // dd($raw);
         if($raw != null){
             $data = collect($raw)->sortBy('class_name')->groupBy('school')->groupBy('department')->groupBy('program');
         }
