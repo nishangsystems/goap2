@@ -601,10 +601,12 @@ class HomeController extends Controller
                 return back()->withInput();
             }
 
+            // dd($fees);
 
             $data['platform_links'] = [];
            
-
+            $data['year'] = substr($appl->year->name, -4);
+            // dd($data);
             $data['title'] = "ADMISSION LETTER";
             $data['name'] = $appl->name;
             $data['matric'] =  $appl->matric;
@@ -625,6 +627,8 @@ class HomeController extends Controller
             $data['_program'] = $program;
             $data['matric_sn'] = substr($appl->matric, -3);
             $data['department'] = $department->name??'-------';
+            $data['fee'] = $fees[0]??$fees;
+            // dd($program);
             if($data['degree'] ==  null){
                 session()->flash('error', 'Program Degree Name not set');
                 return back()->withInput();

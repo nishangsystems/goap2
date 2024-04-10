@@ -1,6 +1,9 @@
 @extends('student.layout')
 @php
 $___year = intval(now()->format('Y'));
+$ol_key = time().random_int(1000, 1099);
+$al_key = time().random_int(2000, 2099);
+$em_key = time().random_int(3000, 3099);
 @endphp
 @section('section')
     <div class="py-4">
@@ -133,23 +136,10 @@ $___year = intval(now()->format('Y'));
                                 <input type="tel" class="form-control text-primary"  name="phone" value="{{ auth('student')->user()->phone }}" readonly required>
                             </div>
                         </div>
-                        <div class="py-2 col-sm-6 col-md-4 col-xl-4">
-                            <label class="text-secondary  text-capitalize">{{ __('text.word_email_bilang') }}<i class="text-danger text-xs">*</i></label>
-                            <div class="">
-                                <input type="email" class="form-control text-primary"  name="email" value="{{ auth('student')->user()->email }}" required readonly>
-                            </div>
-                        </div>
-                        <div class="py-2 col-sm-6 col-md-4 col-lg-3 col-xl-2">
-                            <label class="text-secondary  text-capitalize">{{ __('text.word_campus') }}</label>
-                            <div class="">
-                                <select class="form-control text-primary"  name="campus_id" required>
-                                    <option value=""></option>
-                                    @foreach($campuses as $campus)
-                                        <option value="{{ $campus->id }}" {{ $application->campus_id== $campus->id ? 'selected' : '' }}>{{ $campus->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
+                        
+                        <input type="hidden"  name="email" value="{{ auth('student')->user()->email }}">
+                        
+                        <input type="hidden" name="campus_id" value="{{ $application->campus_id }}">
                         <div class="py-2 col-sm-6 col-md-4 col-lg-4 col-xl-2">
                             <label class="text-secondary  text-capitalize">{{ __('text.entry_qualification') }}<i class="text-danger text-xs">*</i></label>
                             <div class="">
@@ -383,13 +373,13 @@ $___year = intval(now()->format('Y'));
                                                         <div class="col-sm-6 col-md-4">
                                                             <div class="row border rounded mx-1 my-1">
                                                                 <div class="col-md-6 col-lg-6 text-capitalize bg-secondary text-white">@lang('text.center_no')<i class="text-danger text-xs">*</i>:</div>
-                                                                <div class="col-md-6 col-lg-6"><input type="text" name="ol_center_number" class="form-control rounded border-0" placeholder="center number" value="{{ old('al_center_number', $application->al_center_number) }}"></div>
+                                                                <div class="col-md-6 col-lg-6"><input type="text" name="ol_center_number" class="form-control rounded border-0" placeholder="center number" value="{{ old('ol_center_number', $application->ol_center_number) }}"></div>
                                                             </div>
                                                         </div class="col-sm-6 col-md-4">
                                                         <div class="col-sm-6 col-md-4">
                                                             <div class="row border rounded mx-1 my-1">
                                                                 <div class="col-md-6 col-lg-6 text-capitalize bg-secondary text-white">@lang('text.candidate_no')<i class="text-danger text-xs">*</i>:</div>
-                                                                <div class="col-md-6 col-lg-6"><input type="text" name="ol_candidate_number" class="form-control rounded border-0" placeholder="candidate number" value="{{ old('al_candidate_number', $application->al_candidate_number) }}"></div>
+                                                                <div class="col-md-6 col-lg-6"><input type="text" name="ol_candidate_number" class="form-control rounded border-0" placeholder="candidate number" value="{{ old('ol_candidate_number', $application->ol_candidate_number) }}"></div>
                                                             </div>
                                                         </div class="col-sm-6 col-md-4">
                                                         <div class="col-sm-6 col-md-4">
@@ -402,7 +392,7 @@ $___year = intval(now()->format('Y'));
                                                                     <select name="ol_year" class="form-control rounded border-0">
                                                                         <option value=""></option>
                                                                         @for($i = $__y; $i > $__y - 100; $i--)
-                                                                            <option value="{{ $i }}" {{ old('ol_year', $application->ol_year == $i ? 'selected' : '') }}>{{ $i }}</option>
+                                                                            <option value="{{ $i }}" {{ old('ol_year', $application->ol_year) == $i ? 'selected' : '' }}>{{ $i }}</option>
                                                                         @endfor
                                                                     </select>
                                                                 </div>
@@ -416,11 +406,14 @@ $___year = intval(now()->format('Y'));
                                                 <th></th>
                                         </thead>
                                         <tbody id="ol_results">
-                                            @foreach (json_decode($application->ol_results)??[] as $key=>$result)
+                                            @foreach (json_decode($application->ol_results)??[] as $result)
+                                                @php
+                                                    $ol_key++;
+                                                @endphp
                                                 <tr class="text-capitalize">
-                                                    <td><input class="form-control text-primary"  name="ol_results[$key][subject]" required value="{{ $result->subject }}"></td>
+                                                    <td><input class="form-control text-primary"  name="ol_results[{{ $ol_key }}][subject]" required value="{{ $result->subject }}"></td>
                                                     <td>
-                                                        <select class="form-control text-primary input imput-sm"  name="ol_results[$key][grade]" required value="{{ $result->grade }}">
+                                                        <select class="form-control text-primary input imput-sm"  name="ol_results[{{ $ol_key }}][grade]" required value="{{ $result->grade }}">
                                                             <option value=""></option>
                                                             <option value="A" {{ $result->grade == 'A' ? 'selected' : '' }}>A</option>
                                                             <option value="B" {{ $result->grade == 'B' ? 'selected' : '' }}>B</option>
@@ -489,7 +482,7 @@ $___year = intval(now()->format('Y'));
                                                                     <select name="al_year" class="form-control rounded border-0">
                                                                         <option value=""></option>
                                                                         @for($i = $__y; $i > $__y - 100; $i--)
-                                                                            <option value="{{ $i }}" {{ old('ol_year', $application->ol_year == $i ? 'selected' : '') }}>{{ $i }}</option>
+                                                                            <option value="{{ $i }}" {{ old('al_year', $application->al_year) == $i ? 'selected' : '' }}>{{ $i }}</option>
                                                                         @endfor
                                                                     </select>
                                                                 </div>
@@ -503,19 +496,22 @@ $___year = intval(now()->format('Y'));
                                                 <th></th>
                                         </thead>
                                         <tbody id="al_results">
-                                            @foreach (json_decode($application->al_results)??[] as $key=>$result)
+                                            @foreach (json_decode($application->al_results)??[] as $_result)
+                                                @php
+                                                    $al_key++;
+                                                @endphp
                                                 <tr class="text-capitalize">
-                                                    <td><input class="form-control text-primary"  name="al_results[$key][subject]" required value="{{ $result->subject }}"></td>
+                                                    <td><input class="form-control text-primary"  name="al_results[{{ $al_key }}][subject]" required value="{{ $_result->subject }}"></td>
                                                     <td>
-                                                        <select class="form-control text-primary"  name="al_results[$key][grade]" required value="{{ $result->grade }}">
+                                                        <select class="form-control text-primary"  name="al_results[{{ $al_key++ }}][grade]" required>
                                                             <option value=""></option>
-                                                            <option value="A" {{ $result->grade == 'A' ? 'selected' : '' }}>A</option>
-                                                            <option value="B" {{ $result->grade == 'B' ? 'selected' : '' }}>B</option>
-                                                            <option value="C" {{ $result->grade == 'C' ? 'selected' : '' }}>C</option>
-                                                            <option value="D" {{ $result->grade == 'D' ? 'selected' : '' }}>D</option>
-                                                            <option value="E" {{ $result->grade == 'E' ? 'selected' : '' }}>E</option>
-                                                            <option value="F" {{ $result->grade == 'F' ? 'selected' : '' }}>F</option>
-                                                            <option value="U" {{ $result->grade == 'U' ? 'selected' : '' }}>U</option>
+                                                            <option value="A" {{ $_result->grade == 'A' ? 'selected' : '' }}>A</option>
+                                                            <option value="B" {{ $_result->grade == 'B' ? 'selected' : '' }}>B</option>
+                                                            <option value="C" {{ $_result->grade == 'C' ? 'selected' : '' }}>C</option>
+                                                            <option value="D" {{ $_result->grade == 'D' ? 'selected' : '' }}>D</option>
+                                                            <option value="E" {{ $_result->grade == 'E' ? 'selected' : '' }}>E</option>
+                                                            <option value="F" {{ $_result->grade == 'F' ? 'selected' : '' }}>F</option>
+                                                            <option value="U" {{ $_result->grade == 'U' ? 'selected' : '' }}>U</option>
                                                         </select>
                                                     </td>
                                                     <td><span class="btn btn-sm px-4 py-1 btn-danger rounded" onclick="dropAlResult(event)">{{ __('text.word_drop') }}</span></td>
@@ -828,7 +824,7 @@ $___year = intval(now()->format('Y'));
         }
         // Add and drop previous trainings form table rows
         let addAlResult = function(){
-            let key = `_key_${ Date.now() }_${ Math.random()*1000000 }`;
+            let key = '_key_'+Date.now()+'_'+Math.random()*10000;
             let html = `<tr class="text-capitalize">
                             <td><input class="form-control text-primary"  name="al_results[${key}][subject]" required value="" placeholder="SUBJECT"></td>
                             <td>
@@ -841,7 +837,7 @@ $___year = intval(now()->format('Y'));
                                     <option value="E">E</option>
                                 </select>
                             </td>
-                            <td><span class="btn btn-sm px-4 py-1 btn-danger rounded fa fa-trash" onclick="dropAlResult(event)">{{ __('text.word_drop') }}</span></td>
+                            <td><span class="btn btn-sm px-4 py-1 btn-danger rounded" onclick="dropAlResult(event)">{{ __('text.word_drop') }}</span></td>
                         </tr>`;
             $('#al_results').append(html);
         } 
@@ -855,7 +851,7 @@ $___year = intval(now()->format('Y'));
         }
         // Add and drop employment form table rows
         let addOlResult = function(){
-            let key = `_key_${ Date.now() }_${ Math.random()*1000000 }`;
+            let key = '_key_'+Date.now()+'_'+Math.random()*10000;
             let html = `<tr class="text-capitalize">
                             <td><input class="form-control text-primary"  name="ol_results[${key}][subject]" required value="" placeholder="SUBJECT"></td>
                             <td>
@@ -866,7 +862,7 @@ $___year = intval(now()->format('Y'));
                                     <option value="C">C</option>
                                 </select>
                             </td>
-                            <td><span class="btn btn-sm px-4 py-1 btn-danger rounded fa fa-trash" onclick="dropOlResult(event)">{{ __('text.word_drop') }}</span></td>
+                            <td><span class="btn btn-sm px-4 py-1 btn-danger rounded" onclick="dropOlResult(event)">{{ __('text.word_drop') }}</span></td>
                         </tr>`;
             $('#ol_results').append(html);
         } 
@@ -880,7 +876,7 @@ $___year = intval(now()->format('Y'));
         }
         // Add and drop employment form table rows
         let addTraining = function(){
-            let key = `_key_${ Date.now() }_${ Math.random()*1000000 }`;
+            let key = '_key_'+Date.now()+'_'+Math.random()*10000;
             let html = `<tr class="text-capitalize">
                             <td class="border"><input class="form-control text-primary"  name="previous_training[school][${key}]" required value="" placeholder="SCHOOL"></td>
                             <td class="border"><select class="form-control text-primary"  name="previous_training[year][${key}]" required>

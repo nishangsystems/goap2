@@ -1008,6 +1008,7 @@ return [
     'degree_slash_diploma_study_choice'=>'degree / diploma study choice',
     'inst_tapplication_form'=>'BUIB :degree application form',
     'word_nationality'=>'nationality',
+    'word_nationality_bilang'=>'nationality',
     'previous_higher_education_training'=>'previous higher education training',
     'marital_status'=>'marital status',
     'printed_date'=>'printed date',
@@ -1067,5 +1068,8 @@ return [
     'application_bypass'=>'application bypass',
     'platform_bypass'=>'platform bypass',
     'bypass_report'=>'bypass report',
+    'emergency_address'=>'emergency address',
+    'emergency_name'=>'emergency name',
+    'emergency_tel'=>'emergency tel',
     ''
 ]; 

@@ -54,20 +54,20 @@
                     <b>@lang('text.offer_of_admission')</b>
                 </div>
                 <div class="my-3 py-2">
-                    <span>@lang('text.admission_letter_text_block1', ['degree'=>$degree, 'department'=>$department])</span>
+                    <span>@lang('text.admission_letter_text_block1', ['degree'=>$degree??'DEG', 'department'=>$fee['department']??'DEP', 'year'->$year??'NO-YEAR', 'tution_fee'=>$fee['amount']??'FEE', 'first_installment'=>$fee['first_installment']??'1INST', 'reg_fee'=>$fee['registration']??'RG.FEE', 'fee_total'=>($fee['amount']+$fee['registration']??0)])</span>
                 </div>
                 <div class="my-3 py-2">
                     <span>@lang('text.the_tution_fee_amount_should_be_paid_at'):</span><br>
                     <ul style="list-style-type: disc; margin-left:2rem; padding-left:2rem;">
-                        <li><span class="text-capitalize">@lang('text.bank_name'):</span> <b class="text-uppercase">{{ $bank_name??'' }}</b></li>
-                        <li><span class="text-capitalize">@lang('text.account_name'):</span> <b class="text-uppercase">{{ $bank_account_name??'' }}</b></li>
-                        <li><span class="text-capitalize">@lang('text.account_number'):</span> <b class="text-uppercase">{{ $bank_account_number??'' }}</b></li>
+                        <li><span class="text-capitalize">@lang('text.bank_name'):</span> <b class="text-uppercase">{{ $fee->bank_name??'----' }}</b></li>
+                        <li><span class="text-capitalize">@lang('text.account_name'):</span> <b class="text-uppercase">{{ $fee->bank_account_name??'----' }}</b></li>
+                        <li><span class="text-capitalize">@lang('text.account_number'):</span> <b class="text-uppercase">{{ $fee->bank_account_number??'----' }}</b></li>
                     </ul>
                 </div>
                 <div class="my-3 py-2">
                     <span>@lang('text.at_registration_you_will_be_expected_to_do_the_following'):</span><br>
                     <ul style="list-style-type: disc; margin-left:2rem; padding-left:2rem;">
-                        <li>@lang('text.present_receipts_of_payment_of_registration_fees')</li>
+                        <li>@lang('text.present_receipts_of_payment_of_registration_fees', ['bank_name'=>$fee->bank_name??'----'])</li>
                         <li>@lang('text.present_originals_of_certificates')</li>
                         <li>@lang('text.present_fee_receipts')</li>
                     </ul>

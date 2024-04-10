@@ -48,26 +48,25 @@ class CustomLoginController extends Controller
     
     
     public function createAccount(Request $request){
-        if (Students::where('matric', $request->username)->exists()) {  
+        if (($stud = Students::where('matric', $request->username)->first()) != null) {  
             $update['phone'] = $request->phone;
-            $update['email'] = $request->email;
             $update['password'] = Hash::make($request->password);
             
-            $up = Students::where('matric', $request->username)->update($update);
+            $stud->update($update);
              if (User::where('username', $request->username)->exists()) {  
                 $update1['name'] = $request->name;
-                $update1['email'] = $request->email;
+                // $update1['email'] = $request->email;
                 $update1['username'] = $request->username;
                 $update1['type'] = 'student';
                 $update1['password'] = Hash::make($request->password);
                 
                 $up1 = User::where('username', $request->username)->update($update1);
-                auth('student')->login($up1);
+                auth('student')->login($stud);
                 return redirect()->to(route('student.home'))->with('s','Account created successfully.'); 
 
             }else{
                 $insert['name'] = $request->name;
-                $insert['email'] = $request->email;
+                // $insert['email'] = $request->email;
                 $insert['username'] = $request->username;
                 $insert['type'] = 'student';
                 $insert['gender'] = '';
@@ -75,11 +74,7 @@ class CustomLoginController extends Controller
             
                 $up2 = User::create($insert);
                 auth()->login($up2);
-                if($up2->type == 'teacher'){
-                    return redirect()->to(route('user.home'))->with('s','Account created successfully.'); 
-                }else{
-                    return redirect()->to(route('admin.home'))->with('s','Account created successfully.'); 
-                }
+                return redirect()->to(route('admin.home'))->with('s','Account created successfully.'); 
             }
         //      if( Auth::guard('student')->attempt(['matric'=>$request->username,'password'=>$request->password], $request->remember)){
         //     // return "Spot 1";
@@ -123,7 +118,7 @@ class CustomLoginController extends Controller
         //Attempt to log the user in
 
         // return $request->all();
-        if( (Auth::guard('student')->attempt(['email'=>$request->username,'password'=>$request->password], $request->remember)) || (Auth::guard('student')->attempt(['phone'=>$request->username,'password'=>$request->password], $request->remember))){
+        if( (Auth::guard('student')->attempt(['phone'=>$request->username,'password'=>$request->password], $request->remember))){
             // return "Spot 1";
             return redirect()->intended(route('student.home'));
         }else{

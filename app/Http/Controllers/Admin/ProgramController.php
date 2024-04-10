@@ -1303,7 +1303,7 @@ class ProgramController extends Controller
                 $sent = $this->sendSMS($phone_number, $message);
 
                 // Send student admission letter to email
-                $this->send_admission_letter($application->id);
+                // $this->send_admission_letter($application->id);
 
                 return redirect(route('admin.applications.admit'))->with('success', "Student admitted successfully.");
            }else
