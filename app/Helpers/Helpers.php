@@ -225,7 +225,7 @@ class Helpers
         //     # code...
         //     return asset('assets/images/avatars').'/'.$lt->first()->path;
         // }
-        return asset('assets/images/header.jpg');
+        return asset('assets/images/avatars/letterhead.jpg');
     }
 
     public function getBackground()
