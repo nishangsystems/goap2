@@ -73,6 +73,11 @@
             display: none;
         }
         
+        table { page-break-after:auto; page-break-inside: auto; }
+        tr    { page-break-inside:auto; page-break-after:auto }
+        td    { page-break-inside:auto; page-break-after:auto }
+        thead { display:table-header-group }
+        tfoot { display:table-footer-group }
     </STYLE>
 @php
     $bg1 = \App\Http\Controllers\HomeController::getColor('background_color_1');
