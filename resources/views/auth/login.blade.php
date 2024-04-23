@@ -162,7 +162,7 @@
 											@csrf
 												<fieldset style="color: black;">
 													<label class="block clearfix">
-														<span class="text-capitalize">{{ __('text.phone_number') }}</span>
+														<span class="text-capitalize">{{ __('text.word_email') }}</span>
 														<span class="block input-icon input-icon-right" style="background-color: white !important;">
 															<input type="text" required class="form-control" value="{{old("username")}}" name="username" style="border-radius: 0.5rem !important; background-color: white !important; color: black" />
 														</span>

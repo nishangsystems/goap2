@@ -163,7 +163,7 @@
 														</span>
 													@enderror
 												</label>
-												{{-- <label class="block clearfix">
+												<label class="block clearfix">
 													<span class="text-capitalize">{{__('text.word_email')}}</span>
 													<span class="block input-icon input-icon-right">
 														<input type="email" required class="form-control" placeholder="{{ __('text.word_email') }}" name="email"  style="border-radius: 0.5rem !important; background-color: white !important; color: black" />
@@ -174,7 +174,7 @@
 															<strong>{{ $message }}</strong>
 														</span>
 													@enderror
-												</label> --}}
+												</label>
 												<label class="block clearfix">
 													<span class="text-capitalize">{{__('text.phone_number')}}</span>
 													<span class="block input-icon input-icon-right">

@@ -50,12 +50,13 @@ class CustomLoginController extends Controller
     public function createAccount(Request $request){
         if (($stud = Students::where('matric', $request->username)->first()) != null) {  
             $update['phone'] = $request->phone;
+            $update['email'] = $request->emial;
             $update['password'] = Hash::make($request->password);
             
             $stud->update($update);
              if (User::where('username', $request->username)->exists()) {  
                 $update1['name'] = $request->name;
-                // $update1['email'] = $request->email;
+                $update1['email'] = $request->email;
                 $update1['username'] = $request->username;
                 $update1['type'] = 'student';
                 $update1['password'] = Hash::make($request->password);
@@ -66,7 +67,7 @@ class CustomLoginController extends Controller
 
             }else{
                 $insert['name'] = $request->name;
-                // $insert['email'] = $request->email;
+                $insert['email'] = $request->email;
                 $insert['username'] = $request->username;
                 $insert['type'] = 'student';
                 $insert['gender'] = '';
@@ -108,7 +109,7 @@ class CustomLoginController extends Controller
     }
 
     public function login(Request $request){
-         //return $request->all();
+        //return $request->all();
         //validate the form data
         $this->validate($request, [
             'username' => 'required',
@@ -118,7 +119,7 @@ class CustomLoginController extends Controller
         //Attempt to log the user in
 
         // return $request->all();
-        if( (Auth::guard('student')->attempt(['phone'=>$request->username,'password'=>$request->password], $request->remember))){
+        if( (Auth::guard('student')->attempt(['phone'=>$request->username,'password'=>$request->password], $request->remember) || Auth::guard('student')->attempt(['emial'=>$request->username,'password'=>$request->password], $request->remember))){
             // return "Spot 1";
             return redirect()->intended(route('student.home'));
         }else{

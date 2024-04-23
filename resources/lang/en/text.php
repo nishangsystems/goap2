@@ -1071,5 +1071,8 @@ return [
     'emergency_address'=>'emergency address',
     'emergency_name'=>'emergency name',
     'emergency_tel'=>'emergency tel',
+    'name_of_spouse'=>'name of spouse',
+    'spouse_region'=>'spouse region',
+    'guardian_occupation'=>'guardian\'s occupation',
     ''
 ]; 
