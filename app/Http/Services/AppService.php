@@ -52,19 +52,11 @@ class AppService{
             $data['title'] = "ADMISSION LETTER";
             $data['name'] = $appl->name;
             $data['matric'] =  $appl->matric;
-            $data['auth_no'] =  time().'/'.random_int(150553, 998545).'/XGS4';
-            $data['registrar'] = $admins->registrar??'REGISTRAR-NOT-SET';
-            $data['chancellor'] = $admins->chancellor??'CHANCELLOR-NOT-SET';
-            $data['p_chancellor'] = $admins->pro_chancellor??'Pro CHANCELLOR-NOT-SET';
-            $data['v_chancellor'] = $admins->vice_chancellor??"VC-NOT-SET";
-            $data['dvc1'] = $admins->dvc_admin??"DVC-NOT-SET";
-            $data['dvc2'] = $admins->dvc_academic??"DVC-NOT-SET";
-            $data['dvc3'] = $admins->dvc_coop??"DVC-NOT-SET";
-            $data['fee1_dateline'] = $config->fee1_latest_date;
-            $data['fee2_dateline'] = $config->fee2_latest_date;
+            $data['start_of_lectures'] = $config->start_of_lectures;
+            $data['school_email'] = $appl->email??'';
             $data['help_email'] =  $config->help_email;
             $data['campus'] = $campus->name??null;
-            $data['degree'] = ($program->deg_name??null) == null ? ("NOT SET") : $program->deg_name;
+            $data['degree'] = ($program->deg_name??null) == null ? ($program->name??"") : $program->deg_name;
             $data['program'] = str_replace($data['degree'], ' ', $program->name??"");
             $data['_program'] = $program;
             $data['matric_sn'] = substr($appl->matric, -3);
@@ -80,5 +72,42 @@ class AppService{
             $pdf = Pdf::loadView('admin.student.admission_letter', $data);
             return $pdf->download($appl->matric.'_ADMISSION_LETTER.pdf');            
         }
+    }
+
+    public function application_form($application_id)
+    {
+        # code...
+        $application = ApplicationForm::find($application_id);
+        $data['surname'] = strtok($application->name, ' ');
+        $data['gname'] = substr($application->name, strlen($data['surname']));
+        // dd($data);
+        $data['campuses'] = json_decode($this->api_service->campuses())->data;
+        $data['application'] = ApplicationForm::find($application_id);
+        $data['degree'] = collect(json_decode($this->api_service->degrees())->data??[])->where('id', $data['application']->degree_id)->first();
+        $data['campus'] = collect($data['campuses'])->where('id', $data['application']->campus_id)->first();
+        $data['certs'] = json_decode($this->api_service->certificates())->data;
+        
+        $data['programs'] = json_decode($this->api_service->campusDegreeCertificatePrograms($data['application']->campus_id, $data['application']->degree_id, $data['application']->entry_qualification))->data;
+        $data['cert'] = collect($data['certs'])->where('id', $data['application']->entry_qualification)->first();
+        $data['program1'] = collect($data['programs'])->where('id', $data['application']->program_first_choice)->first();
+        $data['program2'] = collect($data['programs'])->where('id', $data['application']->program_second_choice)->first();
+        
+        $fees = $this->api_service->class_portal_fee_structure($application->program_first_choice, $application->level)['data'];
+        if($fees == null){
+            session()->flash('error', 'Fees not set for this program. Contact school system for fee settings');
+            return back()->withInput();
+        }
+        $data['fee'] = $fees[0]??$fees;
+        // dd($data['fee']);
+
+        // $title = $application->degree??''.' APPLICATION FOR '.$application->campus->name??' --- '.' CAMPUS';
+        $title = __('text.inst_tapplication_form', ['degree'=>$data['degree']->deg_name]);
+        $data['title'] = $title;
+
+        // if(in_array(null, array_values($data))){ return redirect(route('student.application.start', [0, $application_id]))->with('message', "Make sure your form is correctly filled and try again.");}
+        // return view('student.online.form_dawnloadable', $data);
+        $pdf = PDF::loadView('student.online.form_dawnloadable', $data);
+        $filename = $title.' - '.$application->name.'.pdf';
+        return $pdf->download($filename);
     }
 }

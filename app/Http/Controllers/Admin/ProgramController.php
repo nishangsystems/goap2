@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers\Helpers;
 use App\Http\Controllers\Controller;
+use App\Http\Services\AppService;
 use App\Http\Resources\AdmittedStudentResource;
 use App\Mail\AdmissionMail;
 use App\Models\ApplicationForm;
@@ -31,6 +32,11 @@ use Illuminate\Support\Facades\Validator;
 
 class ProgramController extends Controller
 {
+
+    protected $appService;
+    public function __construct(AppService $appService){
+        $this->appService = $appService;
+    }
 
     public function sections()
     {
@@ -1012,27 +1018,7 @@ class ProgramController extends Controller
             return view('admin.student.applications', $data);
         }
 
-        $application = ApplicationForm::find($id);
-        $data['campuses'] = json_decode($this->api_service->campuses())->data;
-        $data['application'] = ApplicationForm::find($id);
-        $data['degree'] = collect(json_decode($this->api_service->degrees())->data??[])->where('id', $data['application']->degree_id)->first();
-        $data['campus'] = collect($data['campuses'])->where('id', $data['application']->campus_id)->first();
-        $data['certs'] = json_decode($this->api_service->certificates())->data;
-        
-        $data['programs'] = json_decode($this->api_service->campusDegreeCertificatePrograms($data['application']->campus_id, $data['application']->degree_id, $data['application']->entry_qualification))->data;
-        $data['cert'] = collect($data['certs'])->where('id', $data['application']->entry_qualification)->first();
-        $data['program1'] = collect($data['programs'])->where('id', $data['application']->program_first_choice)->first();
-        $data['program2'] = collect($data['programs'])->where('id', $data['application']->program_second_choice)->first();
-        
-        // $title = $application->degree??''.' APPLICATION FOR '.$application->campus->name??' --- '.' CAMPUS';
-        $title = "APPLICATION FORM FOR ".$data['degree']->deg_name;
-        $data['title'] = $title;
-
-        if(in_array(null, array_values($data))){ return redirect(route('student.application.start', [0, $id]))->with('message', "Make sure your form is correctly filled and try again.");}
-        // return view('student.online.form_dawnloadable', $data);
-        $pdf = PDF::loadView('student.online.form_dawnloadable', $data);
-        $filename = $title.' - '.$application->name.'.pdf';
-        return $pdf->download($filename);
+        return $this->appService->application_form($id);
     }
 
     public function edit_application_form(Request $request, $id = null)
@@ -1157,41 +1143,7 @@ class ProgramController extends Controller
     {
         // TEMPORARILY HALTING SENDING OF ADMISSION LETTERS
         // return true;
-
-        
-        $appl = ApplicationForm::find($id);
-        if($appl != null){
-            $campus = collect(json_decode($this->api_service->campuses())->data)->where('id', $appl->campus_id)->first()??null;
-            $program = collect(json_decode($this->api_service->programs())->data)->where('id', $appl->program_first_choice)->first()??null;
-            $degree = collect(json_decode($this->api_service->degrees())->data)->where('id', $appl->degree_id)->first()??null;
-            $config = Config::where('year_id', Helpers::instance()->getCurrentAccademicYear())->first();
-
-            $data['platform_links'] = [
-                'BONABERI'=>'https://bnb.stlouissystems.org',
-                'BONAMOUSSADI'=>'https://bms.stlouissystems.org',
-                'YAOUNDE'=>'https://yde.stlouissystems.org',
-            ];
-
-            $data['title'] = "ADMISSION LETTER";
-            $data['name'] = $appl->name;
-            $data['matric'] =  $appl->matric;
-            $data['registrar'] = "Mandi Derick Ediange";
-            $data['dean_name'] = $config->dean??null;
-            $data['fee1_dateline'] = $config->fee1_latest_date;
-            $data['fee2_dateline'] = $config->fee2_latest_date;
-            $data['help_email'] =  $config->help_email;
-            $data['campus'] = $campus->name??null;
-            $data['degree'] = $degree->deg_name??null;
-            $data['program'] = str_replace($data['degree'], ' ', $program->name??"");
-    
-            $pdf = Pdf::loadView('admin.student.admission_letter', $data);
-            if($action == '_dld'){
-                return $pdf->download($appl->matric.'_ADMISSION_LETTER.pdf');
-            }
-            // $this->sendAdmissionEmails($appl->name, $appl->email, $appl->matric, $program->name??null, $campus->name??null, $config->fee1_latest_date, $config->fee2_latest_date, $config->director, $config->dean, $config->help_email, $pdf, $degree->deg_name??null);
-            return true;
-        }
-        return false;
+        return $this->appService->admission_letter($id);
     }
 
     public function admit_application_form(Request $request, $id=null)
@@ -1227,8 +1179,9 @@ class ProgramController extends Controller
                         $max_count = intval(substr($max_matric, strlen($prefix)+4));
                     }
 
+                    // dd($max_count);
                     NEXT_MATRIC:
-                    $next_count = substr('0000'.(++$max_count), -4);
+                    $next_count = substr('000'.(++$max_count), -4);
                     $student_matric = $prefix.$year.$suffix.$next_count;
                     // dd($student_matric);
                     if(ApplicationForm::where('matric', $student_matric)->where('id', '!=', $id)->count() == 0){

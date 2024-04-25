@@ -173,24 +173,19 @@ $em_key = time().random_int(3000, 3099);
                             </div>
                         </div>
                         <div class="py-2 col-md-6 col-lg-4 col-xl-4">
-                            <label class="text-secondary  text-capitalize">{{ __('text.spouse_region') }}<i class="text-danger text-xs">*</i></label>
+                            <label class="text-secondary  text-capitalize">{{ __('text.spouse_region') }}</label>
                             <div class="">
-                                <select class="form-control text-primary"  name="spouse_region">
-                                    <option value=""></option>
-                                    @foreach(\App\Models\Region::all() as $value)
-                                        <option value="{{ $value->id }}" {{ $application->spouse_origin == $value->id ? 'selected' : '' }}>{{ $value->region }}</option>
-                                    @endforeach
-                                </select>
+                                <input type="text" class="form-control text-primary"  name="religion" value="{{ $application->spouse_origin }}">
                             </div>
                         </div>
                         <div class="py-2 col-md-6 col-lg-4 col-xl-4">
-                            <label class="text-secondary  text-capitalize">{{ __('text.word_denomination') }}<i class="text-danger text-xs">*</i></label>
+                            <label class="text-secondary  text-capitalize">{{ __('text.word_denomination') }}</label>
                             <div class="">
                                 <input type="text" class="form-control text-primary"  name="denomination" value="{{ $application->denomination??'' }}">
                             </div>
                         </div>
                         <div class="py-2 col-md-6 col-lg-4 col-xl-4">
-                            <label class="text-secondary  text-capitalize">{{ __('text.where_did_you_hear_about_us') }}<i class="text-danger text-xs">*</i></label>
+                            <label class="text-secondary  text-capitalize">{{ __('text.where_did_you_hear_about_us') }}</label>
                             <div class="">
                                 <select class="form-control text-primary"  name="info_source" value="{{ $application->info_source??'' }}">
                                     <option></option>
@@ -506,15 +501,15 @@ $em_key = time().random_int(3000, 3099);
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-4 col-lg-4">
-                            <label class=" text-secondary text-capitalize">{{ __('text.mother_name') }}</label>
+                            <label class=" text-secondary text-capitalize">{{ __('text.mother_name') }}<i class="text-danger text-xs">*</i></label>
                             <div class="">
                                 <input type="text" class="form-control text-primary"  name="mother_name" required value="{{ old('mother_name', $application->mother_name) }}">
                             </div>
                         </div>
                         <div class="py-2 col-sm-6 col-md-4 col-lg-4">
-                            <label class="text-secondary  text-capitalize">{{ __('text.word_parents') }} / {{ __('text.guardian_address') }}<i class="text-danger text-xs">*</i></label>
+                            <label class="text-secondary  text-capitalize">{{ __('text.word_parent') }} / {{ __('text.guardian_address') }}<i class="text-danger text-xs">*</i></label>
                             <div class="">
-                                <input type="text" class="form-control text-primary"  name="parent_address" required value="{{ old('parent_address', $application->parent_address??'') }}">
+                                <input type="text" class="form-control text-primary"  name="guardian_address" required value="{{ old('guardian_address', $application->guardian_address??'') }}">
                             </div>
                         </div>
                         <div class="py-2 col-sm-6 col-md-4 col-lg-4">
@@ -524,9 +519,27 @@ $em_key = time().random_int(3000, 3099);
                             </div>
                         </div>
                         <div class="py-2 col-sm-6 col-md-4 col-lg-4">
-                            <label class="text-secondary  text-capitalize">{{ __('text.word_parent') }} / {{ __('text.guardian_occupation') }}<i class="text-danger text-xs">*</i></label>
+                            <label class="text-secondary  text-capitalize">{{ __('text.word_parent') }} / {{ __('text.phone_number') }}<i class="text-danger text-xs">*</i></label>
                             <div class="">
-                                <input type="text" class="form-control text-primary"  name="parent_address" required value="{{ old('parent_address', $application->parent_address??'') }}">
+                                <input type="text" class="form-control text-primary"  name="parent_phone" required value="{{ old('parent_phone', $application->parent_phone??'') }}">
+                            </div>
+                        </div>
+                        <div class="py-2 col-sm-6 col-md-4 col-lg-4">
+                            <label class="text-secondary  text-capitalize">{{ __('text.emergency_tel_bilang') }} <i class="text-danger text-xs">*</i></label>
+                            <div class="">
+                                <input type="text" class="form-control text-primary"  name="emergency_tel" required value="{{ old('emergency_tel', $application->emergency_tel??'') }}">
+                            </div>
+                        </div>
+                        <div class="py-2 col-sm-6 col-md-4 col-lg-4">
+                            <label class="text-secondary  text-capitalize">{{ __('text.student_mailing_address_if_different') }}</label>
+                            <div class="">
+                                <input type="text" class="form-control text-primary"  name="student_mailing_address" value="{{ old('student_mailing_address', $application->student_mailing_address??'') }}">
+                            </div>
+                        </div>
+                        <div class="py-2 col-sm-6 col-md-4 col-lg-4">
+                            <label class="text-secondary  text-capitalize">{{ __('text.extra_curricula_activities_eg_sports_hobbies') }}</label>
+                            <div class="">
+                                <input type="text" class="form-control text-primary"  name="extra_curricula_activities" value="{{ old('extra_curricula_activities', $application->extra_curricula_activities??'') }}">
                             </div>
                         </div>
                         
@@ -547,218 +560,175 @@ $em_key = time().random_int(3000, 3099);
                         
                         <!-- STAGE 1 PREVIEW -->
                         <h4 class="py-1 border-bottom border-top border-warning bg-white text-danger my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:500;">{{ __('text.word_stage') }} 1: <a href="{{ route('student.application.start', [1, $application->id]) }}" class="text-white btn py-1 px-2 btn-sm">{{ __('text.view_and_or_edit_stage') }} 1</a></h4>
-                        <div class="py-2 col-sm-6 col-md-4 col-lg-5">
-                            <label class="text-secondary  text-capitalize">{{ __('text.word_name') }}</label>
+                        <div class="py-2 col-md-6 col-lg-5 col-xl-4">
                             <div class="">
                                 <label class="form-control text-primary border-0 ">{{ $application->name ?? '' }}</label>
                             </div>
+                            <label class="text-secondary  text-capitalize">{{ __('text.word_name') }}</label>
                         </div>
-                        <div class="py-2 col-sm-6 col-md-4 col-lg-3">
-                            <label class="text-secondary  text-capitalize">{{ __('text.word_gender_bilang') }}</label>
+                        <div class="py-2 col-sm-6 col-md-4 col-lg-3 col-xl-2">
                             <div class="">
                                 <label class="form-control text-primary border-0 ">{{ $application->gender ?? '' }}</select>
                             </div>
+                            <label class="text-secondary  text-capitalize">{{ __('text.word_gender_bilang') }}</label>
                         </div>
-                        <div class="py-2 col-sm-6 col-md-4 col-lg-4">
-                            <label class="text-secondary  text-capitalize">{{ __('text.date_of_birth_bilang') }}</label>
+                        <div class="py-2 col-sm-6 col-md-4 col-lg-4 col-xl-3">
                             <div class="">
                                 <label class="form-control text-primary border-0 ">{{ $application->dob ?? '' }}</label>
                             </div>
+                            <label class="text-secondary  text-capitalize">{{ __('text.date_of_birth_bilang') }}</label>
                         </div>
-                        <div class="py-2 col-sm-6 col-md-4 col-lg-3">
-                            <label class="text-secondary  text-capitalize">{{ __('text.place_of_birth_bilang') }}</label>
+                        <div class="py-2 col-sm-6 col-md-4 col-lg-3 col-xl-3">
                             <div class="">
                                 <label class="form-control text-primary border-0 ">{{ $application->pob ?? '' }}</label>
                             </div>
+                            <label class="text-secondary  text-capitalize">{{ __('text.place_of_birth_bilang') }}</label>
                         </div>
-                        <div class="py-2 col-sm-6 col-md-4 col-lg-3">
-                            <label class="text-secondary  text-capitalize">{{ __('text.word_nationality_bilang') }}</label>
+
+                        {{-- ------------new line xl ------------ --}}
+                        <div class="py-2 col-sm-6 col-md-4 col-lg-3 col-xl-2">
                             <div class="">
                                 <label class="form-control text-primary border-0 ">{{ $application->nationality ?? '' }}</label>
                             </div>
+                            <label class="text-secondary  text-capitalize">{{ __('text.word_nationality_bilang') }}</label>
                         </div>
-                        <div class="py-2 col-sm-6 col-md-4 col-lg-3">
-                            <label class="text-secondary  text-capitalize">{{ __('text.word_residence_bilang') }}</label>
+                        <div class="py-2 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                            <div class="">
+                                <label class="form-control text-primary border-0 ">{{ $application->_region->region ?? '' }}</label>
+                            </div>
+                            <label class="text-secondary  text-capitalize">{{ __('text.region_of_origin') }}</label>
+                        </div>
+                        <div class="py-2 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                            <div class="">
+                                <label class="form-control text-primary border-0 ">{{ $application->_division->name ?? '' }}</label>
+                            </div>
+                            <label class="text-secondary  text-capitalize">{{ __('text.word_division_bilang') }}</label>
+                        </div>
+                        <div class="py-2 col-sm-6 col-md-4 col-lg-4 col-xl-3">
                             <div class="">
                                 <label class="form-control text-primary border-0 ">{{ $application->residence ?? '' }}<label>
                             </div>
+                            <label class="text-secondary  text-capitalize">{{ __('text.word_residence_bilang') }}</label>
                         </div>
-                        <div class="py-2 col-sm-6 col-md-4 col-lg-5">
-                            <label class="text-secondary  text-capitalize">{{ __('text.telephone_number_bilang') }}</label>
+                        <div class="py-2 col-sm-6 col-md-4 col-lg-3 col-xl-3">
                             <div class="">
                                 <label class="form-control text-primary border-0 ">{{ $application->phone ?? '' }}</label>
                             </div>
+                            <label class="text-secondary  text-capitalize">{{ __('text.telephone_number_bilang') }}</label>
                         </div>
-                        <div class="py-2 col-sm-6 col-md-4 col-lg-4">
-                            <label class="text-secondary  text-capitalize">{{ __('text.word_email_bilang') }}</label>
+                        <div class="py-2 col-sm-6 col-md-4 col-lg-5 col-xl-3">
                             <div class="">
                                 <label class="form-control text-primary border-0 ">{{ $application->email ?? '' }}</label>
                             </div>
+                            <label class="text-secondary  text-capitalize">{{ __('text.word_email_bilang') }}</label>
                         </div>
-                        <div class="py-2 col-sm-6 col-md-4 col-lg-4">
-                            <label class="text-secondary  text-capitalize">{{ __('text.word_campus') }}</label>
+                         
+                         {{-- -------------new line xl --------------- --}}
+                        
+                        <div class="py-2 col-sm-6 col-md-4 col-lg-4 col-xl-3">
                             <div class="">
-                                <label class="form-control text-primary border-0 ">{{ $campus->name ?? '' }}</label>
+                                <label class="form-control text-primary border-0 ">{{ $application->denomination ?? '' }}</label>
                             </div>
+                            <label class="text-secondary  text-capitalize">{{ __('text.word_denomination') }}</label>
                         </div>
-                        <div class="py-2 col-sm-6 col-md-4 col-lg-4">
-                            <label class="text-secondary  text-capitalize">{{ __('text.entry_qualification') }}</label>
+                        <div class="py-2 col-sm-6 col-md-4 col-lg-3 col-xl-2">
                             <div class="">
-                                <label class="form-control text-primary border-0 ">{{ $cert->certi ?? '' }}</label>
+                                <label class="form-control text-primary border-0 ">{{ $application->marital_status ?? '' }}</label>
                             </div>
+                            <label class="text-secondary  text-capitalize">{{ __('text.marital_status') }}</label>
                         </div>
-                        <div class="py-2 col-sm-6 col-md-4 col-lg-4">
-                            <label class="text-secondary  text-capitalize">{{ __('text.special_needs') }}</label>
+                        <div class="py-2 col-sm-6 col-md-4 col-lg-5 col-xl-4">
                             <div class="">
-                                <label class="form-control text-primary border-0 ">{{ $cert->special_needs ?? '' }}</label>
+                                <label class="form-control text-primary border-0 ">{{ $application->name_of_spouse ?? '' }}</label>
                             </div>
+                            <label class="text-secondary  text-capitalize">{{ __('text.name_of_spouse') }}</label>
+                        </div>
+                        <div class="py-2 col-sm-6 col-md-4 col-lg-4 col-xl-2">
+                            <div class="">
+                                <label class="form-control text-primary border-0 ">{{ $application->religion ?? '' }}</label>
+                            </div>
+                            <label class="text-secondary  text-capitalize">{{ __('text.word_religion') }}</label>
+                        </div>
+                        <div class="py-2 col-sm-6 col-md-4 col-lg-6 col-xl-4">
+                            <div class="">
+                                <label class="form-control text-primary border-0 ">{{ $application->info_source ?? '' }}</label>
+                            </div>
+                            <label class="text-secondary  text-capitalize">{{ __('text.where_did_you_hear_about_us') }}</label>
                         </div>
 
 
                         <!-- STAGE 2 -->
                         <h4 class="py-1 border-bottom border-top border-warning bg-white text-danger my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:500;">{{ __('text.word_stage') }} 2: <a href="{{ route('student.application.start', [2, $application->id]) }}" class="text-white btn py-1 px-2 btn-sm">{{ __('text.view_and_or_edit_stage') }} 2</a></h4>
                         <div class="col-sm-6 col-md-4 col-lg-3">
-                            <label class="text-secondary text-capitalize">{{ __('text.emergency_name') }}</label>
                             <div>
-                                <label class="form-control text-primary border-0">{{ $application->emergency_name ?? '' }}</label>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4 col-lg-3">
-                            <label class="text-secondary  text-capitalize">{{ __('text.emergency_address') }}</label>
-                            <div class="">
-                                <label class="form-control text-primary border-0">{{ $application->emergency_address ?? '' }}</label>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4 col-lg-3">
-                            <label class="text-secondary  text-capitalize">{{ __('text.emergency_tel') }}</label>
-                            <div class="">
-                                <label class="form-control text-primary border-0">{{ $application->emergency_tel ?? '' }}</label>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4 col-lg-3">
-                            <label class="text-secondary  text-capitalize">{{ __('text.first_choice_bilang') }}</label>
-                            <div class="">
                                 <label class="form-control text-primary border-0">{{ $program1->name ?? '' }}</label>
                             </div>
+                            <label class="text-secondary text-capitalize">{{ __('text.program_first_choice') }}</label>
                         </div>
                         <div class="col-sm-6 col-md-4 col-lg-3">
-                            <label class=" text-secondary text-capitalize">{{ __('text.second_choice_bilang') }}</label>
                             <div class="">
                                 <label class="form-control text-primary border-0">{{ $program2->name ?? '' }}</label>
                             </div>
+                            <label class="text-secondary  text-capitalize">{{ __('text.program_second_choice') }}</label>
                         </div>
                         <div class="py-2 col-sm-6 col-md-4 col-lg-3">
-                            <label class="text-secondary  text-capitalize">{{ __('text.word_level') }}</label>
                             <div class="">
                                 <label class="form-control text-primary border-0">{{ $application->level ?? null }}</label>
                             </div>
+                            <label class="text-secondary  text-capitalize">{{ __('text.word_level') }}</label>
                         </div>
 
-                        <!-- STAGE 3 -->
+                        {{-- STAGE 3 --}}
                         <h4 class="py-1 border-bottom border-top border-warning bg-white text-danger my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:500;">{{ __('text.word_stage') }} 3: <a href="{{ route('student.application.start', [3, $application->id]) }}" class="text-white btn py-1 px-2 btn-sm">{{ __('text.view_and_or_edit_stage') }} 3</a></h4>
-                        <h4 class="py-3 border-bottom border-top bg-white text-dark my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:500;"> {{ __('text.previous_higher_education_training_bilang') }}</h4>
-                        <div class="col-sm-12 col-md-12 col-lg-12 py-2">
-                            <table class="border">
-                                <thead>
-                                    <tr class="text-capitalize">
-                                        <th class="text-center border">{{ __('text.word_school_bilang') }}</th>
-                                        <th class="text-center border">{{ __('text.word_year_bilang') }}</th>
-                                        <th class="text-center border">{{ __('text.word_course_bilang') }}</th>
-                                        <th class="text-center border">{{ __('text.word_certificate_bilang') }}</th>
-                                    <tr>
-                                </thead>
-                                <tbody id="previous_trainings">
-                                    @foreach (json_decode($application->previous_training)??[] as $key=>$training)
-                                        <tr class="text-capitalize">
-                                            <td class="border"><label class="form-control text-primary border-0">{{ $training->school ?? '' }}</label></td>
-                                            <td class="border"><label class="form-control text-primary border-0">{{ $training->year ?? '' }}</label></td>
-                                            <td class="border"><label class="form-control text-primary border-0">{{ $training->course ?? '' }}</label></td>
-                                            <td class="border"><label class="form-control text-primary border-0">{{ $training->certificate ?? '' }}</label></td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                        <div class="col-sm-6 col-md-4 col-lg-3">
+                            <div class="">
+                                <label class="form-control text-primary border-0">{{ $application->father_name ?? '' }}</label>
+                            </div>
+                            <label class="text-secondary  text-capitalize">{{ __('text.father_name') }}</label>
+                        </div>
+                        <div class="col-sm-6 col-md-4 col-lg-3">
+                            <div class="">
+                                <label class="form-control text-primary border-0">{{ $application->mother_name ?? '' }}</label>
+                            </div>
+                            <label class="text-secondary  text-capitalize">{{ __('text.mother_name') }}</label>
+                        </div>
+                        <div class="col-sm-6 col-md-4 col-lg-3">
+                            <div class="">
+                                <label class="form-control text-primary border-0">{{ $application->guardian_address ?? '' }}</label>
+                            </div>
+                            <label class=" text-secondary text-capitalize">{{ __('text.second_choice_bilang') }}</label>
+                        </div>
+                        <div class="col-sm-6 col-md-4 col-lg-3">
+                            <div class="">
+                                <label class="form-control text-primary border-0">{{ $application->parent_occupation ?? '' }}</label>
+                            </div>
+                            <label class=" text-secondary text-capitalize">{{ __('text.guardian_occupation') }}</label>
+                        </div>
+                        <div class="col-sm-6 col-md-4 col-lg-3">
+                            <div class="">
+                                <label class="form-control text-primary border-0">{{ $application->parent_phone ?? '' }}</label>
+                            </div>
+                            <label class=" text-secondary text-capitalize">{{ __('text.parents_phone_number') }}</label>
+                        </div>
+                        <div class="col-sm-6 col-md-4 col-lg-3">
+                            <div class="">
+                                <label class="form-control text-primary border-0">{{ $application->emergency_tel ?? '' }}</label>
+                            </div>
+                            <label class=" text-secondary text-capitalize">{{ __('text.emergency_tel') }}</label>
+                        </div>
+                        <div class="col-sm-6 col-md-4 col-lg-3">
+                            <div class="">
+                                <label class="form-control text-primary border-0">{{ $application->student_mailing_address ?? '' }}</label>
+                            </div>
+                            <label class=" text-secondary text-capitalize">{{ __('text.student_mailing_address_if_different') }}</label>
+                        </div>
+                        <div class="col-sm-6 col-md-4 col-lg-3">
+                            <div class="">
+                                <label class="form-control text-primary border-0">{{ $application->extra_curricula_activities ?? '' }}</label>
+                            </div>
+                            <label class=" text-secondary text-capitalize">{{ __('text.extra_curricula_activities_eg_sports_hobbies') }}</label>
                         </div>
 
-                        <!-- STAGE 4 -->
-                        <h4 class="py-1 border-bottom border-top border-warning bg-white text-danger my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:500;">{{ __('text.word_stage') }} 4: <a href="{{ route('student.application.start', [4, $application->id]) }}" class="text-white btn py-1 px-2 btn-sm">{{ __('text.view_and_or_edit_stage') }} 4</a></h4>
-                        <h4 class="py-3 border-bottom border-top bg-white text-dark my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:500;"> {{ __('text.advanced_level_results') }}</h4>
-                        <div class="col-sm-6 col-md-4 col-lg-3">
-                            <label class="text-secondary  text-capitalize">{{ __('text.center_no') }}</label>
-                            <div class="">
-                                <label class="form-control text-primary border-0">{{ $application->al_center_number ?? '' }}</label>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4 col-lg-3">
-                            <label class=" text-secondary text-capitalize">{{ __('text.candidate_no') }}</label>
-                            <div class="">
-                                <label class="form-control text-primary border-0">{{ $application->al_candidate_number ?? '' }}</label>
-                            </div>
-                        </div>
-                        <div class="py-2 col-sm-6 col-md-4 col-lg-3">
-                            <label class="text-secondary  text-capitalize">{{ __('text.word_year') }}</label>
-                            <div class="">
-                                <label class="form-control text-primary border-0">{{ $application->al_year ?? null }}</label>
-                            </div>
-                        </div>
-                        <div class="col-sm-12 col-md-12 col-lg-12 py-2">
-                            <table class="border">
-                                <thead>
-                                    <tr class="text-capitalize">
-                                        <th class="text-center border">{{ trans_choice('text.word_subject',1) }}</th>
-                                        <th class="text-center border">{{ __('text.word_grade') }}</th>
-                                    <tr>
-                                </thead>
-                                <tbody id="previous_trainings">
-                                    {{-- @dd(json_decode($application->al_results)) --}}
-                                    @foreach (json_decode($application->al_results)??[] as $key=>$result)
-                                        <tr class="text-capitalize">
-                                            <td class="border"><label class="form-control text-primary border-0">{{ $result->subject ?? '' }}</label></td>
-                                            <td class="border"><label class="form-control text-primary border-0">{{ $result->grade ?? '' }}</label></td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-
-                        
-                        <h4 class="py-3 border-bottom border-top bg-white text-dark my-4 text-uppercase col-sm-12 col-md-12 col-lg-12" style="font-weight:500;"> {{ __('text.ordinary_level_results') }}</h4>
-                        <div class="col-sm-6 col-md-4 col-lg-3">
-                            <label class="text-secondary  text-capitalize">{{ __('text.center_no') }}</label>
-                            <div class="">
-                                <label class="form-control text-primary border-0">{{ $application->ol_center_number ?? '' }}</label>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4 col-lg-3">
-                            <label class=" text-secondary text-capitalize">{{ __('text.candidate_no') }}</label>
-                            <div class="">
-                                <label class="form-control text-primary border-0">{{ $application->ol_candidate_number ?? '' }}</label>
-                            </div>
-                        </div>
-                        <div class="py-2 col-sm-6 col-md-4 col-lg-3">
-                            <label class="text-secondary  text-capitalize">{{ __('text.word_year') }}</label>
-                            <div class="">
-                                <label class="form-control text-primary border-0">{{ $application->ol_year ?? null }}</label>
-                            </div>
-                        </div>
-                        <div class="col-sm-12 col-md-12 col-lg-12 py-2">
-                            <table class="border">
-                                <thead>
-                                    <tr class="text-capitalize">
-                                        <th class="text-center border">{{ trans_choice('text.word_subject',1) }}</th>
-                                        <th class="text-center border">{{ __('text.word_grade') }}</th>
-                                    <tr>
-                                </thead>
-                                <tbody id="previous_trainings">
-                                    @foreach (json_decode($application->ol_results)??[] as $key=>$result)
-                                        <tr class="text-capitalize">
-                                            <td class="border"><label class="form-control text-primary border-0">{{ $result->subject ?? '' }}</label></td>
-                                            <td class="border"><label class="form-control text-primary border-0">{{ $result->grade ?? '' }}</label></td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
 
                         
                         <div class="col-sm-12 col-md-12 col-lg-12 py-4 mt-5 d-flex justify-content-center text-uppercase">

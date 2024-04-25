@@ -241,7 +241,7 @@ class HomeController extends Controller
     public function persist_application(Request $request, $step, $application_id)
     {
         # code...
-        // return $request->all();
+        // dd($request->all());
         
         // check if application is open now
         if(!(Helpers::instance()->application_open())){
@@ -252,7 +252,7 @@ class HomeController extends Controller
                 # code...
                 
                 $validity = Validator::make($request->all(), [
-                    'campus_id'=>'required', 'degree_id'=>'required'
+                    'degree_id'=>'required'
                 ]);
                 break;
             
@@ -260,9 +260,8 @@ class HomeController extends Controller
                 # code...
                 $validity = Validator::make($request->all(), [
                     "name"=>'required',"gender"=> "required","dob"=> "required", "pob"=> "required", 
-                    "nationality"=> "required", "residence"=> "required", "phone"=> "required", 
-                    "email"=> "required|email", 'division'=>'required', 'emergency_tel'=>'required', 
-                    "entry_qualification"=> "required", 'region'=>'required', 
+                    "nationality"=> "required", "phone"=> "required", 
+                    "email"=> "required|email", 'division'=>'required', 'region'=>'required', 
                 ]);
                 break;
                 
@@ -270,8 +269,7 @@ class HomeController extends Controller
                 # code...
                 
                 $validity = Validator::make($request->all(), [
-                    'program_first_choice'=>'required', 'program_second_choice'=>'required',
-                    'level'=>'required'
+                    'program_first_choice'=>'required', 'level'=>'required'
                 ]);
                 break;
             
@@ -287,8 +285,8 @@ class HomeController extends Controller
                 
                 
                 $validity = Validator::make($request->all(), [
-                    'ol_center_number'=>'required', 'ol_candidate_number'=>'required', 
-                    'ol_year'=>'required'
+                    'father_name'=>'required', 'mother_name'=>'required', 'parent_phone'=>'required',
+                    'guardian_address'=>'required', 'parent_occupation'=>'required', 'emergency_tel'=>'required'
                 ]);
                 break;
 
@@ -296,8 +294,8 @@ class HomeController extends Controller
                 
                 
                 $validity = Validator::make($request->all(), [
-                    'al_center_number'=>'required', 'al_candidate_number'=>'required', 
-                    'al_year'=>'required'
+                    'father_name'=>'required', 'mother_name'=>'required', 'parent_phone'=>'required',
+                    'guardian_address'=>'required', 'parent_occupation'=>'required', 'emergency_tel'=>'required'
                 ]);
                 break;
                 
@@ -525,27 +523,7 @@ class HomeController extends Controller
         // dd($application_id);
         # code...
         try{
-            $application = ApplicationForm::find($application_id);
-            $data['campuses'] = json_decode($this->api_service->campuses())->data;
-            $data['application'] = ApplicationForm::find($application_id);
-            $data['degree'] = collect(json_decode($this->api_service->degrees())->data??[])->where('id', $data['application']->degree_id)->first();
-            $data['campus'] = collect($data['campuses'])->where('id', $data['application']->campus_id)->first();
-            $data['certs'] = json_decode($this->api_service->certificates())->data;
-            
-            $data['programs'] = json_decode($this->api_service->campusDegreeCertificatePrograms($data['application']->campus_id, $data['application']->degree_id, $data['application']->entry_qualification))->data;
-            $data['cert'] = collect($data['certs'])->where('id', $data['application']->entry_qualification)->first();
-            $data['program1'] = collect($data['programs'])->where('id', $data['application']->program_first_choice)->first();
-            $data['program2'] = collect($data['programs'])->where('id', $data['application']->program_second_choice)->first();
-            
-            // $title = $application->degree??''.' APPLICATION FOR '.$application->campus->name??' --- '.' CAMPUS';
-            $title = __('text.inst_tapplication_form', ['degree'=>$data['degree']->deg_name]);
-            $data['title'] = $title;
-
-            // if(in_array(null, array_values($data))){ return redirect(route('student.application.start', [0, $application_id]))->with('message', "Make sure your form is correctly filled and try again.");}
-            return view('student.online.form_dawnloadable', $data);
-            $pdf = PDF::loadView('student.online.form_dawnloadable', $data);
-            $filename = $title.' - '.$application->name.'.pdf';
-            return $pdf->download($filename);
+            return $this->appService->application_form($application_id);
         }catch(Throwable $th){
             return back()->with('error', "\nFile : {$th->getFile()}\nMessage : {$th->getMessage()} \nLine : {$th->getLine()}");
         }

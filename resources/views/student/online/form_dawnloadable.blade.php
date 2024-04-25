@@ -1,243 +1,162 @@
 @extends('student.printable')
 @section('section')
-    <div class="py-1">
-        <table class="border border-light" style="table-layout: fixed;">
-            <thead>
-                <tr>
-                    <th colspan="3" class="text-capitalize text-center header font-weight-bold py-2 border-bottom border-dark">{{ __('text.inst_tapplication_form', ['degree'=>$degree->deg_name]) }}</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th colspan="3" class="text-uppercase text-center heading py-2 border-top border-bottom border-secondary"><b>@lang('text.personal_information')</b></th>
-                </tr>
-                <tr>
-                    <td class="border p-2">
-                        <div style="display: flex; flex-wrap:wrap; word-break:break-all;">
-                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.word_name'):</span>
-                            <span style="flex:auto; color:black;">{{ $application->name??null }}</span>
-                        </div>
-                    </td>
-                    <td class="border p-2">
-                        <div style="display: flex; flex-wrap:wrap; word-break:break-all;">
-                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.word_gender'):</span>
-                            <span style="flex:auto; color:black;">{{ $application->gender??null }}</span>
-                        </div>
-                    </td>
-                    <td class="border p-2">
-                        <div style="display: flex; flex-wrap:wrap; word-break:break-all;">
-                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.date_of_birth'):</span>
-                            <span style="flex:auto; color:black;">{{ $application->dob??null }}</span>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="border p-2">
-                        <div style="display: flex; flex-wrap:wrap; word-break:break-all;">
-                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.place_of_birth'):</span>
-                            <span style="flex:auto; color:black;">{{ $application->pob??null }}</span>
-                        </div>
-                    </td>
-                    <td class="border p-2">
-                        <div style="display: flex; flex-wrap:wrap; word-break:break-all;">
-                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.word_nationality'):</span>
-                            <span style="flex:auto; color:black;">{{ $application->nationality??null }}</span>
-                        </div>
-                    </td>
-                    <td class="border p-2">
-                        <div style="display: flex; flex-wrap:wrap; word-break:break-all;">
-                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.region_of_origin'):</span>
-                            <span style="flex:auto; color:black;">{{ $application->_region->region??null }}</span>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="border p-2">
-                        <div style="display: flex; flex-wrap:wrap; word-break:break-all;">
-                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.word_division'):</span>
-                            <span style="flex:auto; color:black;">{{ $application->_division->name??null }}</span>
-                        </div>
-                    </td>
-                    <td class="border p-2">
-                        <div style="display: flex; flex-wrap:wrap; word-break:break-all;">
-                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.word_address'):</span>
-                            <span style="flex:auto; color:black;">{{ $application->residence??null }}</span>
-                        </div>
-                    </td>
-                    <td class="border p-2">
-                        <div style="display: flex; flex-wrap:wrap; word-break:break-all;">
-                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.phone_number'):</span>
-                            <span style="flex:auto; color:black;">{{ $application->phone??null }}</span>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="border p-2">
-                        <div style="display: flex; flex-wrap:wrap; word-break:break-all;">
-                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.word_email'):</span>
-                            <span style="flex:auto; color:black;">{{ $application->email??null }}</span>
-                        </div>
-                    </td>
-                    <td class="border p-2">
-                        <div style="display: flex; flex-wrap:wrap; word-break:break-all;">
-                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.marital_status'):</span>
-                            <span style="flex:auto; color:black;">{{ $application->marital_status??null }}</span>
-                        </div>
-                    </td>
-                    <td class="border p-2">
-                        <div style="display: flex; flex-wrap:wrap; word-break:break-all;">
-                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.special_needs'):</span>
-                            <span style="flex:auto; color:black;">{{ $application->special_needs??null }}</span>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <th colspan="3" class="text-uppercase text-center heading py-2 border-top border-bottom border-secondary"><b>@lang('text.additional_personal_details')</b></th>
-                </tr>
-                <tr>
-                    <td class="border p-2">
-                        <div style="display: flex; flex-wrap:wrap; word-break:break-all;">
-                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.emergency_name_bilang'):</span>
-                            <span style="flex:auto; color:black;">{{ $program1->emergency_name??null }}</span>
-                        </div>
-                    </td>
-                    <td class="border p-2">
-                        <div style="display: flex; flex-wrap:wrap; word-break:break-all;">
-                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.emergency_address_bilang'):</span>
-                            <span style="flex:auto; color:black;">{{ $program2->emergency_address??null }}</span>
-                        </div>
-                    </td>
-                    <td class="border p-2">
-                        <div style="display: flex; flex-wrap:wrap; word-break:break-all;">
-                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.emergency_tel_bilang'):</span>
-                            <span style="flex:auto; color:black;">{{ $application->emergency_tel??null }}</span>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <th colspan="3" class="text-uppercase text-center heading py-2 border-top border-bottom border-secondary"><b>@lang('text.degree_slash_diploma_study_choice')</b></th>
-                </tr>
-                <tr>
-                    <td class="border p-2">
-                        <div style="display: flex; flex-wrap:wrap; word-break:break-all;">
-                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.program_first_choice'):</span>
-                            <span style="flex:auto; color:black;">{{ $program1->name??null }}</span>
-                        </div>
-                    </td>
-                    <td class="border p-2">
-                        <div style="display: flex; flex-wrap:wrap; word-break:break-all;">
-                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.program_second_choice'):</span>
-                            <span style="flex:auto; color:black;">{{ $program2->name??null }}</span>
-                        </div>
-                    </td>
-                    <td class="border p-2">
-                        <div style="display: flex; flex-wrap:wrap; word-break:break-all;">
-                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.word_level'):</span>
-                            <span style="flex:auto; color:black;">{{ $application->level??null }}</span>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="3" class="p-0"><hr style="border-bottom: 6px double black; margin-block: 0.9rem; padding-block: 1.2rem; text-overflow:clip;" class="text-center"></td>
-                </tr>
-                <tr>
-                    <th colspan="3" class="text-uppercase text-center heading py-2 border-top border-bottom border-secondary"><b>@lang('text.education_qualification')</b></th>
-                </tr>
-                <tr>
-                    <th colspan="3" class="text-uppercase text-center heading py-2 border-top border-bottom border-secondary text-secondary"><b>@lang('text.ordinary_level_results')</b></th>
-                </tr>
-                <tr class="text-capitalize">
-                    <th class="border">
-                        <div style="display: flex;">
-                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.center_no'):</span>
-                            <span style="flex:auto; color:black;">{{ $application->ol_center_number??null }}</span>
-                        </div>
-                    </th>
-                    <th class="border">
-                        <div style="display: flex;">
-                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.candidate_no'):</span>
-                            <span style="flex:auto; color:black;">{{ $application->ol_candidate_number??null }}</span>
-                        </div>
-                    </th>
-                    <th class="border">
-                        <div style="display: flex;">
-                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.word_year'):</span>
-                            <span style="flex:auto; color:black;">{{ $application->ol_year??null }}</span>
-                        </div>
-                    </th>
-                </tr>
-                <tr class="text-capitalize">
-                    <th class="border" colspan="2">{{ trans_choice('text.word_subject', 1) }}</th>
-                    <th class="border">@lang('text.word_grade')</th>
-                </tr>
-                @foreach (json_decode($application->ol_results)??[] as $key=>$result)
-                    <tr>
-                        <td class="border p-2" colspan="2">{{ $result->subject }}</td>
-                        <td class="border p-2">{{ $result->grade }}</td>
-                    </tr>
-                @endforeach
-                <tr>
-                    <th colspan="3" class="text-uppercase text-center heading py-2 border-top border-bottom border-secondary text-secondary"><b>@lang('text.advanced_level_results')</b></th>
-                </tr>
-                <tr class="text-capitalize">
-                    <th class="border">
-                        <div style="display: flex;">
-                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.center_no'):</span>
-                            <span style="flex:auto; color:black;">{{ $application->al_center_number??null }}</span>
-                        </div>
-                    </th>
-                    <th class="border">
-                        <div style="display: flex;">
-                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.candidate_no'):</span>
-                            <span style="flex:auto; color:black;">{{ $application->al_candidate_number??null }}</span>
-                        </div>
-                    </th>
-                    <th class="border">
-                        <div style="display: flex;">
-                            <span style="flex:auto; color:gray; text-transform:capitalize">@lang('text.word_year'):</span>
-                            <span style="flex:auto; color:black;">{{ $application->al_year??null }}</span>
-                        </div>
-                    </th>
-                </tr>
-                <tr class="text-capitalize">
-                    <th class="border" colspan="2">{{ trans_choice('text.word_subject', 1) }}</th>
-                    <th class="border">@lang('text.word_grade')</th>
-                </tr>
-                @foreach (json_decode($application->al_results)??[] as $key=>$result)
-                    <tr>
-                        <td class="border p-2" colspan="2">{{ $result->subject }}</td>
-                        <td class="border p-2">{{ $result->grade }}</td>
-                    </tr>
-                @endforeach
-                @if($application->previous_training != null)
-                    <tr>
-                        <th colspan="3" class="text-capitalize text-center heading py-2 border-top border-bottom border-secondary"><b>@lang('text.previous_higher_education_training')</b></th>
-                    </tr>
-                    <tr class="text-capitalize">
-                        <th class="border">@lang('text.word_school')</th>
-                        <th class="border">@lang('text.word_course')::@lang('text.word_year')</th>
-                        <th class="border">@lang('text.word_certificate')</th>
-                    </tr>
-                    @foreach (json_decode($application->previous_training)??[] as $key=>$training)
-                        <tr>
-                            <td class="border p-2">{{ $training->school }}</td>
-                            <td class="border p-2">{{ $training->course }}::{{ $training->year }}</td>
-                            <td class="border p-2">{{ $training->certificate }}</td>
-                        </tr>
-                    @endforeach
-                @endif
-                <tr>
-                    <td colspan="3" class="p-0"><hr style="border-block: 6px double black; margin-block: 0.9rem; padding-block: 1.2rem; text-overflow:clip;" class="text-center"></td>
-                </tr>
+    <table class="py-1 container"  style="font-size: large; table-layout: auto;">
+        <tbody>
+            <tr>
+                <th colspan="2" class="border-top border-bottom heading font-weight-semibold my-1 py-3 px-3 text-uppercase text-secondary border-secondary">1. @lang('text.personal_details_bilang')</th>
+            </tr>
+            <tr class="my-2 border-bottom border-light">
+                <td class="text-capitalize text-black">@lang('text.word_gender_bilang'):</td>
+                <td class="text-uppercase text-secondary">{{ $application->gender??'' }}</td>
+            </tr>
+            <tr class="my-2 border-bottom border-light">
+                <td class="text-capitalize text-black">@lang('text.word_surname_bilang'):</td>
+                <td class="text-uppercase text-secondary">{{ $surname??'' }}</td>
+            </tr>
+            <tr class="my-2 border-bottom border-light">
+                <td class="text-capitalize text-black">@lang('text.word_name_bilang'):</td>
+                <td class="text-uppercase text-secondary">{{ $gname??'' }}</td>
+            </tr>
+            <tr class="my-2 border-bottom border-light">
+                <td class="text-capitalize text-black">@lang('text.date_of_birth_bilang'):</td>
+                <td class="text-uppercase text-secondary">{{ $application->dob??'' }}</td>
+            </tr>
+            <tr class="my-2 border-bottom border-light">
+                <td class="text-capitalize text-black">@lang('text.place_of_birth_bilang'):</td>
+                <td class="text-uppercase text-secondary">{{ $application->pob??'' }}</td>
+            </tr>
+            <tr class="my-2 border-bottom border-light">
+                <td class="text-capitalize text-black">@lang('text.region_of_origin'):</td>
+                <td class="text-uppercase text-secondary">{{ $application->_region->region??'' }}</td>
+            </tr>
+            <tr class="my-2 border-bottom border-light">
+                <td class="text-capitalize text-black">@lang('text.word_division_bilang'):</td>
+                <td class="text-uppercase text-secondary">{{ $application->_division->name??'' }}</td>
+            </tr>
+            <tr class="my-2 border-bottom border-light">
+                <td class="text-capitalize text-black">@lang('text.word_nationality_bilang'):</td>
+                <td class="text-uppercase text-secondary">{{ $application->nationality??'' }}</td>
+            </tr>
+            <tr class="my-2 border-bottom border-light">
+                <td class="text-capitalize text-black">@lang('text.marital_status'):</td>
+                <td class="text-uppercase text-secondary">{{ $application->marital_status??'' }}</td>
+            </tr>
+            <tr class="my-2 border-bottom border-light">
+                <td class="text-capitalize text-black">@lang('text.name_of_spouse'):</td>
+                <td class="text-uppercase text-secondary">{{ $application->name_of_spouse??'' }}</td>
+            </tr>
+            <tr class="my-2 border-bottom border-light">
+                <td class="text-capitalize text-black">@lang('text.word_religion'):</td>
+                <td class="text-uppercase text-secondary">{{ $application->religion??'' }}</td>
+            </tr>
+            <tr class="my-2 border-bottom border-light">
+                <td class="text-capitalize text-black">@lang('text.word_denomination'):</td>
+                <td class="text-uppercase text-secondary">{{ $application->denomination??'' }}</td>
+            </tr>
+            <tr class="my-2 border-bottom border-light">
+                <td class="text-capitalize text-black">@lang('text.phone_number_bilang'):</td>
+                <td class="text-uppercase text-secondary">{{ $application->phone??'' }}</td>
+            </tr>
+            <tr class="my-2 border-bottom border-light">
+                <td class="text-capitalize text-black">@lang('text.word_email_bilang'):</td>
+                <td class="text-uppercase text-secondary">{{ $application->email??'' }}</td>
+            </tr>
+            <tr>
+                <th colspan="2" class="border-top border-bottom heading font-weight-semibold py-3 px-3 my-1 text-uppercase text-secondary border-secondary">2. @lang('text.additional_personal_details')</th>
+            </tr>
+            <tr class="my-2 border-bottom border-light">
+                <td class="text-capitalize text-black">@lang('text.father_name'):</td>
+                <td class="text-uppercase text-secondary">{{ $application->father_name??'' }}</td>
+            </tr>
+            <tr class="my-2 border-bottom border-light">
+                <td class="text-capitalize text-black">@lang('text.mother_name'):</td>
+                <td class="text-uppercase text-secondary">{{ $application->mother_name??'' }}</td>
+            </tr>
+            <tr class="my-2 border-bottom border-light">
+                <td class="text-capitalize text-black">@lang('text.guardian_address'):</td>
+                <td class="text-uppercase text-secondary">{{ $application->guardian_address??'' }}</td>
+            </tr>
+            <tr class="my-2 border-bottom border-light">
+                <td class="text-capitalize text-black">@lang('text.guardian_occupation'):</td>
+                <td class="text-uppercase text-secondary">{{ $application->parent_occupation??'' }}</td>
+            </tr>
+            <tr class="my-2 border-bottom border-light">
+                <td class="text-capitalize text-black">@lang('text.parents_phone_number'):</td>
+                <td class="text-uppercase text-secondary">{{ $application->parent_phone??'' }}</td>
+            </tr>
+            <tr class="my-2 border-bottom border-light">
+                <td class="text-capitalize text-black">@lang('text.emergency_tel_bilang'):</td>
+                <td class="text-uppercase text-secondary">{{ $application->emergency_tel??'' }}</td>
+            </tr>
+            <tr class="my-2 border-bottom border-light">
+                <td class="text-capitalize text-black">@lang('text.student_mailing_address_if_different'):</td>
+                <td class="text-uppercase text-secondary">{{ $application->student_mailing_address??'' }}</td>
+            </tr>
+            <tr class="my-2 border-bottom border-light">
+                <td class="text-capitalize text-black">@lang('text.extra_curricula_activities_eg_sports_hobbies'):</td>
+                <td class="text-uppercase text-secondary">{{ $application->extra_curricula_activities??'' }}</td>
+            </tr>
+            <tr>
+                <th colspan="2" class="border-top border-bottom heading font-weight-semibold py-3 px-3 my-1 text-uppercase text-secondary border-secondary">3. @lang('text.course_envisaged_bilang')</th>
+            </tr>
+            <tr class="my-2 border-bottom border-light">
+                <td class="text-capitalize text-black">@lang('text.first_choice_bilang'):</td>
+                <td class="text-uppercase text-secondary">{{ $program1->name??'' }}</td>
+            </tr>
+            <tr class="my-2 border-bottom border-light">
+                <td class="text-capitalize text-black">@lang('text.second_choice_bilang'):</td>
+                <td class="text-uppercase text-secondary">{{ $program2->name??'' }}</td>
+            </tr>
+            <tr class="my-2 border-bottom border-light">
+                <td class="text-capitalize text-black">@lang('text.word_level'):</td>
+                <td class="text-uppercase text-secondary">{{ $application->level??'' }}</td>
+            </tr>
+            <tr>
+                <th colspan="2" class="border-top border-bottom heading font-weight-semibold py-3 px-3 my-1 text-capitalize text-secondary border-secondary">3. @lang('text.application_form_docs_heading'):</th>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div class="container-fluid">
+                        <label class="text-black"> <span> &raquo;</span> @lang('text.application_form_doc1')</label>
+                    </div>
+                    <div class="container-fluid">
+                        <label class="text-black"> <span> &raquo;</span> @lang('text.application_form_doc2')</label>
+                    </div>
+                    <div class="container-fluid">
+                        <label class="text-black"> <span> &raquo;</span> @lang('text.application_form_doc3')</label>
+                    </div>
+                    <div class="container-fluid">
+                        <label class="text-black"> <span> &raquo;</span> @lang('text.application_form_doc4')</label>
+                    </div>
+                    <div class="container-fluid">
+                        <label class="text-black"> <span> &raquo;</span> @lang('text.application_form_doc5')</label>
+                    </div>
+                    <div class="container-fluid">
+                        <label class="text-black"> <span> &raquo;</span> @lang('text.application_form_doc6', ['application_fee'=>$degree->amount??'5000', 'registration_fee'=>$fee->registration??'15000'])</label>
+                    </div>
+                    <div class="container-fluid">
+                        <label class="text-black"> <span> &raquo;</span> @lang('text.application_form_doc7')</label>
+                    </div>
+                    <div class="container-fluid">
+                        <label class="text-uppercase text-black" style="font-weight: bold"> @lang('text.application_form_docs_hint')</label>
+                    </div>
+                    <div class="container-fluid my-4">
+                        <label class="text-black"> <span style="font-weight: bold">NB</span>: @lang('text.fitness_note')</label>
+                    </div>
+                    <div class="container-fluid">
+                        <label class="text-black"> @lang('text.affirm_correctness', ['name'=>$application->name??''])</label>
+                    </div>
+                </td>
+            </tr>
+            <tr class="my-5 py-2">
+                <th>
+                    <div class="text-center text-capitalize">
+                        <span>____________________________</span><br> @lang('text.word_signature')
+                    </div>
+                </th>
+                <th><label class="text-black"> {{ now()->format('d-m-Y') }} </label></th>
+            </tr>
+        </tbody>
 
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="3" class="text-center text-capitalize">
-                        @lang('text.printed_date'): {{ now()->format('M d Y') }}
-                    </td>
-                </tr>
-            </tfoot>
-        </table>      
-    </div>
+    </table>
 @endsection

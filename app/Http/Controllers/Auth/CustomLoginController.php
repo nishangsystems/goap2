@@ -119,7 +119,7 @@ class CustomLoginController extends Controller
         //Attempt to log the user in
 
         // return $request->all();
-        if( (Auth::guard('student')->attempt(['phone'=>$request->username,'password'=>$request->password], $request->remember) || Auth::guard('student')->attempt(['emial'=>$request->username,'password'=>$request->password], $request->remember))){
+        if( (Auth::guard('student')->attempt(['phone'=>$request->username,'password'=>$request->password], $request->remember) || Auth::guard('student')->attempt(['email'=>$request->username,'password'=>$request->password], $request->remember))){
             // return "Spot 1";
             return redirect()->intended(route('student.home'));
         }else{
