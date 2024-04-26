@@ -210,7 +210,7 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
 });
 
 
-Route::prefix('student')->name('student.')->middleware('isStudent')->middleware('plcharge')->group(function () {
+Route::prefix('student')->name('student.')->middleware('isStudent')->group(function () {
     // Route::get('', 'Student\HomeController@index')->name('home');
     Route::get('', 'Student\HomeController@all_programs')->name('home');
     Route::get('edit_profile', 'Student\HomeController@edit_profile')->name('edit_profile');
@@ -377,60 +377,15 @@ Route::name('messages.')->prefix('messages')->group(function(){
 
 Route::get('search/students/boarders/{name}', 'HomeController@getStudentBoarders')->name('getStudentBoarder');
 
-Route::get('/campuses/{id}/programs', function(Request $request){
-    $order = \App\Models\SchoolUnits::orderBy('name', 'ASC')->pluck('id')->toArray();
-    $resp = DB::table('campus_programs')->where('campus_id', '=', $request->id)
-                ->join('program_levels', 'program_levels.id', '=', 'campus_programs.program_level_id')
-                ->get(['program_levels.*']);
-    // $resp = \App\Models\CampusProgram::where('campus_id', $request->id)->get();
-    // $resp = \App\Models\CampusProgram::where('campus_id', $request->id)->orderBy(function($model) use ($order){
-    //     return array_search($model->getKey(), $order);
-    // });
-    $data = [];
-    foreach ($resp as $key => $value) {
 
-        $value->program = \App\Models\SchoolUnits::find($value->program_id)->name;
-        $value->level = \App\Models\Level::find($value->level_id)->level;
-        $data[] = $value;
-    }
-
-    return $data;
-})->name('campus.programs');
-Route::get('semesters/{background}', function(Request $request){
-    return \App\Models\Semester::where('background_id', $request->background)->get();
-})->name('semesters');
-Route::get('class_subjects/{program_level_id}', function($program_level_id){
-    // return $program_level_id;
-    $courses = \App\Models\ClassSubject::where(['class_subjects.class_id'=>$program_level_id])
-            ->join('subjects', ['subjects.id'=>'class_subjects.subject_id'])
-            ->get('subjects.*');
-            // return $courses;
-            return response()->json(SubjectResource::collection($courses));
-})->name('class_subjects');
 Route::get('campus/{campus}/program_levels', [Controller::class, 'sorted_campus_program_levels'])->name('campus.program_levels');
 Route::get('program_levels', [Controller::class, 'sorted_program_levels'])->name('program_levels');
 Route::get('getColor/{label}', [HomeController::class, 'getColor'])->name('getColor');
 
-Route::get('search_subjects', function (Request $request) {
-    $data = $request->name;
-    $subjects = Subjects::where('code', 'LIKE', '%' . $data . '%')
-        ->orWhere('name', 'LIKE', '%' . $data . '%')->orderBy('name')->paginate(20);
-    return $subjects;
-})->name('search_subjects');
 
-Route::get('get-income-item/{income_id}', function(Request $request, $income_id){
-    return \App\Models\Income::find($income_id);
-})->name('get-income-item');
 
 Route::get('mode/{locale}', function ($batch) {
     session()->put('mode', $batch);
 
     return redirect()->back();
 })->name('mode');
-
-Route::get('trace_resits', function(){
-    $data['resits'] = Resit::all();
-    $resit_ids = $data['resits']->pluck('id')->toArray();
-    $data['resit_students'] = StudentSubject::whereIn('resit_id', $resit_ids)->get();
-    return $data;
-});
