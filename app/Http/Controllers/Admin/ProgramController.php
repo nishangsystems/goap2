@@ -6,6 +6,7 @@ use App\Helpers\Helpers;
 use App\Http\Controllers\Controller;
 use App\Http\Services\AppService;
 use App\Http\Resources\AdmittedStudentResource;
+use App\Http\Services\ApiService;
 use App\Mail\AdmissionMail;
 use App\Models\ApplicationForm;
 use App\Models\Batch;
@@ -34,8 +35,10 @@ class ProgramController extends Controller
 {
 
     protected $appService;
-    public function __construct(AppService $appService){
+    protected $api_service;
+    public function __construct(AppService $appService, ApiService $apiService){
         $this->appService = $appService;
+        $this->api_service = $apiService;
     }
 
     public function sections()
@@ -270,22 +273,22 @@ class ProgramController extends Controller
     }
     public function studentsListing($id)
     {
-    # code...
-    // get array of ids of all sub units
-    $year = \App\Helpers\Helpers::instance()->getCurrentAccademicYear();
-    $subUnits = $this->subunitsOf($id);
+        # code...
+        // get array of ids of all sub units
+        $year = \App\Helpers\Helpers::instance()->getCurrentAccademicYear();
+        $subUnits = $this->subunitsOf($id);
 
-    $students = DB::table('student_classes')
-            ->whereIn('class_id', $subUnits)
-            ->join('students', 'students.id', '=', 'student_classes.student_id')
-            ->get();
-    $parent = ProgramLevel::find($id);
-    $data['parent'] = $parent;
-    $data['students'] = $students;
-    // dd($parent);
-    $data['classes'] = \App\Http\Controllers\Admin\StudentController::baseClasses();
-    $data['title'] = __('text.manage_students_under', ['unit'=>$parent->program()->first()->name]);
-    return view('admin.units.student-listing')->with($data);
+        $students = DB::table('student_classes')
+                ->whereIn('class_id', $subUnits)
+                ->join('students', 'students.id', '=', 'student_classes.student_id')
+                ->get();
+        $parent = ProgramLevel::find($id);
+        $data['parent'] = $parent;
+        $data['students'] = $students;
+        // dd($parent);
+        $data['classes'] = \App\Http\Controllers\Admin\StudentController::baseClasses();
+        $data['title'] = __('text.manage_students_under', ['unit'=>$parent->program()->first()->name]);
+        return view('admin.units.student-listing')->with($data);
     }
 
     public function saveSubjects(Request  $request, $id)
