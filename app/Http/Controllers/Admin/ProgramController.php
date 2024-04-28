@@ -35,7 +35,7 @@ class ProgramController extends Controller
 {
 
     protected $appService;
-    protected $api_service;
+    public $api_service;
     public function __construct(AppService $appService, ApiService $apiService){
         $this->appService = $appService;
         $this->api_service = $apiService;
