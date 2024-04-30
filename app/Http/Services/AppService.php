@@ -38,10 +38,10 @@ class AppService{
             // get program fee settings
             $fees = $this->api_service->class_portal_fee_structure($appl->program_first_choice, $appl->level)['data'];
             // dd($fees);
-            if($fees == null){
-                session()->flash('error', 'Fees not set for this program. Contact school system for fee settings');
-                return back()->withInput();
-            }
+            // if($fees == null){
+            //     session()->flash('error', 'Fees not set for this program. Contact school system for fee settings');
+            //     return back()->withInput();
+            // }
 
             // dd($fees);
 
@@ -93,10 +93,10 @@ class AppService{
         $data['program2'] = collect($data['programs'])->where('id', $data['application']->program_second_choice)->first();
         
         $fees = $this->api_service->class_portal_fee_structure($application->program_first_choice, $application->level)['data'];
-        if($fees == null){
-            session()->flash('error', 'Fees not set for this program. Contact school system for fee settings');
-            return back()->withInput();
-        }
+        // if($fees == null){
+        //     session()->flash('error', 'Fees not set for this program. Contact school system for fee settings');
+        //     return back()->withInput();
+        // }
         $data['fee'] = $fees[0]??$fees;
         // dd($data['fee']);
 
