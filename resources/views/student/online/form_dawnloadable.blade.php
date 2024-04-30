@@ -117,41 +117,41 @@
             <tr>
                 <td colspan="2">
                     <div class="container-fluid">
-                        <label class="text-black"> <span> &raquo;</span> @lang('text.application_form_doc1')</label>
+                        <label class="text-black"> <span> &raquo;</span> {!!  __('text.application_form_doc1') !!}</label>
                     </div>
                     <div class="container-fluid">
-                        <label class="text-black"> <span> &raquo;</span> @lang('text.application_form_doc2')</label>
+                        <label class="text-black"> <span> &raquo;</span> {!! __('text.application_form_doc2') !!}</label>
                     </div>
                     <div class="container-fluid">
-                        <label class="text-black"> <span> &raquo;</span> @lang('text.application_form_doc3')</label>
+                        <label class="text-black"> <span> &raquo;</span> {!! __('text.application_form_doc3') !!}</label>
                     </div>
                     <div class="container-fluid">
-                        <label class="text-black"> <span> &raquo;</span> @lang('text.application_form_doc4')</label>
+                        <label class="text-black"> <span> &raquo;</span> {!! __('text.application_form_doc4') !!}</label>
                     </div>
                     <div class="container-fluid">
-                        <label class="text-black"> <span> &raquo;</span> @lang('text.application_form_doc5')</label>
+                        <label class="text-black"> <span> &raquo;</span> {!! __('text.application_form_doc5') !!}</label>
                     </div>
                     <div class="container-fluid">
-                        <label class="text-black"> <span> &raquo;</span> @lang('text.application_form_doc6', ['application_fee'=>$degree->amount??'5000', 'registration_fee'=>$fee->registration??'15000'])</label>
+                        <label class="text-black"> <span> &raquo;</span> {!! __('text.application_form_doc6', ['application_fee'=>$degree->amount??'5000', 'registration_fee'=>$fee->registration??'15000']) !!}</label>
                     </div>
                     <div class="container-fluid">
-                        <label class="text-black"> <span> &raquo;</span> @lang('text.application_form_doc7')</label>
+                        <label class="text-black"> <span> &raquo;</span> {!! __('text.application_form_doc7') !!}</label>
                     </div>
                     <div class="container-fluid">
-                        <label class="text-uppercase text-black" style="font-weight: bold"> @lang('text.application_form_docs_hint')</label>
+                        <label class="text-uppercase text-black" style="font-weight: bold"> {!! __('text.application_form_docs_hint') !!}</label>
                     </div>
                     <div class="container-fluid my-4">
-                        <label class="text-black"> <span style="font-weight: bold">NB</span>: @lang('text.fitness_note')</label>
+                        <label class="text-black"> <span style="font-weight: bold">NB</span>: {!! __('text.fitness_note') !!}</label>
                     </div>
                     <div class="container-fluid">
-                        <label class="text-black"> @lang('text.affirm_correctness', ['name'=>$application->name??''])</label>
+                        <label class="text-black"> {!! __('text.affirm_correctness', ['name'=>$application->name??'']) !!}</label>
                     </div>
                 </td>
             </tr>
             <tr class="my-5 py-2">
                 <th>
                     <div class="text-center text-capitalize">
-                        <span>____________________________</span><br> @lang('text.word_signature')
+                        <span>____________________________</span><br> {!! __('text.word_signature') !!}
                     </div>
                 </th>
                 <th><label class="text-black"> {{ now()->format('d-m-Y') }} </label></th>

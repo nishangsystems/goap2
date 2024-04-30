@@ -6,10 +6,10 @@
         <div style="font-size: large;">
             
             <div class="my-3 py-2 text-capitalize">
-                <span>@lang('text.dear_titles') : <b>{{ $name??'' }}</b></span><br>
+                <span>{!!  __('text.dear_titles') !!} : <b>{{ $name??'' }}</b></span><br>
             </div>
             <div class="my-3 py-2">
-                <span>@lang('text.admission_letter_text_block1', ['degree'=>$degree??'DEG', 'department'=>$fee['department']??'DEP', 'matric'=>$matric ,'start_of_lectures'=>$start_of_lectures, 'school_email'=>$school_email])</span>
+                <span>{!! __('text.admission_letter_text_block1', ['degree'=>$degree??'DEG', 'department'=>$fee['department']??'DEP', 'matric'=>$matric ,'start_of_lectures'=>$start_of_lectures, 'school_email'=>$school_email]) !!}</span>
             </div>
             
             
