@@ -87,10 +87,9 @@ class AppService{
         $data['campus'] = collect($data['campuses'])->where('id', $data['application']->campus_id)->first();
         $data['certs'] = json_decode($this->api_service->certificates())->data;
         
-        $data['programs'] = json_decode($this->api_service->campusDegreeCertificatePrograms($data['application']->campus_id, $data['application']->degree_id, $data['application']->entry_qualification))->data;
         $data['cert'] = collect($data['certs'])->where('id', $data['application']->entry_qualification)->first();
-        $data['program1'] = collect($data['programs'])->where('id', $data['application']->program_first_choice)->first();
-        $data['program2'] = collect($data['programs'])->where('id', $data['application']->program_second_choice)->first();
+        $data['program1'] = json_decode($this->api_service->programs($data['application']->program_first_choice))->data;
+        $data['program2'] = json_decode($this->api_service->programs($data['application']->program_second_choice))->data;
         
         $fees = $this->api_service->class_portal_fee_structure($application->program_first_choice, $application->level)['data'];
         // if($fees == null){

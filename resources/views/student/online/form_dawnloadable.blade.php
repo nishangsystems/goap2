@@ -59,7 +59,7 @@
             </tr>
             <tr class="my-2 border-bottom border-light">
                 <td class="text-capitalize text-black">@lang('text.word_email_bilang'):</td>
-                <td class="text-uppercase text-secondary">{{ $application->email??'' }}</td>
+                <td class="text-lowercase text-secondary">{{ $application->email??'' }}</td>
             </tr>
             <tr>
                 <th colspan="2" class="border-top border-bottom heading font-weight-semibold py-3 px-3 my-1 text-uppercase text-secondary border-secondary">2. @lang('text.additional_personal_details')</th>
