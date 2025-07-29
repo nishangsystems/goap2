@@ -68,6 +68,7 @@ $em_key = time().random_int(3000, 3099);
                             <label class="text-secondary  text-capitalize">{{ __('text.word_gender_bilang') }}<i class="text-danger text-xs">*</i></label>
                             <div class="">
                                 <select class="form-control text-primary"  name="gender" required>
+                                    <option value=""></option>
                                     <option value="male" {{ $application->gender == 'male' ? 'selected' : '' }}>{{ __('text.word_male') }}</option>
                                     <option value="female" {{ $application->gender == 'female' ? 'selected' : '' }}>{{ __('text.word_female') }}</option>
                                 </select>
