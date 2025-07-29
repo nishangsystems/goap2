@@ -362,7 +362,7 @@ class HomeController extends Controller
 
                 GEN_TOKEN:
                 $response = Http::post(config('tranzak.base').config('tranzak.token'), ['appId'=>$tranzak_credentials->app_id, 'appKey'=>$tranzak_credentials->api_key]);
-                dd($response->collect());
+                // dd($response->collect());
                 $token_refreshed++;
                 if($response->status() == 200){
                     cache([$tranzak_credentials->cache_token_key => json_decode($response->body())->data->token]);
