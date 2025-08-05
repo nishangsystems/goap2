@@ -1031,7 +1031,7 @@ class ProgramController extends Controller
             $data['title'] = "Edit Student Information";
             $data['_this'] = $this;
             $data['action'] = __('text.word_edit');
-            $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->where('admitted', 0)->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
+            $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->whereNull('admitted')->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
             return view('admin.student.applications', $data);
         }
 
@@ -1130,7 +1130,7 @@ class ProgramController extends Controller
             $data['_this'] = $this;
             $data['action'] = __('text.word_send');
             $data['download'] = __('text.word_download');
-            $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->where('admitted', 1)->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
+            $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->whereNotNull('admitted')->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
             return view('admin.student.applications', $data);
         }
         if($request->has('_atn')){
@@ -1156,7 +1156,7 @@ class ProgramController extends Controller
             $data['title'] = "Admit Student";
             $data['_this'] = $this;
             $data['action'] = __('text.word_admit');
-            $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->where('admitted', 0)->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
+            $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->whereNull('admitted')->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
             return view('admin.student.applications', $data);
         }
         if(!$request->has('matric') or ($request->matric == null)){
@@ -1244,7 +1244,7 @@ class ProgramController extends Controller
         // dd($resp);
         if($resp != null and !is_string($resp)){
            if($resp->status == 1){
-                $application->update(['matric'=>$request->matric, 'admitted'=>1]);
+                $application->update(['matric'=>$request->matric, 'admitted'=>now()]);
 
                 // Send sms/email notification
                 $phone_number = $application->phone;
@@ -1280,7 +1280,7 @@ class ProgramController extends Controller
             $data['title'] = "Change Student Program";
             $data['_this'] = $this;
             $data['action'] = __('text.change_program');
-            $data['applications'] = ApplicationForm::where('admitted', true)->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
+            $data['applications'] = ApplicationForm::whereNotNull('admitted')->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
             return view('admin.student.applications', $data);
         }
 
@@ -1377,7 +1377,7 @@ class ProgramController extends Controller
         if($resp != null){
             if($resp->status ==1){
                 // $application->matric = $request->matric;
-                $application->update(['matric'=>$request->matric, 'admitted'=>1]);
+                $application->update(['matric'=>$request->matric, 'admitted'=>now()]);
 
                 // Send sms/email notification
                 return redirect(route('admin.applications.admit'))->with('success', "Program changed successfully.");

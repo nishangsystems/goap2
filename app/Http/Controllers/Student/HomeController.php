@@ -551,7 +551,7 @@ class HomeController extends Controller
         # code...
         $data['title'] = "Download Admission Letter";
         $data['_this'] = $this;
-        $data['applications'] = auth('student')->user()->applicationForms->where('admitted', 1);
+        $data['applications'] = auth('student')->user()->applicationForms->whereNotNull('admitted');
         // return $data;
         return view('student.online.admission_letter', $data);
     }

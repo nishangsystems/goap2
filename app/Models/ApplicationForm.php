@@ -24,6 +24,8 @@ class ApplicationForm extends Model
         'previous_training', 'level', 'marital_status', 'bypass_reason'
     ];
 
+    protected $dates = ['created_at', 'updated_at', 'admitted']; 
+
     public function student()
     {
         # code...

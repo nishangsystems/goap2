@@ -51,7 +51,9 @@ class AppService{
             // dd($data);
             $data['title'] = "ADMISSION LETTER";
             $data['name'] = $appl->name;
+            $data['application'] = $appl;
             $data['matric'] =  $appl->matric;
+            $data['phone'] =  $appl->phone;
             $data['start_of_lectures'] = $config->start_of_lectures;
             $data['school_email'] = $appl->email??'';
             $data['help_email'] =  $config->help_email;
