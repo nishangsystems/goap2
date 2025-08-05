@@ -9,9 +9,6 @@ class ApiService{
     // get campuses
     public function campuses(){
 
-        // static data for a campus since current system has just one campus
-        // return json_encode(['data'=>[['id'=>1, 'name'=>'GRACIOUS UNIVERSITY CAMPUS', 'address'=>'MOLYKO, BUEA, SWR-CAMEROON', 'telephone'=>'679135426', 'school_id'=>'1']]]);
-
         // dd(Helpers::instance()->getApiRoot().'/'.config('api_routes.campuses'));
         return Http::get(Helpers::instance()->getApiRoot().'/'.config('api_routes.campuses'))->body();
     }
