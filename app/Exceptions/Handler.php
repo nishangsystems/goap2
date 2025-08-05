@@ -50,8 +50,9 @@ class Handler extends ExceptionHandler
                 return redirect(route('admin.home'));
             }
             // return $e;
-            session()->flash('error', "F::{$e->getFile()}, L::{$e->getLine()}, M::{$e->getMessage()}");
-            return back()->withInput();
+            throw $e;
+            // session()->flash('error', "F::{$e->getFile()}, L::{$e->getLine()}, M::{$e->getMessage()}");
+            // return back()->withInput();
         });
         
     }
