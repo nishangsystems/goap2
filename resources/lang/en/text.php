@@ -1090,6 +1090,8 @@ return [
     'fitness_note'=>'Please note that the programs above do not fit individuals with disabilities',
     'affirm_correctness'=>'<b style="text-decoration: underline"> :name</b> hereby declares that all information in this form is correct to the best of my knowledge. Any false or incomplete information given in this form will automatically disqualify me from being considered for admission to, or continuing with any course of study in the DAJA University. I shall accept as final the decision of the university with regard to my Department/Programme of study',
     'word_sincerely'=>'sincerely',
+    'application_statistics'=>'application statistics',
+    'admission_statistics'=>'admission statistics',
     ''
 
 ]; 

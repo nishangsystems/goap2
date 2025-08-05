@@ -497,7 +497,7 @@
                     <li>
                         <a href="{{route('admin.stats.results')}}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
-                            {{__('text.Application_bypass')}}
+                            {{__('text.application_bypass')}}
                         </a>
 
                         <b class="arrow"></b>
@@ -549,14 +549,15 @@
                 <b class="arrow"></b>
             </li>
         
-            
-            <li>
-                <a href="{{route('admin.platform.bypass')}}" class="text-capitalize">
-                    <i  style="color: {{$bg1}};" class="fa fa-dollar menu-icon"></i>
-                    {{__('text.platform_bypass')}}
-                </a>
-                <b class="arrow"></b>
-            </li>
+            @if(Auth::user()->hasPermissionTo('bypass_platform_charges'))
+                <li>
+                    <a href="{{route('admin.platform.bypass')}}" class="text-capitalize">
+                        <i  style="color: {{$bg1}};" class="fa fa-dollar menu-icon"></i>
+                        {{__('text.platform_bypass')}}
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+            @endif
             <li>
                 <a href="{{route('admin.reset_password')}}" class="text-capitalize">
                     <i  style="color: {{$bg1}};" class="fa fa-refresh menu-icon   "></i>
