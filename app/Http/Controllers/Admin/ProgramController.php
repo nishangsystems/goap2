@@ -1130,7 +1130,7 @@ class ProgramController extends Controller
             $data['_this'] = $this;
             $data['action'] = __('text.word_send');
             $data['download'] = __('text.word_download');
-            $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->whereNotNull('admitted')->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
+            $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->whereNotNull('matric')->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
             return view('admin.student.applications', $data);
         }
         if($request->has('_atn')){
@@ -1156,7 +1156,7 @@ class ProgramController extends Controller
             $data['title'] = "Admit Student";
             $data['_this'] = $this;
             $data['action'] = __('text.word_admit');
-            $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->whereNull('admitted')->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
+            $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->whereNull('matric')->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
             return view('admin.student.applications', $data);
         }
         if(!$request->has('matric') or ($request->matric == null)){
