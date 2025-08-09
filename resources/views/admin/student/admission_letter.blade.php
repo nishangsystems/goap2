@@ -3,7 +3,7 @@
     <div class="py-2 container-fluid">
         <h3 class="text-uppercase text-center"><b>{{ $title }}</b></h3>
         <hr class="border-bottom border-4 my-0">
-        <div style="font-size: large;">
+        <div style="font-size: normal;">
             
             <div class="my-3 py-2 text-capitalize">
                 <span>@lang('text.word_date') : {{ $application->admitted?->format('M dS Y')??null }}</span><br><br>
