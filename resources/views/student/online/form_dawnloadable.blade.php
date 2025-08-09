@@ -151,7 +151,7 @@
             <tr class="my-5 py-2">
                 <th>
                     <div class="text-center text-capitalize">
-                        <span>____________________________</span><br> {!! __('text.word_signature') !!}
+                        <i><u>{{ $application->name??'' }}</u></i><br> {!! __('text.word_signature') !!}
                     </div>
                 </th>
                 <th><label class="text-black"> {{ now()->format('d-m-Y') }} </label></th>
