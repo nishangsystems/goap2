@@ -16,14 +16,14 @@
                 <span>DAJA Higher Institute (DHI)</span><br>
                 <span>Buea, SWR, Cameroon</span><br><br>
             </div>
-            <div class="my-3 py-2">
+            <div class="my-1 py-2">
                 <span class="d-block">Dear  <b>{{ $name }}</b>,</span><br>
                 <span class="d-block"><u><b>Congratulations!</b></u> It gives us pleasure to inform you that your application for admission into the <i>{{ $degree }}</i>  program has been approved. We have found your application to be satisfactory and promising.</span><br>
                 <span class="d-block">Classes will begin at DAJA University in October, and a specific start date of classes will be announced in the days and weeks ahead. Also, the University will have an orientation for all the students, and the
                     dates and a detailed agenda will be sent to everyone. Attendance at the orientation will be mandatory. Several essential details will be disclosed to the students during this orientation.</span><br>
                 <span class="d-block">We welcome you into our university family as you join a global learning community that lays down a foundation for positive social change.</span><br>
                 <span class="d-block">We look forward to welcoming you to the DAJA University community</span><br>
-                <span class="d-block">Sincerely,</span><br>
+                <span class="d-block">Sincerely,</span>
                 <span class="d-block">Dr. Julius Atemafac <br> President</span><br>
             </div>
 
