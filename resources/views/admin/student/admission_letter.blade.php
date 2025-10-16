@@ -1,6 +1,19 @@
 @extends('admin.printable2')
+@section('style')
+    <style>
+        #admission_letter{
+            background-image: url("{{ asset('assets/images/avatars/logo.png') }}");
+            background-color: white;
+            background-blend-mode: overlay;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: scroll;
+        }
+    </style>
+@endsection
 @section('section')
-    <div class="py-2 container-fluid">
+    <div class="py-2 container-fluid" id="admission_letter">
         <h3 class="text-uppercase text-center"><b>{{ $title }}</b></h3>
         <hr class="border-bottom border-4 my-0">
         <div style="font-size: normal;">
@@ -27,9 +40,9 @@
                 <span class="d-block">Dr. Julius Atemafac <br> President</span><br>
             </div>
 
-            <div class="my-4 py-3 text-capitalize text-center text-info">
+            {{-- <div class="my-4 py-3 text-capitalize text-center text-info">
                 <i>Mt. Carmel Street; Former Hotel Carlos,<br> Mile 18 Buea SWR Cameroon <br> Tel: +237672495853/687672289 <br> WhatsApp: +237672495853, Fax: 866-207-0983</i>
-            </div>
+            </div> --}}
         </div>
     </div>
 @endsection
