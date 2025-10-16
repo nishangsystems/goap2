@@ -20,8 +20,8 @@
     </style>
 @endsection
 @section('section')
-    <div class="py-2 container-fluid" id="admission_letter">
-        <div>
+    <div id="admission_letter">
+        <div class="py-2 container-fluid">
             <h3 class="text-uppercase text-center"><b>{{ $title }}</b></h3>
             <hr class="border-bottom border-4 my-0">
             <div style="font-size: normal;">
