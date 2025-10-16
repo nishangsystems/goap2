@@ -13,7 +13,7 @@
         }
 
         #admission_letter > div {
-            background-color: rgba(255, 255, 255, 0.95);
+            background-color: rgba(255, 255, 255, 0.9);
             width: inherit;
             height: inherit;
         }
