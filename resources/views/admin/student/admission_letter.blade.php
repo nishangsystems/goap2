@@ -3,8 +3,8 @@
     <style>
         #admission_letter{
             background-image: url("{{ asset('assets/images/avatars/logo.png') }}");
-            background-color: white;
-            background-blend-mode: overlay;
+            background-color: rgba(248, 248, 248, 0.9);
+            background-blend-mode: multiply;
             background-position: center;
             background-size: cover;
             background-repeat: no-repeat;
