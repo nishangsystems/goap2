@@ -9,6 +9,7 @@
             background-size: cover;
             background-repeat: no-repeat;
             background-attachment: scroll;
+            filter: blur(10px);
         }
     </style>
 @endsection
