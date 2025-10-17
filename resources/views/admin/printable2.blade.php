@@ -88,7 +88,7 @@
 </head>
 <body class="no-skin">
     <div class="" style="background-color: white;">
-        <img src="{{ asset('assets/images/avatars/letterhead.jpg') }}" style="width: 100%; max-height: auto; margin-bottom: 1rem;">
+        <img src="{{ asset('assets/images/avatars/lhead.png') }}" style="width: 100%; max-height: auto; margin-bottom: 1rem;">
         {{-- <div class="text-center text-black h3 py-2">{{$title ?? ''}}</div> --}}
         @yield('section')
         {{-- <img src="{{ asset('assets/images/footer.png') }}" style="width: 100%; max-height: 20rem; margin-top: 1rem;"> --}}
