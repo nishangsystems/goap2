@@ -74,7 +74,7 @@
 
 <body class="no-skin">
     <div class="container-fluid" style="background-color: white;">
-        <img src="{{ asset('assets/images/avatars/letterhead.jpg') }}" class="w-100 h-auto">
+        <img src="{{ asset('assets/images/avatars/lhead.png') }}" class="w-100 h-auto">
         <div class="text-center text-black h3 py-2 text-uppercase">{{$title ?? ''}}</div>
         @yield('section')
     </div>
