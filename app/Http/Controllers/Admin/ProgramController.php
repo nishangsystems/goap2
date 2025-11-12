@@ -993,6 +993,7 @@ class ProgramController extends Controller
         # code...
         $data['title'] = "All Application Forms";
         $data['_this'] = $this;
+        $data['programs'] = collect(json_decode($this->api_service->programs())->data);
         $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->get();
         return view('admin.student.applications', $data);
     }
@@ -1001,6 +1002,7 @@ class ProgramController extends Controller
     {
         # code...
         $data['application'] = ApplicationForm::find($id);
+        $data['programs'] = collect(json_decode($this->api_service->programs())->data);
         $data['title'] = "Application Details For ".$data['application']->name;
         
     }
@@ -1017,6 +1019,7 @@ class ProgramController extends Controller
             $data['_this'] = $this;
             $data['action'] = __('text.word_print');
             $data['download'] = __('text.word_download');
+            $data['programs'] = collect(json_decode($this->api_service->programs())->data);
             $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->get();
             return view('admin.student.applications', $data);
         }
@@ -1027,6 +1030,7 @@ class ProgramController extends Controller
     public function edit_application_form(Request $request, $id = null)
     {
         # code...
+        $data['programs'] = collect(json_decode($this->api_service->programs())->data);
         if($id == null){
             $data['title'] = "Edit Student Information";
             $data['_this'] = $this;
@@ -1078,6 +1082,7 @@ class ProgramController extends Controller
 
     public function uncompleted_application_form(Request $request, $id=null)
     {
+        $data['programs'] = collect(json_decode($this->api_service->programs())->data);
         # code...
         if($id == null){
             $data['title'] = "Uncompleted Application Forms";
@@ -1130,6 +1135,7 @@ class ProgramController extends Controller
             $data['_this'] = $this;
             $data['action'] = __('text.word_send');
             $data['download'] = __('text.word_download');
+            $data['programs'] = collect(json_decode($this->api_service->programs())->data);
             $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->whereNotNull('matric')->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
             return view('admin.student.applications', $data);
         }
@@ -1276,6 +1282,7 @@ class ProgramController extends Controller
     public function application_form_change_program(Request $request, $id = null)
     {
         # code...
+        $data['programs'] = collect(json_decode($this->api_service->programs())->data);
         if($id == null){
             $data['title'] = "Change Student Program";
             $data['_this'] = $this;
@@ -1392,6 +1399,7 @@ class ProgramController extends Controller
         # code...
         $data['title'] = __('text.bypass_application_fee');
         $data['_this'] = $this;
+        $data['programs'] = collect(json_decode($this->api_service->programs())->data);
         $data['applications'] = ApplicationForm::whereNull('transaction_id')->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
         if($application_id != null){
             $data['application'] = ApplicationForm::find($application_id);
@@ -1405,6 +1413,7 @@ class ProgramController extends Controller
         # code...
         $data['title'] = "Application Fee Bypass Report";
         $data['_this'] = $this;
+        $data['programs'] = collect(json_decode($this->api_service->programs())->data);
         $data['applications'] = ApplicationForm::whereNotNull('transaction_id')->whereNotNull('bypass_reason')->where('year_id', Helpers::instance()->getCurrentAccademicYear())->get();
         // dd($data);
         return view('admin.student.application_bypass_report', $data);
