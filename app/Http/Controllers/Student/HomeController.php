@@ -115,8 +115,8 @@ class HomeController extends Controller
     {
         // $this->middleware('isStudent');
         // $this->boarding_fee =  BoardingFee::first();
-        //  $this->year = Batch::find(Helpers::instance()->getCurrentAccademicYear())->name;
-        $this->batch_id = Batch::find(Helpers::instance()->getCurrentAccademicYear())->id;
+        // $this->year = Batch::find(Helpers::instance()->getCurrentAccademicYear())->name;
+        $this->batch_id = Helpers::instance()->getCurrentAccademicYear();
         $this->years = Batch::all();
         $this->api_service = $service;
         $this->appService = $appService;
@@ -515,7 +515,7 @@ class HomeController extends Controller
         $data['title'] = "Download Application Form";
         $data['_this'] = $this;
         // $data['applications'] = auth('student')->user()->applicationForms->whereNotNull('transaction_id');
-        $data['applications'] = auth('student')->user()->applicationForms;
+        $data['applications'] = auth('student')->user()->applicationForms()->where('year_id', $this->batch_id);
         return view('student.online.download_form', $data);
     }
 
