@@ -566,6 +566,7 @@ class HomeController extends Controller
     {
         # code...
         $charge = PlatformCharge::first();
+        $student = auth('student')->user();
         if($charge == null || $charge->yearly_amount == null || $charge->yearly_amount == 0){return back()->with('error', 'Platform charges not set.');}
         if($student->hasPaidPlatformCharges($request->year_id)){return redirect(route('student.home'))->with('message', 'Platform charges already paid for this year.');}
         $data['title'] = "Pay Platform Charges";
