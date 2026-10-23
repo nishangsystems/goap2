@@ -358,7 +358,7 @@ class HomeController extends Controller
             $token_refreshed = 0;
             $application = auth('student')->user()->applicationForms()->where('year_id', Helpers::instance()->getCurrentAccademicYear())->first();
             $tranzak_credentials = TranzakCredential::where('campus_id', $application->campus_id)->first();
-            if(cache($tranzak_credentials->cache_token_key) == null or Carbon::parse(cache($tranzak_credentials->cache_token_expiry_key))->isAfter(now())){
+            if(cache($tranzak_credentials->cache_token_key) == null or Carbon::parse(cache($tranzak_credentials->cache_token_expiry_key))->isPast()){
 
                 GEN_TOKEN:
                 $response = Http::post(config('tranzak.base').config('tranzak.token'), ['appId'=>$tranzak_credentials->app_id, 'appKey'=>$tranzak_credentials->api_key]);
@@ -515,7 +515,7 @@ class HomeController extends Controller
         $data['title'] = "Download Application Form";
         $data['_this'] = $this;
         // $data['applications'] = auth('student')->user()->applicationForms->whereNotNull('transaction_id');
-        $data['applications'] = auth('student')->user()->applicationForms()->where('year_id', $this->batch_id);
+        $data['applications'] = auth('student')->user()->applicationForms()->where('year_id', $this->batch_id)->whereNotNull('transaction_id')->get();
         return view('student.online.download_form', $data);
     }
 
@@ -840,7 +840,7 @@ class HomeController extends Controller
         // check if token exist and hasn't expired or get new token otherwise
         $application = auth('student')->user()->applicationForms()->where('year_id', Helpers::instance()->getCurrentAccademicYear())->first();
         $tranzak_credentials = \App\Models\TranzakCredential::where('campus_id', 6)->first();
-        if(cache($tranzak_credentials->cache_token_key) == null or Carbon::parse(cache($tranzak_credentials->cache_token_expiry_key))->isAfter(now())){
+        if(cache($tranzak_credentials->cache_token_key) == null or Carbon::parse(cache($tranzak_credentials->cache_token_expiry_key))->isPast()){
             GEN_TOKEN:
             $response = Http::post(config('tranzak.base').config('tranzak.token'), ['appId'=>$tranzak_credentials->app_id, 'appKey'=>$tranzak_credentials->api_key]);
             if($response->status() == 200){
